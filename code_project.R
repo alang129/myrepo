@@ -10,52 +10,98 @@ It attempts to make mapping in parallel as seamless as possible.'
 
 
 'Function should accepts user-definied simulation functions along with parameter input,
-f.e.
-
-MC_function(x, y) with pramameter grid x=-10:10, y=0-1'
+f.e.'
 
 'Those grids should be generated automatically'
 
-
-#Creates parameter grid
-grid_function <- function(start, end, steps){
-  output <- seq(from=start, to=end, by=steps)
+MC_sim(n=100, alpha = 0.5) #our monte carlo simulation function
+MC_sim_fixed_alpha <- function(n){
+  output <- MC_sim(n, alpha=0.5)
   return(output)
 }
-
-
-grid_function(0, 10, 0.1)
+MC_sim_fixed_alpha(n=100)
 
 
 'Supply the parameters as a list object?'
 
 
-# define parameter grid:
-n_grid <- c(50,100,250,500)
-loc_grid <-seq(0,1,0.2)
-scale_grid <-c(1,2)
 
-# collect parameter grids in list:
-param_list=list("n"=n_grid, "loc"=loc_grid, "scale"=scale_grid)
-
-#Complete tidyMC function
-tidyMC <-  function(simulation_function, parameters){
-  grid_function(parameters1[0], parameters1[1], steps = 0.1)
-  grid_function(parameters2[0], parameters2[1], steps = 0.1)
-  simulation_function(n=1000, mean=)
+mc_complete <- function(mc_fun, from, till, by, summary_fun1, summary_fun2, summary_fun3){
+  string1 <- deparse(substitute(summary_fun1)) #output string of summary-function name
+  string2 <- deparse(substitute(summary_fun2)) #output string of summary-function name
+  string3 <- deparse(substitute(summary_fun3)) #output string of summary-function name
+  parameter_grid <- seq(from, till, by)
   
+  mc_sim <- purrr::map_dbl(parameter_grid, mc_fun)
+  df_sim <- as.data.frame(cbind(parameter_grid, mc_sim))
+  
+  a <- summary_fun1(mc_sim) 
+  b <- summary_fun2(mc_sim)
+  c <- summary_fun3(mc_sim)
+  
+  summary_output <- c(a, b, c)
+  names(summary_output) <- c(string1, string2, string3)
+  
+  
+  results <-  list(knitr::kable(df_sim)
+                   , knitr::kable(summary_output))
+  
+  names(results) <- c("simulation", "Summary statistics")
+  
+
+
+  return(results)
 }
 
-param_vec1 <- c(0,10)
-tidyMC(simulation_function=test_mc_function, parameters1=param_vec1)
+
+mc_complete(mc_fun = MC_sim_fixed_alpha
+            , from=50, till=250, by=50
+            , summary_fun1 = mean
+            , summary_fun2 = max
+            , summary_fun3 = min)
 
 
 
-test_mc_function <- function(n, mean, sd){
-  output <- rnorm(n, mean, sd)
-  return(output)
-}
 
+
+
+
+
+
+
+
+
+
+
+choose_summary <- function(f) f(1:100)
+choose_summary(mean)
+choose_summary(median)
+choose_summary(max)
+
+sum_fun_list <- c("mean", "max", "median")
+sum_fun_list <- c(mean, max, median)
+choose_summary(sum_fun_list[1])
+
+class(as.function(unlist(sum_fun_list)))
+class(sum_fun_list)
+
+choose_summary(as.function(sum_fun_list[1]))
+
+
+str(unlist(sum_fun_list))
+str(unlist(sum_fun_list[1]))
+
+unlist(sum_fun_list[1])(1:10)
+
+choose_summary(unlist(sum_fun_list[1]))
+
+
+
+
+grid_x <- mc_complete(from=10, till=500, by=10)
+length(grid_x)
+purrr::map_dfc(grid_x, MC_sim_fixed_alpha)
+purrr::map_dbl(grid_x, function(x) x+1)
 
 
 #Simple MC test function
