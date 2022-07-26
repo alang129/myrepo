@@ -14,94 +14,139 @@ f.e.'
 
 'Those grids should be generated automatically'
 
-MC_sim(n=100, alpha = 0.5) #our monte carlo simulation function
+
 MC_sim_fixed_alpha <- function(n){
   output <- MC_sim(n, alpha=0.5)
   return(output)
 }
+
+
+MC_sim(n=100, alpha = 0.5) #our monte carlo simulation function
 MC_sim_fixed_alpha(n=100)
 
 
 'Supply the parameters as a list object?'
 
+'summary_functions can have vector or list as input, mc_sim needs to be list. 
+summary functions need to be contain the string of the wanted functions!'
 
 
-mc_complete <- function(mc_fun, from, till, by, summary_fun1, summary_fun2, summary_fun3){
-  string1 <- deparse(substitute(summary_fun1)) #output string of summary-function name
-  string2 <- deparse(substitute(summary_fun2)) #output string of summary-function name
-  string3 <- deparse(substitute(summary_fun3)) #output string of summary-function name
-  parameter_grid <- seq(from, till, by)
+### original
+
+mc_complete <- function(mc_fun, from, to, by, summary_functions, seed){
+  set.seed(seed)
+  parameter_grid <- seq(from, to, by)
   
   mc_sim <- purrr::map_dbl(parameter_grid, mc_fun)
+  
   df_sim <- as.data.frame(cbind(parameter_grid, mc_sim))
   
-  a <- summary_fun1(mc_sim) 
-  b <- summary_fun2(mc_sim)
-  c <- summary_fun3(mc_sim)
-  
-  summary_output <- c(a, b, c)
-  names(summary_output) <- c(string1, string2, string3)
-  
+  summary_output <- sapply(summary_functions, do.call, as.list(mc_sim))
+  names(summary_output) <- summary_functions
+
   
   results <-  list(knitr::kable(df_sim)
                    , knitr::kable(summary_output))
+  names(results) <- c("simulation", "Summary statistics")
+  
+  return(as.list(mc_sim))
+}
+
+###
+
+mc_complete <- function(mc_fun, from, to, by, summary_functions, input_var, output_var,  seed){
+  set.seed(seed)
+  parameter_grid <- seq(from, to, by)
+  
+  mc_sim <- purrr::map_dfc(parameter_grid, mc_fun)
+  
+  df_sim <- as.data.frame(cbind(parameter_grid, t(mc_sim)))
+  colnames(df_sim) <- c(input_var, output_var)
+  
+  
+  dim_row <- dim(df_sim)[2]-1
+  dim_col <- length(summary_functions)
+  sum_matrix <- matrix(0, nrow=dim_row, ncol=dim_col)
+  
+  for(i in 2:dim(df_sim)[2]){
+    input <- as.vector(unlist(df_sim[i]))
+    sum_matrix[i-1,] <- sapply(summary_functions, do.call, as.list(input))
+    
+  }
+  
+  df_mat <-  as.data.frame(sum_matrix)
+  names(df_mat) <- summary_functions
+  
+  df_mat_transposed <- t(df_mat)
+  colnames(df_mat_transposed) <- output_var
+
+  
+  results <-  list(knitr::kable(df_sim)
+                   , knitr::kable(df_mat_transposed))
   
   names(results) <- c("simulation", "Summary statistics")
   
-
-
+  #return(results)
   return(results)
 }
 
 
 mc_complete(mc_fun = MC_sim_fixed_alpha
-            , from=50, till=250, by=50
-            , summary_fun1 = mean
-            , summary_fun2 = max
-            , summary_fun3 = min)
+            , from=50, to=300, by=50
+            , summary_functions = list("mean", "median", "min", "max")
+            , input_var = "n"
+            , output_var = c("OLS", "GLS", "Difference")
+            , seed = 1234)
+
+
+
+mat <- matrix(0, nrow=2, ncol=4)
+df1 <- as.data.frame(mat)
+names(df1) <- c("a", "b", "c", "d")
+
+MC_sim_fixed_alpha(n=10)
+grid_x <- seq(from=10, to=100, by=10)
+
+
+test <- as.list(purrr::map_dfc(grid_x, MC_sim_fixed_alpha))
+test[1]
+
+test2 <- as.list(purrr::map_dbl(grid_x, MC_sim_fixed_alpha))
+test2[1]
+
+as.list(purrr::map_dbl(grid_x, MC_sim_fixed_alpha))
+
+a <- as.vector(unlist(df[2]))
+b <- as.list(a)
+mean(b)
+max(as.list(df[2]))
+
+sapply(list("mean", "median", "min", "sd"), do.call, b)
+
+
+
+sd(b)
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-choose_summary <- function(f) f(1:100)
-choose_summary(mean)
-choose_summary(median)
-choose_summary(max)
-
-sum_fun_list <- c("mean", "max", "median")
-sum_fun_list <- c(mean, max, median)
-choose_summary(sum_fun_list[1])
-
-class(as.function(unlist(sum_fun_list)))
-class(sum_fun_list)
-
-choose_summary(as.function(sum_fun_list[1]))
-
-
-str(unlist(sum_fun_list))
-str(unlist(sum_fun_list[1]))
-
-unlist(sum_fun_list[1])(1:10)
-
-choose_summary(unlist(sum_fun_list[1]))
-
-
-
-
-grid_x <- mc_complete(from=10, till=500, by=10)
 length(grid_x)
+
+
+
+MC_sim(n=10, alpha=0.5)
+MC_sim_fixed_alpha(n=10)
+
+test <- purrr::map_dfc(grid_x, MC_sim_fixed_alpha)
+
+purrr::map_dbl(grid_x, MC_sim_fixed_alpha)
 purrr::map_dfc(grid_x, MC_sim_fixed_alpha)
-purrr::map_dbl(grid_x, function(x) x+1)
+as.data.frame(test)
+
+
+purrr::map_dbl(grid_x, MC_sim_fixed_alpha)
+
+purrr::map_dfc(grid_x, MC_sim(alpha=0.5))
 
 
 #Simple MC test function
