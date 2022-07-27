@@ -54,9 +54,20 @@ summary functions need to be contain the string of the wanted functions!'
 
 ###
 
-mc_complete <- function(mc_fun, from, to, by, summary_functions, input_var, output_var,  seed){
-  set.seed(seed)
+mc_complete <- function(mc_fun, from, to, by, summary_functions, input_var,
+                        output_var, seed = NULL,summarise = FALSE ){
+  
+  if(!is.null(seed)) {#Reproducibility
+    set.seed(seed)}#If seed provided then set.seed takes the number
+  else {
+    warning("No seed provided!", call. = FALSE)
+    seed <- sample.int(10000, 1)#if its not provided then we generate random seed
+    set.seed(seed)
+    message("Random seed = ", seed, "\n")} 
+
   parameter_grid <- seq(from, to, by)
+
+    
   
   mc_sim <- purrr::map_dfc(parameter_grid, mc_fun)
   
@@ -65,6 +76,8 @@ mc_complete <- function(mc_fun, from, to, by, summary_functions, input_var, outp
   
   
   dim_row <- dim(df_sim)[2]-1
+  
+  if(summarise == TRUE){ #I wasnt sure where to place summarise i guess you started the sumamrise function from this point.
   dim_col <- length(summary_functions)
   sum_matrix <- matrix(0, nrow=dim_row, ncol=dim_col)
   
@@ -87,6 +100,11 @@ mc_complete <- function(mc_fun, from, to, by, summary_functions, input_var, outp
   names(results) <- c("Monte Carlo simulation", "Summary statistics")
   
   return(results)
+} else {
+  result <- list(knitr::kable(df_sim, row.names = FALSE))
+  names(result) <- "Monte Carlo simulation"
+  return(result)
+}
 }
 
 
@@ -95,10 +113,7 @@ mc_complete(mc_fun = MC_sim_fixed_alpha
             , summary_functions = list("mean", "median", "min", "max", "sd", "var")
             , input_var = "n"
             , output_var = c("OLS", "GLS", "Difference")
-            , seed = 1234)
-
-
-
+            , seed = NULL,summarise = FALSE ) #or you can write your own seed and change summarise to TRUE
 
 
 
