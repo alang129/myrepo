@@ -1,6 +1,7 @@
 library(purrr)
 library(furrr)
 library(combinat)
+library(parallel)
 
 
 'Furrr is a bridge between purrrs family of mapping functions and futures parallel processing capabilities. 
@@ -55,7 +56,9 @@ summary functions need to be contain the string of the wanted functions!'
 ###
 
 mc_complete <- function(mc_fun, from, to, by, summary_functions, input_var,
-                        output_var, seed = NULL,summarise = FALSE ){
+                        output_var, seed = NULL,summarise = FALSE, 
+                        max_cores= detectCores(),Workers= NULL,
+                        parallel = FALSE,type = NULL ){
   
   if(!is.null(seed)) {#Reproducibility
     set.seed(seed)}#If seed provided then set.seed takes the number
@@ -67,9 +70,21 @@ mc_complete <- function(mc_fun, from, to, by, summary_functions, input_var,
 
   parameter_grid <- seq(from, to, by)
 
-    
-  
-  mc_sim <- purrr::map_dfc(parameter_grid, mc_fun)
+  if(Workers > max_cores){# User cannot choose the number of cores more than maximum
+    stop("Number of Cores cannot be bigger than total number of cores")
+ }
+  if( parallel == TRUE){
+    if(type == "multisession"){
+      plan(multisession,workers = Workers)
+      mc_sim <- furrr::future_map_dfc(parameter_grid, mc_fun,.options = furrr_options(seed = TRUE))
+    } else {
+      plan(sequential)
+      mc_sim <- furrr::future_map_dfc(parameter_grid, mc_fun,.options = furrr_options(seed = TRUE))
+    }
+  } else{
+    mc_sim <- purrr::map_dfc(parameter_grid, mc_fun)
+  }
+
   
   df_sim <- as.data.frame(cbind(parameter_grid, t(mc_sim)))
   colnames(df_sim) <- c(input_var, output_var)
@@ -77,7 +92,7 @@ mc_complete <- function(mc_fun, from, to, by, summary_functions, input_var,
   
   dim_row <- dim(df_sim)[2]-1
   
-  if(summarise == TRUE){ #I wasnt sure where to place summarise i guess you started the sumamrise function from this point.
+  if(summarise == TRUE){
   dim_col <- length(summary_functions)
   sum_matrix <- matrix(0, nrow=dim_row, ncol=dim_col)
   
@@ -113,7 +128,13 @@ mc_complete(mc_fun = MC_sim_fixed_alpha
             , summary_functions = list("mean", "median", "min", "max", "sd", "var")
             , input_var = "n"
             , output_var = c("OLS", "GLS", "Difference")
-            , seed = NULL,summarise = FALSE ) #or you can write your own seed and change summarise to TRUE
+            , seed = NULL,summarise = FALSE
+            , max_cores= detectCores()
+            , Workers= 5,parallel = TRUE
+            , type="multisession" )
+
+
+
 
 
 
