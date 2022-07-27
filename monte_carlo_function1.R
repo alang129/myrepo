@@ -53,10 +53,11 @@ MC_sim <- function(n){
   
   sumGLS <- summary(myGLS)
   sumOLS <- summary(myOLS)
-  #output <- c(sumGLS$sigma^2, sumOLS$sigma^2)
+  diff <- sumGLS$sigma^2 - sumOLS$sigma^2
+  output <- c(sumGLS$sigma^2, sumOLS$sigma^2, diff)
   
   
-  return(c(sumGLS$sigma^2, sumOLS$sigma^2))
+  return(output)
 }
 
 MC_sim(n=100)
