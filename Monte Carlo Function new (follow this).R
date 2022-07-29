@@ -2,7 +2,7 @@
 
 'Data generating process, alpha is the MA-parameter'
 dgp <-  function(n, alpha){
-  errors <- arima.sim(model = list(ma = c(alpha)), n = n) # MA(1)
+  errors <- arima.sim(model = list(ma = c(alpha)), n = n) # MA(1) process
   beta0 <- rep(2, n) #beta0 = 2
   beta1 <- 3 #beta1 = 3
   x <- 0:(n-1) #x vector

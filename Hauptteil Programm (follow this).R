@@ -56,9 +56,10 @@ summary functions need to be contain the string of the wanted functions!'
 ###
 
 mc_complete <- function(mc_fun, from, to, by, summary_functions, input_var,
-                        output_var, seed = NULL,summarise = FALSE, 
-                        max_cores= detectCores(),Workers= NULL,
-                        parallel = FALSE,type = NULL ){
+                        output_var, seed = NULL, summarise = FALSE 
+                        , Workers= NULL, parallel = FALSE, type = NULL ){
+  
+  max_cores= detectCores() #check number of cores
   
   if(!is.null(seed)) {#Reproducibility
     set.seed(seed)}#If seed provided then set.seed takes the number
@@ -93,6 +94,9 @@ mc_complete <- function(mc_fun, from, to, by, summary_functions, input_var,
   dim_row <- dim(df_sim)[2]-1
   
   if(summarise == TRUE){
+    if(missing(summary_functions)){
+      stop("Please provide a list of summary functions you want to use!")
+    }
   dim_col <- length(summary_functions)
   sum_matrix <- matrix(0, nrow=dim_row, ncol=dim_col)
   
@@ -133,6 +137,18 @@ mc_complete(mc_fun = MC_sim_fixed_alpha
             , Workers= 5,parallel = TRUE
             , type="multisession" )
 
+
+
+# with seed
+mc_complete(mc_fun = MC_sim_fixed_alpha
+            , from=50, to=300, by=50
+            , summarise = FALSE
+            #, summary_functions = list("mean", "median", "min", "max", "sd", "var")
+            , input_var = "n"
+            , output_var = c("OLS", "GLS", "Difference")
+            , seed = 1234
+            , Workers= 4, parallel = TRUE
+            , type="multisession" )
 
 
 
