@@ -40,7 +40,6 @@ create_cholsky <- function(matrix){
 
 'Complete MC simulation'
 MC_sim <- function(n, alpha){
-  set.seed(1234)
   y <- dgp(n, alpha) #creates data (n draws) with alpha as MA parameter
   V <- create_covMat(n, alpha) #creates var-cov matrix V
   C <- create_cholsky(matrix=V) #Cholsky decomposition
