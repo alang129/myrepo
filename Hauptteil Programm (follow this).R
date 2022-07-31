@@ -289,7 +289,7 @@ colnames(df_sim) <- c("n","OLS","GLS","DIF")
 class(df_sim) <- "xnx"
 
 
-ggplot.xnx <<- function(t){
+ggplot.xnx <- function(t){
   if(class(t) == "xnx"){
     class(t) <- c("xnx","data.frame")
     ggplot(data = as.data.frame(t),aes(x=OLS)) + 
