@@ -276,3 +276,30 @@ parallel = TRUE works'
 
 
 
+
+#-----------------------------------
+
+
+
+#Here I have used "<<-" operator in code line 187 but didnt change it here because that is not the way we should do.
+#But you can try ggplot function via line 187. One thing that you should change class to "xnx".
+
+
+colnames(df_sim) <- c("n","OLS","GLS","DIF")
+class(df_sim) <- "xnx"
+
+
+ggplot.xnx <<- function(t){
+  if(class(t) == "xnx"){
+    class(t) <- c("xnx","data.frame")
+    ggplot(data = as.data.frame(t),aes(x=OLS)) + 
+      geom_density(color="darkblue", fill="lightblue",linetype="dashed") +
+      geom_density(aes(x=GLS),color="red",fill="lightgreen",linetype="dashed")
+  } else {
+    message("Object not  class of  xnx !")
+  }
+}
+ggplot(df_sim2)
+
+
+
