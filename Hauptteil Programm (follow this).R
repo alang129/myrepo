@@ -285,21 +285,30 @@ parallel = TRUE works'
 #But you can try ggplot function via line 187. One thing that you should change class to "xnx".
 
 
+#Lets assume df_sim is a output of the Monte Carlo Simulation.(But not in kable() format)
+
 colnames(df_sim) <- c("n","OLS","GLS","DIF")
 class(df_sim) <- "xnx"
 
 
 ggplot.xnx <- function(t){
-  if(class(t) == "xnx"){
-    class(t) <- c("xnx","data.frame")
-    ggplot(data = as.data.frame(t),aes(x=OLS)) + 
-      geom_density(color="darkblue", fill="lightblue",linetype="dashed") +
-      geom_density(aes(x=GLS),color="red",fill="lightgreen",linetype="dashed")
+  if(class(t) == "xnx"){.                 #Put the condition for some spesific class
+    class(t) <- c("xnx","data.frame").     #Somehow ggplot2 doesnt work some spesific class that we implemented. 
+                                          #I guess thats the reason that  they ask us to find a way to plot it by using ggplot2 method.
+    ggplot(data = as.data.frame(t)) #Basically I just told ggplot where to find the data. 
+                                    #After that we can just choose other functions to improve the plot.
+     
   } else {
     message("Object not  class of  xnx !")
   }
 }
-ggplot(df_sim2)
+#Lets try it 
+ggplot(df_sim)+
+ geom_density(aes(x=OLS))+
+ geom_density(aes(x=GLS))# It works well.
+# The issue is how to store result of Monte Carlo Simulation. I couldt find any way to plot it by using kable() function. 
+#Or we can just save the line 187 by using "<<-" operator to Global environment  and use the ggplot function. 
+#like, replacing "<-" operator by "<<-" in line 187 . and use that output in ggplot??
 
 
 
