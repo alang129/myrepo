@@ -2,6 +2,7 @@ library(purrr)
 library(furrr)
 library(combinat)
 library(parallel)
+library(tidyverse)
 
 
 'Furrr is a bridge between purrrs family of mapping functions and futures parallel processing capabilities. 
@@ -186,14 +187,19 @@ mc_complete2 <- function(mc_fun, from, to, by, summary_functions, input_var,
     
   df_sim <- as.data.frame(cbind(parameter_grid, t(mc_sim))) #resuluts of MC simulation
   colnames(df_sim) <- c(input_var, output_var)
-
+  
+  class(df_sim) <- c("xnx", "data.frame")
+  
+  
+  #print(tibble(df_sim))
+  print(knitr::kable(df_sim, row.names = FALSE))
 
 
   if(summarise == TRUE){ #output with summary = TRUE
     return(summary_oop(summary_functions, df_sim, output_var))
   } 
   else { #output with summary = FALSE
-    return(knitr::kable(df_sim, row.names = FALSE))
+    return(df_sim)
   }
 }
 
@@ -258,15 +264,30 @@ summary_oop <- function(summary_functions, df_sim, output_var){
 #######################
 # output command
 mc_complete2(mc_fun = MC_sim_fixed_alpha
-            , from=50, to=400, by=50
+            , from=50, to=410, by=50
             , summarise = TRUE
             , summary_functions = list("mean", "median", "min", "max", "sd", "var")
             , input_var = "n"
-            , output_var = c("OLS", "GLS", "Difference")
-            , seed = 7162
+            , output_var = list("OLS", "GLS", "Difference")
+            , seed = 1234
             , Workers= 4
             , parallel = TRUE
             , type_parall="multisession")
+
+
+out1==out2
+
+'Problem: Knit:kable output'
+'Problem 2: line 187, if we change class we run into problems'
+
+class(out)
+type(out)
+
+ggplot(data=out, aes(x=n, y=OLS))+
+  geom_line()
+
+df <- as.data.frame(out)
+class(out) 
 
 
 'Invalid type works
@@ -292,8 +313,8 @@ class(df_sim) <- "xnx"
 
 
 ggplot.xnx <- function(t){
-  if(class(t) == "xnx"){.                 #Put the condition for some spesific class
-    class(t) <- c("xnx","data.frame").     #Somehow ggplot2 doesnt work some spesific class that we implemented. 
+  if(class(t)[1] == "xnx"){                 #Put the condition for some spesific class
+             #Somehow ggplot2 doesnt work some spesific class that we implemented. 
                                           #I guess thats the reason that  they ask us to find a way to plot it by using ggplot2 method.
     ggplot(data = as.data.frame(t)) #Basically I just told ggplot where to find the data. 
                                     #After that we can just choose other functions to improve the plot.
@@ -302,8 +323,11 @@ ggplot.xnx <- function(t){
     message("Object not  class of  xnx !")
   }
 }
+
+ggplot(out)
+
 #Lets try it 
-ggplot(df_sim)+
+ggplot(out)+
  geom_density(aes(x=OLS))+
  geom_density(aes(x=GLS))# It works well.
 # The issue is how to store result of Monte Carlo Simulation. I couldt find any way to plot it by using kable() function. 
