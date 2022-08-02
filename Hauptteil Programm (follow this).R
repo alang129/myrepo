@@ -22,6 +22,11 @@ MC_sim_fixed_alpha <- function(n){
   return(output)
 }
 
+MC_sim_fixed_n <- function(alpha){
+  output <- MC_sim(n=200, alpha)
+  return(output)
+}
+
 
 MC_sim(n=100, alpha = 0.5) #our monte carlo simulation function
 MC_sim_fixed_alpha(n=100)
@@ -162,7 +167,7 @@ mc_complete(mc_fun = MC_sim_fixed_alpha
 'I tried to outsource some functions out of the main code to make it less complicated'
 
 
-
+#list for parameter grid
 mc_complete2 <- function(mc_fun, from, to, by, summary_functions, input_var,
                         output_var, seed = NULL, summarise = FALSE 
                         , Workers= NULL, parallel = FALSE, type_parall = NULL ){
@@ -275,7 +280,29 @@ mc_complete2(mc_fun = MC_sim_fixed_alpha
             , type_parall="multisession")
 
 
-out1==out2
+mc_complete2(mc_fun = MC_sim_fixed_n
+             , from=0, to=2, by=0.1
+             , summarise = TRUE
+             , summary_functions = list("mean", "median", "min", "max", "sd", "var")
+             , input_var = "alpha"
+             , output_var = list("OLS", "GLS", "Difference")
+             , seed = 1234
+             , Workers= 4
+             , parallel = TRUE
+             , type_parall="multisession")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 'Problem: Knit:kable output'
 'Problem 2: line 187, if we change class we run into problems'
