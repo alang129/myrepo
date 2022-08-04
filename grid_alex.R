@@ -69,43 +69,91 @@ with coefficient alpha.'
 #Part 2: Grid 
 
 
+####################
+#test run with rnorm
+create_grid <- function(input){
+  storage <- list()
+  name_vec <- c()
+  
+  for(i in 1:length(input)){ #1:3
+    a <- as.numeric(input[[i]][[2]])
+    b <- as.numeric(input[[i]][[3]])
+    c <- as.numeric(input[[i]][[4]])
+    output <- seq(from=a, to=b, by=c)
+    storage[[i]] <-  output
+    name_vec[i] <- input[[i]][[1]]
+  }
+  
+grid <- expand_grid(unlist(storage[1])
+            , unlist(storage[2])
+            , unlist(storage[3])
+            , unlist(storage[4])
+            , unlist(storage[5]))
 
-#Base R version
-expand.grid(var_a = 0:10, sex = c("Male","Female"), dead = c("yes", "no"))
+names(grid) <- name_vec
 
-
-#tidyverse version
-
-grid <- expand_grid(n = c(10,20,30), alpha =  c(0.5, 1), beta = c(0,1))
-grid2 <- expand_grid(n = c(10,20,30), mean =  c(0, 1), sd = c(0, 0.5, 1))
-nrow(grid)
-
-
-a <- as.list(unlist(grid2[,1]))
-b <- as.list(unlist(grid2[,2]))
-c <- as.list(unlist(grid2[,3]))
-
-list(a,b,c)
-
-
-test <- function(n, mean, sd){
-  a <- rnorm(n, mean, sd)
-  return(c(a))
+  return(grid)
+  #return(list(storage, grid))
 }
 
-pmap(list(a,b,c), rnorm)
+'Grid works well.'
 
 
-a <- as.list(unlist(grid[,1]))
-b <- as.list(unlist(grid[,2]))
+##############################################
+# MC Sim over grid
 
-map2(a, b, dgp)
-pmap(a, b, dgp) #dpmap doesnt work with 2 elements
+##############################################
+function_new1 <- function(simulation, parameters){
+  grid <- create_grid(parameters)
+  
+  if(ncol(grid)==1){
+    var1 <- c(unlist(grid))
+    data <- map(var1, simulation)
+  }
+  
+  if(ncol(grid)==2){
+    var1 <- c(unlist(grid[,1]))
+    var2 <- c(unlist(grid[,2]))
+    data <- map2(var1, var2, simulation)
+  } 
+  
+  
+  if(ncol(grid)==3){
+    var1 <- c(unlist(grid[,1]))
+    var2 <- c(unlist(grid[,2]))
+    var3 <- c(unlist(grid[,3]))
+    list1 <- list(var1,var2,var3)
+    data <- pmap(list1, .f=simulation)
+  } 
+  
+  return(data)
+}
 
-data <- dgp(20, 1)
-class(data)
+################## Test #####################
+
+#mit einer Variable
+param_list1 <- list(c("n", 10, 50, 10))
+
+create_grid(param_list1)
+function_new1(simulation=rnorm, parameters=param_list1) #1 variablen
+
+#mit zwei Variablen
+param_list2 <- list(c("n", 10, 20, 10),
+                    c("mean", 0, 1, 0.25))
+
+test_grid2 <- create_grid(param_list2)
+function_new1(simulation=rnorm, parameters=param_list2)
+
+#mit drei Variablen
+param_list3 <- list(c("n", 10, 20, 10),
+                    c("mean", 0, 1, 0.25),
+                    c("sd", 0, 0.3, 0.1))
+
+test_grid3 <- create_grid(param_list0)
+function_new1(simulation=rnorm, parameters=param_list0)
 
 
-map2(x, y, ~ .x * .y)
-map2_dbl(y, z, ~ .x / .y)
+
+
+
 
