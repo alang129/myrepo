@@ -12,7 +12,6 @@ library(purrr)
 of the given parameters'
 
 ####################
-#test run with rnorm
 create_grid <- function(parameters){
   input <- parameters
   storage <- list()
@@ -40,6 +39,13 @@ names(grid) <- name_vec
 }
 
 # TEST RUN GRID CREATION
+
+param_list3 <- list(c("n", 10, 20, 10)
+                    ,c("mu", 0, 1, 0.25)
+                    ,c("sd", 0, 0.3, 0.1))
+
+
+
 param_list3 # 3 different parameters
 create_grid(param_list3)
 
@@ -57,7 +63,7 @@ summary statistics.
 simulation = data generation function, f.e rnorm
 parameters = list of parameters, f.e. param_list3 '
 
-data_generation <- function(simulation, grid){
+data_generation <- function(simulation, grid){ #this is for use inside the function
   #grid <- create_grid(parameters)
   
   if(ncol(grid)==1){
@@ -83,9 +89,36 @@ data_generation <- function(simulation, grid){
   return(data)
 }
 
-# TEST RUN DATE GENERATION
-data_generation(simulation=rnorm, parameters=param_list3)
-test_data <- data_generation(simulation=rnorm, parameters=param_list3)
+'data_generation2 <- function(simulation, parameters){ #this is just for testing
+  grid <- create_grid(parameters)
+  
+  if(ncol(grid)==1){
+    var1 <- c(unlist(grid))
+    data <- map(var1, simulation)
+  }
+  
+  if(ncol(grid)==2){
+    var1 <- c(unlist(grid[,1]))
+    var2 <- c(unlist(grid[,2]))
+    data <- map2(var1, var2, simulation)
+  } 
+  
+  
+  if(ncol(grid)==3){
+    var1 <- c(unlist(grid[,1]))
+    var2 <- c(unlist(grid[,2]))
+    var3 <- c(unlist(grid[,3]))
+    list1 <- list(var1,var2,var3)
+    data <- pmap(list1, .f=simulation)
+  } 
+  
+  return(data)
+}
+'
+
+# TEST RUN DATE GENERATION (with)
+#data_generation2(simulation=rnorm, parameters=param_list3)
+#test_data <- data_generation2(simulation=rnorm, parameters=param_list3)
 'We see the data generation works as intenden and creates a list for each parameter
 combination, which are available for further data analysis.'
 
@@ -116,7 +149,7 @@ summary_function <- function(sum_fun, data_input){
 
 
 # TEST RUN SUMMARY_FUNCTION
-summary_function(sum_fun=list("mean"), data_input=test_data)
+#summary_function(sum_fun=list("mean"), data_input=test_data)
 
 'Works like a charm. Next, we want to combine our results with the parameter grid and create
 arrays, that structure our simulation input with the given results.'
@@ -126,7 +159,9 @@ arrays, that structure our simulation input with the given results.'
 # Part 5: Summary statistics
 
 'Next, we want to store the summary statistics in an array, where you can easily read
-the given parameter constellation'
+the given parameter constellation. We have to reorder the output, cause arrays gets filled
+column wise.'
+
 
 create_array_function <- function(comb, parameters){
   input <- parameters
@@ -141,9 +176,7 @@ create_array_function <- function(comb, parameters){
     storage[[i]] <-  output
     name_vec[i] <- input[[i]][[1]]
   }
-  
-  
-  
+
   comb_ordered <-  comb %>% arrange(comb[,2])  %>% arrange(comb[,3]) 
 
   
@@ -160,25 +193,20 @@ create_array_function <- function(comb, parameters){
                   , dim = c(length(seq1), length(seq2), length(seq3))
                   , dimnames=list(row.names, column.names, matrix.names)
                   )
-  
-  
-  
   return(array1)
 }
 
-#namama <- paste("n =", seq(0, 0.5, 0.25))
-
-test <- create_array_function(comb=test_data, parameters=param_list3)
-test
-class(test)
+# TEST RUN ARRAY_FUNCTION
+'test_data <- main_function(parameters=param_list3
+                           , simulation = rnorm
+                           , sum_fun="ols")
 
 test_data
-test_data %>% arrange(names(test_data)[3]) 
-test_data %>% arrange(test_data[,2])  %>% arrange(test_data[,3]) 
+test_array <- create_array_function(comb=test_data, parameters=param_list3)
+test_array
+'
 
-# TEST RUN SUMMARY_FUNCTION
 
-create_array_function(sum_fun=list("mean"), data_input=test_data)
 
 
 ##############################################
@@ -197,84 +225,36 @@ summary <- summary_function(sum_fun, data_input=raw_data) #Step 3: Summary stati
 
 comb <- cbind(grid, summary) #Step 4: Combine resuluts with parameters
 
-#array_1 <- create_array_function(comb, parameters) #Step 5: Create array
+array_1 <- create_array_function(comb, parameters) #Step 5: Create array
 
-return(comb)
+return(array_1)
   
 }
-test_data <- main_function(parameters=param_list3
+
+
+# TEST RUN MAIN FUNCTION
+
+
+main_function(parameters=param_list3
               , simulation = rnorm
-              , sum_fun="var")
+              , sum_fun="mean")
 
 
-mc_function <- function(grid_parameters, sum_fun_list, simulation_function){
-  data <- data_generation(simulation=simulation_function, parameters=grid_parameters)
-  summary <-summary_function(sum_fun = sum_fun_list, data_input = data)
-  grid <- create_grid(input=grid_parameters)
-  output <- cbind(grid, summary)
-  return(output)
-}
+#test with different parameters
+param_list3x <- list(c("n", 100, 500, 100)
+                    ,c("mu", 0, 2, 0.25)
+                    ,c("sd", 0, 0.5, 0.1))
 
-
-
-
-
-# use param_list3
-mc_function(grid_parameters = param_list3
-            , sum_fun_list=list("mean", "min", "max", "ttest", "ols")
-            , simulation_function = rnorm)
-
-mc_function(grid_parameters = param_list3
-            , sum_fun_list=list("mean")
-            , simulation_function = rnorm)
-
-
-
-summary_function(sum_fun=list("mean", "min", "max", "ttest", "ols") #works
-                  , data_input = test_data)
-
-
-sim <- mc_function(grid_parameters = param_listx
-            , sum_fun_list=list("var")
-            , simulation_function = rnorm)
+main_function(parameters=param_list3x
+              , simulation = rnorm
+              , sum_fun="mean")
 
 
 
 
-
-'Es werden immer zuerst die Spalten einer Matrix befüllt'
-
-column.names <- c("mean=0", "mean=0.25", "mean=0.5")
-#namama <- paste("n =", seq(0, 0.5, 0.25))
-row.names <- c("n=10", "n=20")
-matrix.names <- c("sd=1", "sd=2")
-
-
-array1 <- array(sim1[,4]
-                , dim = c(2, 3, 2)
-                , dimnames=list(row.names, column.names, matrix.names))
-array1
-
-param_listx <-  list(c("n", 10, 20, 10),
-                     c("mean", 0, 0.5, 0.25),
-                     c("sd", 1, 2, 1))
-
-
-array(c(vector1, vector2), dim = c(3, 3, 2))
-
-# Create two vectors of different lengths.
-vector1 <- c(5, 9, 3)
-vector2 <- c(10, 11, 12, 13, 14, 15)
-
-# Take these vectors as input to the array.
-result <- array(c(vector1, vector2), dim = c(3, 3, 2))
-print(result)
-
-
-
-
-
-
+##################################
+# summary statistics test functions 
+##################################
 
 ### t test
 ttest<-function(data_input){ 
@@ -313,34 +293,38 @@ ols <- function(data_input){
 }
 
 
-ols(dat)
 
 
 
 
 
-################## Test #####################
 
-#mit einer Variable
-param_list1 <- list(c("n", 10, 50, 10))
 
-create_grid(param_list1)
-data_generation(simulation=rnorm, parameters=param_list1) #1 variablen
 
-#mit zwei Variablen
-param_list2 <- list(c("n", 10, 20, 10),
-                    c("mean", 0, 1, 0.25))
 
-test_grid2 <- create_grid(param_list2)
-data_generation(simulation=rnorm, parameters=param_list2)
 
-#mit drei Variablen
-param_list3 <- list(c("n", 10, 20, 10),
-                    c("mean", 0, 1, 0.25),
-                    c("sd", 0, 0.3, 0.1))
 
-test_grid3 <- create_grid(param_list0)
-data_generation(simulation=rnorm, parameters=param_list0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
