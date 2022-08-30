@@ -42,6 +42,7 @@ names(grid) <- c(name_vec, "rep")
 #One parameter (works)
 param_list1 <- list(c("n", 10, 20, 10))
 create_grid(param_list1, nrep=10)
+create_grid(param_list1, nrep=1)
 
 #two parameter (works)
 param_list2 <- list(c("n", 10, 20, 10)
@@ -54,8 +55,7 @@ param_list3 <- list(c("n", 10, 20, 10)
                     ,c("sd", 0, 0.3, 0.1))
 create_grid(param_list3, nrep=10)
 
-grid_3 <- create_grid(param_list31, nrep=50)
-print(grid_3, n=nrow(grid_3))
+
 
 #four parameters (works)
 param_list4 <- list(c("n", 10, 20, 10)
@@ -82,19 +82,22 @@ allows the user more flexibility, f.e. quickly changing the DGB while keeping th
 summary statistics.
 
 simulation = data generation function, f.e rnorm
-parameters = list of parameters, f.e. param_list3 '
+parameters = list of parameters, f.e. param_list3 
+
+Takes parameter list and some data generating function as a input and returns the
+simulated data.'
 
 data_generation <- function(simulation, grid){ #this is for use inside the function
 
   if(ncol(grid)==2){
     var1 <- c(unlist(grid[,1]))
-    data <- map(var1, simulation)
+    data <- map(var1, simulation) #different purrr-functions depending on how many input variables we use
   }
   
   if(ncol(grid)==3){
     var1 <- c(unlist(grid[,1]))
     var2 <- c(unlist(grid[,2]))
-    data <- map2(var1, var2, simulation)
+    data <- map2(var1, var2, simulation) #map2
   } 
   
   if(ncol(grid)==4){ #need to implement more than 3?!
@@ -102,7 +105,7 @@ data_generation <- function(simulation, grid){ #this is for use inside the funct
     var2 <- c(unlist(grid[,2]))
     var3 <- c(unlist(grid[,3]))
     list1 <- list(var1,var2,var3)
-    data <- pmap(list1, .f=simulation)
+    data <- pmap(list1, .f=simulation) #pmap
   } 
   
   return(data)
@@ -259,23 +262,97 @@ create_array_function <- function(comb, parameters, nrep){
 
 
 
+# PREP TEST create_array_function() ----------------------------------------------
+
+main_function_array_test <-  function(parameters #list of parameters
+                           , nrep #number of repetitions
+                           , simulation #data genereation
+                           , sum_fun){ #summary statistics
+  
+  grid <- create_grid(parameters, nrep) #Step 1: create grid
+  
+  raw_data <- data_generation(simulation, grid) #Step 2: simlate data
+  
+  summary <- summary_function(sum_fun, data_input=raw_data) #Step 3: Summary statistics
+  
+  comb <- cbind(grid, summary) #Step 4: Combine resuluts with parameters
+  
+  array_1 <- create_array_function(comb, parameters, nrep) #Step 5: Create array
+  
+  return(comb)
+  
+}
+
+
+
+
+
+
 # TESTING create_array_function() ----------------------------------------------
-comb1
-create_array_function(comb=comb1, parameters=param_list3x, nrep=3)
 
 
 param_list3x <- list(c("n", 10, 100, 10)
                      ,c("mu", 0, 10, 1)
                      ,c("sd", 0, 5, 1))
 
+comb1 <- main_function_array_test(parameters=param_list3x
+                       , nrep = 5
+                       , simulation = rnorm
+                       , sum_fun="mean")
 
-comb1 <- main_function(parameters=param_list3x
-              , nrep = 5
-              , simulation = rnorm
-              , sum_fun="mean")
+comb1 #this is how the df with all permutations and results looks like
+
+'array function takes this data fram and turns it into a array with the right dimensions'
+create_array_function(comb=comb1, parameters=param_list3x, nrep=3)
 
 
 
+
+
+
+
+
+# Part 5.2: output_function ------------------------------------------------------
+'Goal is to create a function, that takes the MC resuluts and all parameter input
+and converts it onto output format that prints nicely into the console'
+
+output_function
+
+
+# Part 5.3: averaging over all repetitions --------------------------------
+
+'Create grid without repetitions, then just add the simulation '
+
+
+'nrep <- 5
+fac <- nrow(comb1)/nrep
+
+test_list <- list(0)
+for(i in 0:fac){
+  start <- 1 + i*nrep
+  end <- nrep + i*nrep
+  test_list[i+1] <- mean(comb1[start:end, ncol(comb1)])
+}
+'
+
+average_function <- function(grid_for_avg, summary, nrep){
+  grid_for_avg <- grid_for_avg[-ncol(grid_for_avg)] #remove column for reps
+  n_rows <- nrow(grid_for_avg)
+  n_col <- ncol(grid_for_avg)
+  
+  for(i in 1:n_rows){
+    start <- 1 + (i-1)*nrep
+    end <- i*nrep
+    grid_for_avg[i, n_col+1] <- mean(summary[start:end, ])
+  }
+  
+  grid_plus_mc <- data.frame(grid_for_avg)
+  
+  colnames(grid_plus_mc)[n_col+1] <- "avg"
+  
+  return(grid_plus_mc)
+  
+}
 
 
 
@@ -286,19 +363,34 @@ comb1 <- main_function(parameters=param_list3x
 main_function <-  function(parameters #list of parameters
                           , nrep #number of repetitions
                           , simulation #data genereation
-                          , sum_fun){ #summary statistics
+                          , sum_fun
+                          , parallel){ #summary statistics
   
 grid <- create_grid(parameters, nrep) #Step 1: create grid
 
-raw_data <- data_generation(simulation, grid) #Step 2: simlate data
+if(parallel==TRUE){
+  raw_data <- data_generation_parallel(simulation, grid) #Öcal?
+} 
+
+if(parallel==FALSE){
+  raw_data <- data_generation(simulation, grid) #Step 2: simlate data
+}
+
+#raw_data <- data_generation(simulation, grid) #Step 2: simlate data (not needed anymore)
+
 
 summary <- summary_function(sum_fun, data_input=raw_data) #Step 3: Summary statistics
+
+average_over_reps <- average_function(grid_for_avg=create_grid(parameters, 1), summary, nrep)
 
 comb <- cbind(grid, summary) #Step 4: Combine resuluts with parameters
 
 array_1 <- create_array_function(comb, parameters, nrep) #Step 5: Create array
 
-return(array_1)
+#summary_1 <- output_function() #Sunyoung?
+
+return(average_over_reps)
+#return(array_1)
   
 }
 
@@ -315,8 +407,19 @@ param_list3x <- list(c("n", 10, 100, 10)
 main_function(parameters=param_list3x
                        , nrep = 5
                        , simulation = rnorm
-                       , sum_fun="mean")
+                       , sum_fun="mean"
+                       , parallel = FALSE)
 
+tu1 <- tu
+head(tu1)
+colnames(tu1)[4] <- "yes"
+
+rename(tu, ) <- "yes"
+
+tu1 <-  as.data.frame(tu)
+colnames(tu1[,5]) <- c("yes")
+colnames(tu1)[,5] <- "yes"
+tu1[,5]
 ###
 
 
@@ -347,12 +450,23 @@ main_function(parameters=param_list3x
 
 #test run with pois
 param_list_rpois <- list(c("n", 10, 30, 10)
-                         , c("lambda", 0, 10, 1))
+                         , c("lambda", 0, 5, 1))
 
 main_function(parameters=param_list_rpois
-              , nrep = 5
+              , nrep = 2
               , simulation = rpois
-              , sum_fun="mean")
+              , sum_fun="mean"
+              , parallel = FALSE)
+
+
+
+
+# Minimal working example for plot? ---------------------------------------
+
+'Plot just for 1 dimensional parameter input?
+x-achsis: variable
+y-achsis: mc-results
++ facet maybe`?'
 
 
 
