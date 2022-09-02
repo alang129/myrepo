@@ -1,6 +1,10 @@
 require(utils)
 library(tidyverse)
 library(purrr)
+library(utils)
+library(furrr)
+library(future)
+library(parallel)
 
 
 # Part 1:  creating grid --------------------------------------------------
@@ -21,15 +25,15 @@ create_grid <- function(parameters, nrep){
     name_vec[i] <- input[[i]][[1]]
   }
   
-grid <- expand_grid(unlist(storage[1])
-            , unlist(storage[2])
-            , unlist(storage[3])
-            , unlist(storage[4])
-            , unlist(storage[5])
-            , c(1:nrep))
-
-names(grid) <- c(name_vec, "rep")
-
+  grid <- expand_grid(unlist(storage[1])
+                      , unlist(storage[2])
+                      , unlist(storage[3])
+                      , unlist(storage[4])
+                      , unlist(storage[5])
+                      , c(1:nrep))
+  
+  names(grid) <- c(name_vec, "rep")
+  
   return(grid)
   #return(list(storage, grid))
 }
@@ -61,7 +65,7 @@ create_grid(param_list3, nrep=10)
 param_list4 <- list(c("n", 10, 20, 10)
                     ,c("mu", 0, 1, 0.25)
                     ,c("sd", 0, 0.3, 0.1)
-                    ,c("gender", 0, 1, 1))
+                    ,c("gender", 0, 1,6))
 
 create_grid(param_list4, nrep=5)
 
@@ -69,7 +73,6 @@ grid_4 <- create_grid(param_list4, nrep=50)
 print(grid_4, n=nrow(grid_4))
 
 'Grid works well.'
-
 
 
 
@@ -88,16 +91,17 @@ Takes parameter list and some data generating function as a input and returns th
 simulated data.'
 
 data_generation <- function(simulation, grid){ #this is for use inside the function
-
+  
   if(ncol(grid)==2){
     var1 <- c(unlist(grid[,1]))
-    data <- map(var1, simulation) #different purrr-functions depending on how many input variables we use
+    data <- future_map(var1, simulation,.options = furrr_options(seed = TRUE))
+    
   }
   
   if(ncol(grid)==3){
     var1 <- c(unlist(grid[,1]))
     var2 <- c(unlist(grid[,2]))
-    data <- map2(var1, var2, simulation) #map2
+    data <- future_map2(var1, var2, simulation,.options = furrr_options(seed = TRUE))
   } 
   
   if(ncol(grid)==4){ #need to implement more than 3?!
@@ -105,11 +109,13 @@ data_generation <- function(simulation, grid){ #this is for use inside the funct
     var2 <- c(unlist(grid[,2]))
     var3 <- c(unlist(grid[,3]))
     list1 <- list(var1,var2,var3)
-    data <- pmap(list1, .f=simulation) #pmap
+    data <- future_pmap(list1, .f=simulation,.options = furrr_options(seed = TRUE))
   } 
   
   return(data)
 }
+
+
 
 
 
@@ -126,7 +132,7 @@ data_generation(simulation=rnorm, grid=grid2)
 
 #for different parameter (doesnt work)
 param_list2x <- list(c("n", 10, 20, 10)
-                    ,c("sd", 0, 100, 10)) #sd instead of mean
+                     ,c("sd", 0, 100, 10)) #sd instead of mean
 
 
 grid2x <- create_grid(param_list2x, nrep=3)
@@ -141,8 +147,8 @@ The MonteCarlo() function outputs "argument "loc" is missing, with no default'
 
 #for different data generation function (runif) WORKS WELL!
 param_list_runif <- list(c("n", 10, 30, 10)
-                     , c("min", 0, 0, 0)
-                     ,c("max", 1, 1, 0))
+                         , c("min", 0, 0, 0)
+                         ,c("max", 1, 1, 0))
 
 
 grid_unif <- create_grid(param_list_runif, nrep=3)
@@ -150,7 +156,7 @@ data_generation(simulation=runif, grid=grid_unif)
 
 #for different data generation function (rpois) WORKS WELL!
 param_list_rpois <- list(c("n", 10, 30, 10)
-                          , c("lambda", 0, 10, 1))
+                         , c("lambda", 0, 10, 1))
 print(grid_pois, n=nrow(grid_pois))
 grid_pois <- create_grid(param_list_rpois, nrep=3)
 data_generation(simulation=rpois, grid=grid_pois)
@@ -225,7 +231,7 @@ create_array_function <- function(comb, parameters, nrep){
     dimension_array <- c(length(seq1), nrep)
     dim_names_list <- list(row.names, matrix.numeration)
   }
-
+  
   if(length(parameters)==2){
     comb_ordered <-  comb %>% arrange(comb[,2])  %>% arrange(comb[,3])
     seq1 <- c(unlist(storage[1]))
@@ -252,8 +258,8 @@ create_array_function <- function(comb, parameters, nrep){
     dim_names_list <- list(row.names, column.names, matrix.names1, matrix.numeration)
     
   }
-
-
+  
+  
   array1 <- array(comb_ordered[,ncol(comb)] #change to automatically adjust dim
                   , dim = dimension_array
                   , dim_names_list)
@@ -265,9 +271,9 @@ create_array_function <- function(comb, parameters, nrep){
 # PREP TEST create_array_function() ----------------------------------------------
 
 main_function_array_test <-  function(parameters #list of parameters
-                           , nrep #number of repetitions
-                           , simulation #data genereation
-                           , sum_fun){ #summary statistics
+                                      , nrep #number of repetitions
+                                      , simulation #data genereation
+                                      , sum_fun){ #summary statistics
   
   grid <- create_grid(parameters, nrep) #Step 1: create grid
   
@@ -296,9 +302,9 @@ param_list3x <- list(c("n", 10, 100, 10)
                      ,c("sd", 0, 5, 1))
 
 comb1 <- main_function_array_test(parameters=param_list3x
-                       , nrep = 5
-                       , simulation = rnorm
-                       , sum_fun="mean")
+                                  , nrep = 5
+                                  , simulation = rnorm
+                                  , sum_fun="mean")
 
 comb1 #this is how the df with all permutations and results looks like
 
@@ -353,19 +359,16 @@ average_function <- function(grid_for_avg, summary, nrep){
   return(grid_plus_mc)
   
 }
+##Part 6
+##############Tidy output function
 
 
+####Option 1
 
-
-
-# Part 6: main function part ------------------------------------------------------
-
-main_function <-  function(parameters #list of parameters
-                          , nrep #number of repetitions
-                          , simulation #data genereation
-                          , sum_fun
-                          , parallel){ #summary statistics
+output_function <- function(array_1,average_over_reps,parameters,cores,simulation,
+                            nrep,cpt){
   
+<<<<<<< HEAD
 grid <- create_grid(parameters, nrep) #Step 1: create grid
 
 if(parallel==TRUE){
@@ -376,11 +379,43 @@ if(parallel==TRUE){
 
 if(parallel==FALSE){
   raw_data <- data_generation(simulation, grid) #Step 2: simlate data
+=======
+  out <- list()
+  class(out) <- "Eco"
+  out$results <- array_1
+  out$average <- average_over_reps
+  class(out$average) <- c("Eco",class(out$average))
+  class(out$results) <- c("Eco",class(out$results))
+  
+  if(cores>1){
+    parallel = "Multisession"
+  } else {
+    parallel = "Sequential"
+  }
+  text <-  cat("\n",
+           "Repetition(nrep)      : ",nrep,"\n\n",
+           "Parallelization Type  : ",parallel,"\n\n",
+           "Number of Cores Used in  Parallelization : ",cores," out of",detectCores(),"\n\n",
+           "Input Parameters : ",paste(parameters),"\n\n",
+           "Simulation Length :",length(array_1),"\n",
+           "Minumum :",min(array_1),"\n",
+           "Maximum :",max(array_1),"\n",
+           "Mean    :", mean(array_1),"\n",
+           "Median  :",median(array_1),"\n\n",
+           "Quantiles :",names(quantile(out$results)),"\n",
+           "          ",round(quantile(out$results),digits=1),"\n",
+           #"Simulation Function : " ,print(simulation),"\n\n",
+           "Execution Time of Monte Carlo Simulation",as.numeric(cpt),"secs \n",
+           "Name of The Class :",class(out))
+  
+  return(out)
+>>>>>>> 9254f1e9eeaf6a19a89cfcad3e26b7cf13560611
 }
 
-#raw_data <- data_generation(simulation, grid) #Step 2: simlate data (not needed anymore)
 
+# Part 7: main function part ------------------------------------------------------
 
+<<<<<<< HEAD
 summary <- summary_function(sum_fun, data_input=raw_data) #Step 3: Summary statistics
 
 average_over_reps <- average_function(grid_for_avg=create_grid(parameters, 1), summary, nrep) #WORK WITH THIS FOR PLOTTING!!!
@@ -393,7 +428,58 @@ array_1 <- create_array_function(comb, parameters, nrep) #Step 5: Create array
 
 #return(average_over_reps)
 return(array_1)
+=======
+main_function <-  function(parameters #list of parameters
+                           , nrep #number of repetitions
+                           , simulation #data genereation
+                           , sum_fun #summary statistics
+                           ,seed = NULL#Reproducibility
+                           ,cores=NULL){
+ 
+    
+  #Number of cores
+  max.cores <- detectCores()
+  if(cores>max.cores){
+    stop("Number of Cores cannot be bigger than total number of cores")
+  }
+  if(!is.null(seed)) {#Reproducibility
+    set.seed(seed)}#If seed provided then set.seed takes the number
+  else {
+    warning("No seed provided!", call. = FALSE)
+    seed <- sample.int(10000, 1)#if its not provided then we generate random seed
+    set.seed(seed)
+    message("Random seed = ", seed, "\n")} 
+>>>>>>> 9254f1e9eeaf6a19a89cfcad3e26b7cf13560611
   
+  
+  startTime <- Sys.time()#Starting time 
+  
+  
+  grid <- create_grid(parameters, nrep) #Step 1: create grid
+  
+  if(cores > 1){
+    plan(multisession,workers = cores)
+  } else{
+    plan(sequential)
+  }
+  suppressMessages(raw_data <- data_generation(simulation, grid))
+  
+  summary <- summary_function(sum_fun, data_input=raw_data) #Step 3: Summary statistics
+  
+  average_over_reps <- average_function(grid_for_avg=create_grid(parameters, 1), summary, nrep)
+  
+  comb <- cbind(grid, summary) #Step 4: Combine resuluts with parameters
+  
+  array_1 <- create_array_function(comb, parameters, nrep) #Step 5: Create array
+  
+  endTime <- Sys.time()#Endtime
+  
+  cpt <- endTime - startTime#Execution time
+  
+  summary_1 <- output_function(array_1,average_over_reps,parameters,cores,simulation,
+                           nrep,cpt)
+  
+return(summary_1)
 }
 
 
@@ -406,6 +492,7 @@ param_list3x <- list(c("n", 10, 100, 10)
                      ,c("sd", 0, 5, 1))
 
 
+<<<<<<< HEAD
 xxx <- main_function(parameters=param_list3x
                        , nrep = 5
                        , simulation = rnorm
@@ -418,13 +505,16 @@ create_array_function(comb=xxx, parameters=param_list3x, nrep=1)
 tu1 <- tu
 head(tu1)
 colnames(tu1)[4] <- "yes"
+=======
+test_me <- main_function(parameters=param_list3x
+              , nrep = 5
+              , simulation = rnorm
+              , sum_fun="mean"
+              ,seed=123 
+              ,cores=1)
 
-rename(tu, ) <- "yes"
+>>>>>>> 9254f1e9eeaf6a19a89cfcad3e26b7cf13560611
 
-tu1 <-  as.data.frame(tu)
-colnames(tu1[,5]) <- c("yes")
-colnames(tu1)[,5] <- "yes"
-tu1[,5]
 ###
 
 
@@ -434,9 +524,9 @@ param_list3x <- list(c("n", 10, 30, 10)
 
 
 mc <- main_function(parameters=param_list3x
-              , nrep = 10
-              , simulation = rnorm
-              , sum_fun="mean")
+                    , nrep = 10
+                    , simulation = rnorm
+                    , sum_fun="mean")
 
 print(mc, n=20, na.print = FALSE)
 
@@ -538,39 +628,99 @@ ols <- function(data_input){
 
 
 
+###########GGplot
+#First we have to deal with grouping the data but we dont need to worry about that since we use the output of the average function. 
+#Because parameters are already separated, we can call any input parameters by `$` sign. 
 
 
+#Second, the asks about using ggplot for some spesific classes that we implemented before. 
+#For that, I just included line 375 in summary_1 function. 
+#The reason for that , ggplot works only with some spesific classes like data.frame etc.
+#on summary_1 function I used the name "Eco" for the class of "out" which is in 
+#list format and stores the result of the monte carlo simulation,average and summary parts.
+#With line 375 we are able to use ggplot without making any changes.
 
 
+#Lets try it with a simple example. 
+
+#I used the parameters from the line  461.
 
 
+param_list3x <- list(c("n", 10, 100, 10)
+                     ,c("mu", 0, 10, 1)
+                     ,c("sd", 0, 5, 1))
 
 
+test_me <- main_function(parameters=param_list3x
+                         , nrep = 5
+                         , simulation = rnorm
+                         , sum_fun="mean"
+                         ,seed=123 
+                         ,cores=1)
+
+test_me$average # $avarege is the place where the averaged result is stored.
+#for ggplot part we have to use it.
+#Lets check if we can call the each parameters.
+test_me$average %>% select(n)# So, it's nice that we even dont need to use group by
+#Or
+test_me$average %>% select(n,mu)# It works well! : )
+
+##For the second issue I was talking about on the line 591.
+#LEts use an example. Just think about the parameters a,b,c the parameter input and
+#d is the simulation result. And kkk is the output of the average function.
+
+a <- c(1:660)
+b <- c(660:1319)
+c <- c(1320:1979)
+d <- c(1980:2639)
+
+kkk <- data.frame(a,b,c,d)
+
+#Lets use ggplot.
+ggplot(kkk,aes(x=a,y=b,col=c))+geom_line()
+#It works well and no problem with the class becuase it's in dataframe
+class(kkk)
+#[1] "data.frame"
 
 
+#On the task we are asked to use ggplot on the simulation result with
+#some specific class that we implemented.
+
+#I used the name  "Eco" for class of simulation result.
+#Now ,I should also implement the  same class for the average function kkk.
+
+class(kkk) <- "Eco"
+class(kkk)
+#[1] "Eco"
+ggplot(kkk,aes(x=a,y=b,col=c))+geom_line() #Error
+#Why? Becuase ggplot works with some specfic class. like data.frame..
+#That why we should change the class to data.frame or find another way.
+
+#The line 375 created for this purpose. 
+remove(kkk)
+
+kkk <- data.frame(a,b,c,d)#Lets created the kkk again. 
+class(kkk)
+#[1] "data.frame"
+
+class(kkk) <- c("Eco",class(kkk))
+#Now, we have the class that  we have implemented. Now  we can us ggplot.
+
+ggplot(kkk,aes(x=a,y=b,col=c))+geom_line()#Works well!
+
+##Lets try it on our function.
+#we already ran the function in the line 609 and stored the result in the name
+#"test_me"
+class(test_me)#[1] "Eco"  "list"
+class(test_me$results)#[1] "Eco"   "array"
+class(test_me$average)#[1] "Eco"        "data.frame"
+
+#A simple ggplot.
+ggplot(test_me$average,aes(x=n,y=sd,col=mu))+geom_line()#It works.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#Now lets try it with facet_grid 
+test_me$average %>%
+  ggplot(aes(x = avg, y = mu, col = sd )) + 
+  facet_grid(n ~ sd) +
+  geom_line()#It also works with facet!
