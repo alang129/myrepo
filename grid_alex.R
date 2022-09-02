@@ -502,9 +502,7 @@ xxx <- main_function(parameters=param_list3x
 create_array_function(comb=xxx, parameters=param_list3x, nrep=1)
 
 
-tu1 <- tu
-head(tu1)
-colnames(tu1)[4] <- "yes"
+
 =======
 test_me <- main_function(parameters=param_list3x
               , nrep = 5
@@ -724,3 +722,54 @@ test_me$average %>%
   ggplot(aes(x = avg, y = mu, col = sd )) + 
   facet_grid(n ~ sd) +
   geom_line()#It also works with facet!
+  
+  
+  ########
+  ##Paralellization#
+
+# The paralellization implemented in data generation part. Since the simulation runs here. 
+#Before using paralelization the default was;
+
+#map(var1, simulation)#for grids with 2 parameters
+#map2(var1, var2, simulation)#for grids with 3 parameters
+#pmap(list1,.f=simulation)##for grids with 4 parameters
+
+#For paralellization, basically the equivalent functions used in the furrr package..
+#map ---> future_map
+#map2 ---> future_map2
+#pmap ----> future_pmap
+
+
+#.options = furrr_options(seed = TRUE) # used for random number generation
+#It takes control of the RNG process for paralleization and  generates the same  numbers  for the given seed.
+
+#Also in case of the missing seed , seed producer code is included as below.
+if(!is.null(seed)) {#Reproducibility
+  set.seed(seed)}#If seed provided then set.seed takes the number
+else {
+  warning("No seed provided!", call. = FALSE)
+  seed <- sample.int(10000, 1)#if its not provided then we generate random seed
+  set.seed(seed)
+  message("Random seed = ", seed, "\n")} 
+
+#Two methods : `Multisession` used  for paralelization and 
+#`Sequential` used  to run simulation without paralellization.
+#Cores  are used to indicate the number of cores that the user wanted use in paralellization.
+#If the core is 1 no paralellization used in the simulation.Otherwise `Multisession`
+#used for paralelization
+
+if(cores > 1){
+  plan(multisession,workers = cores)
+} else{
+  plan(sequential)
+}
+
+#`detectCores`checks the maximum number of the cores in the machine.
+#By using if else commands we restrict the user to choose the number of cores is equal to maximum
+#or less tahn maximum. Otherwise simulation would stop and the shows the Error message below.
+
+max.cores <- detectCores()
+if(cores>max.cores){
+  stop("Number of Cores cannot be bigger than total number of cores")
+}
+
