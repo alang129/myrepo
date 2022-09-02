@@ -369,7 +369,7 @@ output_function <- function(array_1,average_over_reps,parameters,cores,simulatio
                             nrep,cpt){
   
   out <- list()
-  class(out) <- c("Eco",class(out))
+  class(out) <- "Eco"
   out$results <- array_1
   out$average <- average_over_reps
   class(out$average) <- c("Eco",class(out$average))
@@ -390,8 +390,8 @@ output_function <- function(array_1,average_over_reps,parameters,cores,simulatio
            "Maximum :",max(array_1),"\n",
            "Mean    :", mean(array_1),"\n",
            "Median  :",median(array_1),"\n\n",
-           "Quantiles :",names(quantile(dt$results)),"\n",
-           "          ",round(quantile(dt$results),digits=1),"\n",
+           "Quantiles :",names(quantile(out$results)),"\n",
+           "          ",round(quantile(out$results),digits=1),"\n",
            #"Simulation Function : " ,print(simulation),"\n\n",
            "Execution Time of Monte Carlo Simulation",as.numeric(cpt),"secs \n",
            "Name of The Class :",class(out))
