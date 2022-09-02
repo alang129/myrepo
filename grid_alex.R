@@ -47,7 +47,7 @@ create_grid(param_list1, nrep=1)
 #two parameter (works)
 param_list2 <- list(c("n", 10, 20, 10)
                     ,c("mu", 0, 1, 0.25))
-create_grid(param_list1, nrep=10)
+create_grid(param_list2, nrep=3)
 
 #three parameters (works)
 param_list3 <- list(c("n", 10, 20, 10)
@@ -370,6 +370,8 @@ grid <- create_grid(parameters, nrep) #Step 1: create grid
 
 if(parallel==TRUE){
   raw_data <- data_generation_parallel(simulation, grid) #Öcal?
+  
+  
 } 
 
 if(parallel==FALSE){
@@ -381,7 +383,7 @@ if(parallel==FALSE){
 
 summary <- summary_function(sum_fun, data_input=raw_data) #Step 3: Summary statistics
 
-average_over_reps <- average_function(grid_for_avg=create_grid(parameters, 1), summary, nrep)
+average_over_reps <- average_function(grid_for_avg=create_grid(parameters, 1), summary, nrep) #WORK WITH THIS FOR PLOTTING!!!
 
 comb <- cbind(grid, summary) #Step 4: Combine resuluts with parameters
 
@@ -389,8 +391,8 @@ array_1 <- create_array_function(comb, parameters, nrep) #Step 5: Create array
 
 #summary_1 <- output_function() #Sunyoung?
 
-return(average_over_reps)
-#return(array_1)
+#return(average_over_reps)
+return(array_1)
   
 }
 
@@ -404,11 +406,14 @@ param_list3x <- list(c("n", 10, 100, 10)
                      ,c("sd", 0, 5, 1))
 
 
-main_function(parameters=param_list3x
+xxx <- main_function(parameters=param_list3x
                        , nrep = 5
                        , simulation = rnorm
                        , sum_fun="mean"
                        , parallel = FALSE)
+
+create_array_function(comb=xxx, parameters=param_list3x, nrep=1)
+
 
 tu1 <- tu
 head(tu1)
@@ -444,7 +449,8 @@ param_list3x <- list(c("n", 10, 100, 10)
 main_function(parameters=param_list3x
               , nrep = 5
               , simulation = runif
-              , sum_fun="mean")
+              , sum_fun="mean"
+              , parallel = FALSE)
 
 
 
