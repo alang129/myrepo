@@ -368,20 +368,13 @@ average_function <- function(grid_for_avg, summary, nrep){
 output_function <- function(array_1,average_over_reps,parameters,cores,simulation,
                             nrep,cpt){
   
-  ggplot.eco <<- function(average_over_reps ){
-    if(class(average_over_reps ) == "Eco"){
-      ggplot(data=average_over_reps )
-    } else{
-      warning("asdasd")
-    }
-  }
-  
   out <- list()
   class(out) <- c("Eco",class(out))
   out$results <- array_1
   out$average <- average_over_reps
   class(out$average) <- c("Eco",class(out$average))
   class(out$results) <- c("Eco",class(out$results))
+  
   if(cores>1){
     parallel = "Multisession"
   } else {
@@ -591,39 +584,99 @@ ols <- function(data_input){
 
 
 
+###########GGplot
+#First we have to deal with grouping the data but we dont need to worry about that since we use the output of the average function. 
+#Because parameters are already separated, we can call any input parameters by `$` sign. 
 
 
+#Second, the asks about using ggplot for some spesific classes that we implemented before. 
+#For that, I just included line 375 in summary_1 function. 
+#The reason for that , ggplot works only with some spesific classes like data.frame etc.
+#on summary_1 function I used the name "Eco" for the class of "out" which is in 
+#list format and stores the result of the monte carlo simulation,average and summary parts.
+#With line 375 we are able to use ggplot without making any changes.
 
 
+#Lets try it with a simple example. 
+
+#I used the parameters from the line  461.
 
 
+param_list3x <- list(c("n", 10, 100, 10)
+                     ,c("mu", 0, 10, 1)
+                     ,c("sd", 0, 5, 1))
 
 
+test_me <- main_function(parameters=param_list3x
+                         , nrep = 5
+                         , simulation = rnorm
+                         , sum_fun="mean"
+                         ,seed=123 
+                         ,cores=1)
+
+test_me$average # $avarege is the place where the averaged result is stored.
+#for ggplot part we have to use it.
+#Lets check if we can call the each parameters.
+test_me$average %>% select(n)# So, it's nice that we even dont need to use group by
+#Or
+test_me$average %>% select(n,mu)# It works well! : )
+
+##For the second issue I was talking about on the line 591.
+#LEts use an example. Just think about the parameters a,b,c the parameter input and
+#d is the simulation result. And kkk is the output of the average function.
+
+a <- c(1:660)
+b <- c(660:1319)
+c <- c(1320:1979)
+d <- c(1980:2639)
+
+kkk <- data.frame(a,b,c,d)
+
+#Lets use ggplot.
+ggplot(kkk,aes(x=a,y=b,col=c))+geom_line()
+#It works well and no problem with the class becuase it's in dataframe
+class(kkk)
+#[1] "data.frame"
 
 
+#On the task we are asked to use ggplot on the simulation result with
+#some specific class that we implemented.
+
+#I used the name  "Eco" for class of simulation result.
+#Now ,I should also implement the  same class for the average function kkk.
+
+class(kkk) <- "Eco"
+class(kkk)
+#[1] "Eco"
+ggplot(kkk,aes(x=a,y=b,col=c))+geom_line() #Error
+#Why? Becuase ggplot works with some specfic class. like data.frame..
+#That why we should change the class to data.frame or find another way.
+
+#The line 375 created for this purpose. 
+remove(kkk)
+
+kkk <- data.frame(a,b,c,d)#Lets created the kkk again. 
+class(kkk)
+#[1] "data.frame"
+
+class(kkk) <- c("Eco",class(kkk))
+#Now, we have the class that  we have implemented. Now  we can us ggplot.
+
+ggplot(kkk,aes(x=a,y=b,col=c))+geom_line()#Works well!
+
+##Lets try it on our function.
+#we already ran the function in the line 609 and stored the result in the name
+#"test_me"
+class(test_me)#[1] "Eco"  "list"
+class(test_me$results)#[1] "Eco"   "array"
+class(test_me$average)#[1] "Eco"        "data.frame"
+
+#A simple ggplot.
+ggplot(test_me$average,aes(x=n,y=sd,col=mu))+geom_line()#It works.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#Now lets try it with facet_grid 
+test_me$average %>%
+  ggplot(aes(x = avg, y = mu, col = sd )) + 
+  facet_grid(n ~ sd) +
+  geom_line()#It also works with facet!
