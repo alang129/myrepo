@@ -1,0 +1,764 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{lmodern}
+
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[lmargin=2.5cm,rmargin=2.5cm,tmargin=2.5cm,bmargin=2.5cm]{geometry}
+
+% Figure Placement:
+\usepackage{float}
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][2] {
+    \expandafter\origfigure\expandafter[H]
+} {
+    \endorigfigure
+}
+
+%% citation setup
+
+\usepackage{csquotes}
+
+\usepackage[backend=biber, maxbibnames = 99, style = apa]{biblatex}
+\setlength\bibitemsep{1.5\itemsep}
+\bibliography{references.bib}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={Alexander Langnau, Öcal Kaptan, Sunyoung Ji},
+            pdftitle={A Functional Approach to (Parallelised) Monte Carlo Simulation},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{5}
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{A Functional Approach to (Parallelised) Monte Carlo Simulation}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+\subtitle{Advance R for Econometricians}
+  \author{Alexander Langnau, Öcal Kaptan, Sunyoung Ji}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{today}
+
+
+%% linespread settings
+
+\usepackage{setspace}
+
+\onehalfspacing
+
+% Language Setup
+
+\usepackage{ifthen}
+\usepackage{iflang}
+\usepackage[super]{nth}
+
+\ifthenelse{\equal{english}{german}}{
+  \usepackage[ngerman]{babel}
+  }{
+  \usepackage[english]{babel}
+  }
+
+\begin{document}
+
+\newgeometry{left=2cm,right=1cm,bottom=2cm,top=2cm}
+
+\begin{titlepage}
+  \noindent\begin{minipage}{0.6\textwidth}
+	  \IfLanguageName{english}{University of Duisburg-Essen}{Universität Duisburg-Essen}\\
+	  \IfLanguageName{english}{Faculty of Business Administration and Economics}{Fakultät für Wirtschaftswissensschaften}\\
+	  \IfLanguageName{english}{Chair of Econometrics}{Lehrstuhl für Ökonometrie}\\
+  \end{minipage}
+	\begin{minipage}{0.4\textwidth}
+	  \begin{flushright}
+  	  \vspace{-0.5cm}
+      \IfLanguageName{english}{\includegraphics*[width=5cm]{Includes/duelogo_en.png}}{\includegraphics*[width=5cm]{Includes/duelogo_de.png}}
+	  \end{flushright}
+	\end{minipage}
+  \\
+  \vspace{1.5cm}
+  \begin{center}
+  \huge{A Functional Approach to (Parallelised) Monte Carlo
+Simulation}\\
+  \vspace{.25cm}
+  \Large{Advance R for Econometricians}\\
+  \vspace{0.5cm}
+  \large{Final Project}\\
+  \vspace{1cm}
+  \large{
+  \IfLanguageName{english}{Submitted to the Faculty of \\ Business Administration and Economics \\at the \\University of Duisburg-Essen}{Vorgelegt der \\Fakultät für Wirtschaftswissenschaften der \\ Universität Duisburg-Essen}\\}
+  \vspace{0.75cm}
+  \large{\IfLanguageName{english}{from:}{von:}}\\
+  \vspace{0.5cm}
+  Alexander Langnau, Öcal Kaptan, Sunyoung Ji\\
+  \end{center}
+  \vspace{4cm}
+
+  \noindent\begin{minipage}[t]{0.5\textwidth}
+  \IfLanguageName{english}{Matriculation Number:}{Matrikelnummer}
+  \end{minipage}
+  \begin{minipage}[t]{0.7\textwidth}
+  \hspace{1cm}232907, 230914, 229979
+  \end{minipage}
+
+  \noindent\begin{minipage}[t]{0.5\textwidth}
+  \IfLanguageName{english}{Study Path:}{Studienfach:}
+  \end{minipage}
+  \begin{minipage}[t]{0.7\textwidth}
+  \hspace{1cm}M.Sc. Econometircs
+  \end{minipage}
+
+  \noindent\begin{minipage}[t]{0.5\textwidth}
+  \IfLanguageName{english}{Reviewer:}{Erstgutachter:}
+  \end{minipage}
+  \begin{minipage}[t]{0.7\textwidth}
+  \hspace{1cm}Prof.~Dr.~Christoph Hanck
+  \end{minipage}
+
+  \noindent\begin{minipage}[t]{0.5\textwidth}
+  \IfLanguageName{english}{Secondary Reviewer:}{Zweitgutachter}
+  \end{minipage}
+  \begin{minipage}[t]{0.7\textwidth}
+  \hspace{1cm}M.Sc. Martin C. Arnold, M.Sc. Jens Klenke
+  \end{minipage}
+
+  \noindent\begin{minipage}[t]{0.5\textwidth}
+  Semester:
+  \end{minipage}
+  \begin{minipage}[t]{0.7\textwidth}
+  \hspace{1cm}\IfLanguageName{english}{\nth{1} Semester}{1. Fachsemester}
+  \end{minipage}
+
+  \noindent\begin{minipage}[t]{0.5\textwidth}
+  \IfLanguageName{english}{Graduation (est.):}{Vsl. Studienabschluss:}
+  \end{minipage}
+  \begin{minipage}[t]{0.7\textwidth}
+  \hspace{1cm}Summer Term 2022
+  \end{minipage}
+
+  \noindent\begin{minipage}[t]{0.5\textwidth}
+  \IfLanguageName{english}{Deadline:}{Abgabefrist:}
+  \end{minipage}
+  \begin{minipage}[t]{0.7\textwidth}
+  \hspace{1cm}09. 09. 2022
+  \end{minipage}
+
+\end{titlepage}
+
+% Ends the declared geometry for the titlepage
+\restoregeometry
+
+
+\pagenumbering{Roman} 
+{
+\hypersetup{linkcolor=black}
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\newpage
+\listoftables
+\newpage
+\listoffigures
+\newpage
+\pagenumbering{arabic} 
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+Monte Carlo, named after a casino in Monaco, simulates complex
+probabilistic events using simple random events, such as the tossing of
+a pair of dice to simulate the casino's overall business model. In Monte
+Carlo computing, a pseudo-random number generator is repeatedly called
+which returns a real number in {[}0, 1{]}, and the results are used to
+generate a distribution of samples that is a fair representation of the
+target probability distribution under study.
+\autocite[Adrian\_2022]{Barbu} Monte Carlo Method is combined with
+programming in modern research and contributes to various studies. The
+task in this paper is to create the wrapper functions providing a
+convenient interface for Monte Carlo Simulations.
+
+\hypertarget{preprocess}{%
+\section{Preprocess}\label{preprocess}}
+
+\hypertarget{function-for-creating-grid}{%
+\subsection{Function for creating
+grid}\label{function-for-creating-grid}}
+
+\texttt{create\_grid} is the function hat creates a parameter grid with
+all permutations of the given parameters. This is necessary to try all
+possible combinations to find the optimal parameters. This function
+tunes parameters to improve performance of Monte Carlo Simulation
+function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{create\_grid }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(parameters, nrep)\{}
+\NormalTok{  input }\OtherTok{\textless{}{-}}\NormalTok{ parameters}
+\NormalTok{  storage }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\NormalTok{  name\_vec }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+  
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(input))\{ }\CommentTok{\#1:3}
+\NormalTok{    a }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(input[[i]][[}\DecValTok{2}\NormalTok{]])}
+\NormalTok{    b }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(input[[i]][[}\DecValTok{3}\NormalTok{]])}
+\NormalTok{    c }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(input[[i]][[}\DecValTok{4}\NormalTok{]])}
+\NormalTok{    output }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\AttributeTok{from=}\NormalTok{a, }\AttributeTok{to=}\NormalTok{b, }\AttributeTok{by=}\NormalTok{c)}
+\NormalTok{    storage[[i]] }\OtherTok{\textless{}{-}}\NormalTok{  output}
+\NormalTok{    name\_vec[i] }\OtherTok{\textless{}{-}}\NormalTok{ input[[i]][[}\DecValTok{1}\NormalTok{]]}
+\NormalTok{  \}}
+  
+\NormalTok{  grid }\OtherTok{\textless{}{-}} \FunctionTok{expand\_grid}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{1}\NormalTok{])}
+\NormalTok{                      , }\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{2}\NormalTok{])}
+\NormalTok{                      , }\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{3}\NormalTok{])}
+\NormalTok{                      , }\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{4}\NormalTok{])}
+\NormalTok{                      , }\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{5}\NormalTok{])}
+\NormalTok{                      , }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{nrep))}
+  
+  \FunctionTok{names}\NormalTok{(grid) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(name\_vec, }\StringTok{"rep"}\NormalTok{)}
+  
+  \FunctionTok{return}\NormalTok{(grid)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{create\_grid()} Example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#One parameter (works)}
+\NormalTok{param\_list1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{))}
+\FunctionTok{tail}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list1, }\AttributeTok{nrep=}\DecValTok{10}\NormalTok{), }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 2
+##       n   rep
+##   <dbl> <int>
+## 1    20     9
+## 2    20    10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tail}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list1, }\AttributeTok{nrep=}\DecValTok{1}\NormalTok{), }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 2
+##       n   rep
+##   <dbl> <int>
+## 1    10     1
+## 2    20     1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#two parameter (works)}
+\NormalTok{param\_list2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"mu"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.25}\NormalTok{))}
+\FunctionTok{tail}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list1, }\AttributeTok{nrep=}\DecValTok{10}\NormalTok{), }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 2
+##       n   rep
+##   <dbl> <int>
+## 1    20     9
+## 2    20    10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#three parameters (works)}
+\NormalTok{param\_list3 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"mu"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.25}\NormalTok{)}
+\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"sd"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.1}\NormalTok{))}
+\FunctionTok{tail}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list3, }\AttributeTok{nrep=}\DecValTok{10}\NormalTok{), }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 4
+##       n    mu    sd   rep
+##   <dbl> <dbl> <dbl> <int>
+## 1    20     1   0.3     9
+## 2    20     1   0.3    10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#four parameters (works)}
+\NormalTok{param\_list4 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"mu"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.25}\NormalTok{)}
+\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"sd"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.1}\NormalTok{)}
+\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"gender"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\FunctionTok{tail}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list4, }\AttributeTok{nrep=}\DecValTok{5}\NormalTok{),}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 5
+##       n    mu    sd gender   rep
+##   <dbl> <dbl> <dbl>  <dbl> <int>
+## 1    20     1   0.3      1     4
+## 2    20     1   0.3      1     5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid\_4 }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list4, }\AttributeTok{nrep=}\DecValTok{50}\NormalTok{)}
+\FunctionTok{tail}\NormalTok{(grid\_4,}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 5
+##       n    mu    sd gender   rep
+##   <dbl> <dbl> <dbl>  <dbl> <int>
+## 1    20     1   0.3      1    49
+## 2    20     1   0.3      1    50
+\end{verbatim}
+
+\hypertarget{data-generation-function}{%
+\subsection{Data generation function}\label{data-generation-function}}
+
+\texttt{data\_generation} allows users to flexibly change data while
+keeping the summary statistics and to choose the number of inputs by
+using different \texttt{purrr} mapping functions: map, map2, and pmap
+for a input, two inputs, and p inputs respectively.
+
+In the function below, \texttt{simulation} means a distribution of data,
+and \texttt{grid} is a list of parameters.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_generation }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(simulation, grid)\{ }
+  \CommentTok{\#this is for use inside the function}
+  
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{ncol}\NormalTok{(grid)}\SpecialCharTok{==}\DecValTok{2}\NormalTok{)\{}
+\NormalTok{    var1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(grid[,}\DecValTok{1}\NormalTok{]))}
+\NormalTok{    data }\OtherTok{\textless{}{-}} \FunctionTok{map}\NormalTok{(var1, simulation) }
+    \CommentTok{\#different purrr{-}functions depending on how many input variables we use}
+\NormalTok{  \}}
+  
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{ncol}\NormalTok{(grid)}\SpecialCharTok{==}\DecValTok{3}\NormalTok{)\{}
+\NormalTok{    var1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(grid[,}\DecValTok{1}\NormalTok{]))}
+\NormalTok{    var2 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(grid[,}\DecValTok{2}\NormalTok{]))}
+\NormalTok{    data }\OtherTok{\textless{}{-}} \FunctionTok{map2}\NormalTok{(var1, var2, simulation)}
+\NormalTok{  \} }
+  
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{ncol}\NormalTok{(grid)}\SpecialCharTok{==}\DecValTok{4}\NormalTok{)\{ }
+\NormalTok{    var1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(grid[,}\DecValTok{1}\NormalTok{]))}
+\NormalTok{    var2 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(grid[,}\DecValTok{2}\NormalTok{]))}
+\NormalTok{    var3 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(grid[,}\DecValTok{3}\NormalTok{]))}
+\NormalTok{    list1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(var1,var2,var3)}
+\NormalTok{    data }\OtherTok{\textless{}{-}} \FunctionTok{pmap}\NormalTok{(list1, }\AttributeTok{.f=}\NormalTok{simulation)}
+\NormalTok{  \} }
+  
+  \FunctionTok{return}\NormalTok{(data)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{data\_generation()} Example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid1 }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list1, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{)}
+\FunctionTok{tail}\NormalTok{(}\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{rnorm, }\AttributeTok{grid=}\NormalTok{grid1),}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $n6
+##  [1] -0.491031166 -2.309168876  1.005738524 -0.709200763 -0.688008616
+##  [6]  1.025571370 -0.284773007 -1.220717712  0.181303480 -0.138891362
+## [11]  0.005764186  0.385280401 -0.370660032  0.644376549 -0.220486562
+## [16]  0.331781964  1.096839013  0.435181491 -0.325931586  1.148807618
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid2 }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list2, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{)}
+\FunctionTok{tail}\NormalTok{(}\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{rnorm, }\AttributeTok{grid=}\NormalTok{grid2),}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $n30
+##  [1]  1.9672673  0.8917199  0.3015793  0.7240548  2.1146485  1.5500440
+##  [7]  2.2366758  1.1390979  1.4102751  0.4415431  1.6053707  0.4936665
+## [13] -0.4205655  1.1279930  2.9458512  1.8009143  2.1652534  1.3588557
+## [19]  0.3914428  0.7977591
+\end{verbatim}
+
+Users can apply many distributions such as normal, uniform, poisson
+distributions by putting existing functions in r as \texttt{simulation}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Application to Uniform distribution}
+\NormalTok{param\_list\_runif }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{30}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{                         ,}\FunctionTok{c}\NormalTok{(}\StringTok{"min"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{                         ,}\FunctionTok{c}\NormalTok{(}\StringTok{"max"}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+
+
+\NormalTok{grid\_unif }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list\_runif, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{)}
+\FunctionTok{tail}\NormalTok{(}\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{runif, }\AttributeTok{grid=}\NormalTok{grid\_unif),}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $n9
+##  [1] 0.004638151 0.277560080 0.325203143 0.588706277 0.249684701 0.043117281
+##  [7] 0.110678788 0.703753812 0.939021239 0.311169018 0.078492930 0.321744091
+## [13] 0.624905537 0.440241850 0.801345301 0.279283805 0.570713193 0.042128012
+## [19] 0.190717455 0.727086471 0.826690050 0.510721075 0.567726166 0.001155820
+## [25] 0.143778103 0.865967083 0.082561061 0.244570682 0.981543157 0.577581279
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Application to Poisson distribution}
+
+\NormalTok{param\_list\_rpois }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{30}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{                         , }\FunctionTok{c}\NormalTok{(}\StringTok{"lambda"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\NormalTok{grid\_pois }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list\_rpois, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{)}
+\FunctionTok{tail}\NormalTok{(grid\_pois,}\DecValTok{2}\NormalTok{) }\CommentTok{\# nrow(grid\_pois) = 99}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 3
+##       n lambda   rep
+##   <dbl>  <dbl> <int>
+## 1    30     10     2
+## 2    30     10     3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tail}\NormalTok{(}\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{rpois, }\AttributeTok{grid=}\NormalTok{grid\_pois),}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $n99
+##  [1]  8  8  8 12  7  6 10  9  5  8 19 12  7 12 13  7  3  9  7 15  6 13 11 15  8
+## [26] 13  9  7  9  5
+\end{verbatim}
+
+\hypertarget{summary-function}{%
+\subsection{Summary function}\label{summary-function}}
+
+\texttt{summary\_function} offers summary statistics that users can
+choose.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#summary function for one input}
+\NormalTok{summary\_function }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(sum\_fun, data\_input)\{}
+  
+\NormalTok{  count }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(data\_input)}
+\NormalTok{  summary\_matrix }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\AttributeTok{nrow=}\NormalTok{count, }\AttributeTok{ncol=}\DecValTok{1}\NormalTok{)}
+  
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{count)\{}
+\NormalTok{    input }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(data\_input[[i]])}
+\NormalTok{    output }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(sum\_fun, do.call, input)}
+\NormalTok{    summary\_matrix[i] }\OtherTok{\textless{}{-}}\NormalTok{ output}
+\NormalTok{  \}}
+  \CommentTok{\#output \textless{}{-} as.data.frame(summary\_matrix)}
+  \CommentTok{\#names(output) \textless{}{-} sum\_fun}
+  \FunctionTok{colnames}\NormalTok{(summary\_matrix) }\OtherTok{\textless{}{-}}\NormalTok{ sum\_fun}
+  \FunctionTok{return}\NormalTok{(summary\_matrix)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{summary\_function} Example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid\_test }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list3, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{)}
+\NormalTok{test\_data }\OtherTok{\textless{}{-}} \FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{rnorm, }\AttributeTok{grid=}\NormalTok{grid\_test)}
+\FunctionTok{tail}\NormalTok{(}\FunctionTok{summary\_function}\NormalTok{(}\AttributeTok{sum\_fun=}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{), }\AttributeTok{data\_input=}\NormalTok{test\_data),}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           mean
+## [119,] 1.03361
+## [120,] 1.01786
+\end{verbatim}
+
+\hypertarget{summary-array-funcation}{%
+\subsection{Summary array funcation}\label{summary-array-funcation}}
+
+The outcome of \texttt{create\_array\_function} illustrates the
+combination of user defined grid and the summary statistics. This
+function product dataframes with all permutations and results that
+allow, thus users can look any possible parameter regarding specific
+grid.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{create\_array\_function }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(comb, parameters, nrep)\{}
+\NormalTok{  storage }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\NormalTok{  name\_vec }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+  
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(parameters))\{ }
+    \CommentTok{\#this creates the sequences of parameters}
+\NormalTok{    a }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(parameters[[i]][[}\DecValTok{2}\NormalTok{]])}
+\NormalTok{    b }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(parameters[[i]][[}\DecValTok{3}\NormalTok{]])}
+\NormalTok{    c }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(parameters[[i]][[}\DecValTok{4}\NormalTok{]])}
+\NormalTok{    output }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\AttributeTok{from=}\NormalTok{a, }\AttributeTok{to=}\NormalTok{b, }\AttributeTok{by=}\NormalTok{c)}
+\NormalTok{    storage[[i]] }\OtherTok{\textless{}{-}}\NormalTok{  output}
+\NormalTok{    name\_vec[i] }\OtherTok{\textless{}{-}}\NormalTok{ parameters[[i]][[}\DecValTok{1}\NormalTok{]] }
+    \CommentTok{\#this just stores the names of the variables}
+\NormalTok{  \}}
+  
+  
+\NormalTok{  matrix.numeration }\OtherTok{\textless{}{-}}  \FunctionTok{paste}\NormalTok{(}\StringTok{"rep"}\NormalTok{,}\StringTok{"="}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{nrep, }\AttributeTok{sep =} \StringTok{""}\NormalTok{)}
+  
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(parameters)}\SpecialCharTok{==}\DecValTok{1}\NormalTok{)\{}
+\NormalTok{    comb\_ordered }\OtherTok{\textless{}{-}}\NormalTok{  comb }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{2}\NormalTok{])}
+\NormalTok{    seq1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{1}\NormalTok{]))}
+    
+\NormalTok{    row.names }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(name\_vec[}\DecValTok{1}\NormalTok{],}\StringTok{"="}\NormalTok{,seq1, }\AttributeTok{sep =} \StringTok{""}\NormalTok{)}
+    
+\NormalTok{    dimension\_array }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{length}\NormalTok{(seq1), nrep)}
+\NormalTok{    dim\_names\_list }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(row.names, matrix.numeration)}
+\NormalTok{  \}}
+  
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(parameters)}\SpecialCharTok{==}\DecValTok{2}\NormalTok{)\{}
+\NormalTok{    comb\_ordered }\OtherTok{\textless{}{-}}\NormalTok{  comb }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{2}\NormalTok{])  }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{3}\NormalTok{])}
+\NormalTok{    seq1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{1}\NormalTok{]))}
+\NormalTok{    seq2 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{2}\NormalTok{]))}
+    
+\NormalTok{    row.names }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(name\_vec[}\DecValTok{1}\NormalTok{],}\StringTok{"="}\NormalTok{,seq1, }\AttributeTok{sep =} \StringTok{""}\NormalTok{)}
+\NormalTok{    column.names }\OtherTok{\textless{}{-}}  \FunctionTok{paste}\NormalTok{(name\_vec[}\DecValTok{2}\NormalTok{],}\StringTok{"="}\NormalTok{,seq2, }\AttributeTok{sep =} \StringTok{""}\NormalTok{)}
+    
+\NormalTok{    dimension\_array }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{length}\NormalTok{(seq1), }\FunctionTok{length}\NormalTok{(seq2), nrep)}
+\NormalTok{    dim\_names\_list }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(row.names, column.names, matrix.numeration)}
+\NormalTok{  \}}
+  
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(parameters)}\SpecialCharTok{==}\DecValTok{3}\NormalTok{)\{}
+\NormalTok{    comb\_ordered }\OtherTok{\textless{}{-}}\NormalTok{  comb }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{2}\NormalTok{])  }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{3}\NormalTok{]) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{4}\NormalTok{]) }
+\NormalTok{    seq1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{1}\NormalTok{]))}
+\NormalTok{    seq2 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{2}\NormalTok{]))}
+\NormalTok{    seq3 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{3}\NormalTok{]))}
+    
+\NormalTok{    row.names }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(name\_vec[}\DecValTok{1}\NormalTok{],}\StringTok{"="}\NormalTok{,seq1, }\AttributeTok{sep =} \StringTok{""}\NormalTok{)}
+\NormalTok{    column.names }\OtherTok{\textless{}{-}}  \FunctionTok{paste}\NormalTok{(name\_vec[}\DecValTok{2}\NormalTok{],}\StringTok{"="}\NormalTok{,seq2, }\AttributeTok{sep =} \StringTok{""}\NormalTok{)}
+\NormalTok{    matrix.names1 }\OtherTok{\textless{}{-}}  \FunctionTok{paste}\NormalTok{(name\_vec[}\DecValTok{3}\NormalTok{],}\StringTok{"="}\NormalTok{,seq3, }\AttributeTok{sep =} \StringTok{""}\NormalTok{)}
+    
+\NormalTok{    dimension\_array }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{length}\NormalTok{(seq1), }\FunctionTok{length}\NormalTok{(seq2), }\FunctionTok{length}\NormalTok{(seq3), nrep)}
+\NormalTok{    dim\_names\_list }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(row.names, column.names, }
+\NormalTok{                           matrix.names1, matrix.numeration)}
+    
+\NormalTok{  \}}
+  
+  
+\NormalTok{  array1 }\OtherTok{\textless{}{-}} \FunctionTok{array}\NormalTok{(comb\_ordered[,}\FunctionTok{ncol}\NormalTok{(comb)] }
+                  \CommentTok{\#change to automatically adjust dim}
+\NormalTok{                  , }\AttributeTok{dim =}\NormalTok{ dimension\_array}
+\NormalTok{                  , dim\_names\_list)}
+  \FunctionTok{return}\NormalTok{(array1)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{create\_array\_function} Example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# PREP }\AlertTok{TEST}\CommentTok{ \textasciigrave{}create\_array\_function\textasciigrave{}}
+\NormalTok{main\_function\_array\_test }\OtherTok{\textless{}{-}}  \ControlFlowTok{function}\NormalTok{(parameters }\CommentTok{\#list of parameters}
+\NormalTok{                                      , nrep }\CommentTok{\#number of repetitions}
+\NormalTok{                                      , simulation }\CommentTok{\#data genereation}
+\NormalTok{                                      , sum\_fun)\{ }\CommentTok{\#summary statistics}
+  
+\NormalTok{  grid }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(parameters, nrep) }\CommentTok{\#Step 1: create grid}
+\NormalTok{  raw\_data }\OtherTok{\textless{}{-}} \FunctionTok{data\_generation}\NormalTok{(simulation, grid) }\CommentTok{\#Step 2: simlate data}
+\NormalTok{  summary }\OtherTok{\textless{}{-}} \FunctionTok{summary\_function}\NormalTok{(sum\_fun, }\AttributeTok{data\_input=}\NormalTok{raw\_data) }\CommentTok{\#Step 3: Summary statistics}
+\NormalTok{  comb }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(grid, summary) }\CommentTok{\#Step 4: Combine resuluts with parameters}
+\NormalTok{  array\_1 }\OtherTok{\textless{}{-}} \FunctionTok{create\_array\_function}\NormalTok{(comb, parameters, nrep) }\CommentTok{\#Step 5: Create array}
+  
+  \FunctionTok{return}\NormalTok{(comb)}
+\NormalTok{\}}
+
+\NormalTok{param\_list3x }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{                     ,}\FunctionTok{c}\NormalTok{(}\StringTok{"mu"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{1}\NormalTok{)}
+\NormalTok{                     ,}\FunctionTok{c}\NormalTok{(}\StringTok{"sd"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\NormalTok{comb1 }\OtherTok{\textless{}{-}} \FunctionTok{main\_function\_array\_test}\NormalTok{(}\AttributeTok{parameters=}\NormalTok{param\_list3x}
+\NormalTok{                                  , }\AttributeTok{nrep =} \DecValTok{1}
+\NormalTok{                                  , }\AttributeTok{simulation =}\NormalTok{ rnorm}
+\NormalTok{                                  , }\AttributeTok{sum\_fun=}\StringTok{"mean"}\NormalTok{)}
+
+\FunctionTok{head}\NormalTok{(comb1,}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    n mu sd rep       mean
+## 1 10  0  0   1  0.0000000
+## 2 10  0  1   1 -0.6031898
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{create\_array\_function}\NormalTok{(}\AttributeTok{comb=}\NormalTok{comb1, }\AttributeTok{parameters=}\NormalTok{param\_list3x, }\AttributeTok{nrep=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## , , sd=0, rep=1
+## 
+##      mu=0 mu=1 mu=2 mu=3 mu=4 mu=5
+## n=10    0    1    2    3    4    5
+## n=20    0    1    2    3    4    5
+## 
+## , , sd=1, rep=1
+## 
+##            mu=0      mu=1     mu=2     mu=3     mu=4     mu=5
+## n=10 -0.6031898 1.1547493 1.768505 2.799209 4.297611 5.240045
+## n=20 -0.1950611 0.7933902 1.609615 2.815089 4.066077 4.798390
+\end{verbatim}
+
+\hypertarget{monte-carlo-simulation-funcion}{%
+\section{Monte Carlo Simulation
+Funcion}\label{monte-carlo-simulation-funcion}}
+
+\hypertarget{examples}{%
+\section{Examples}\label{examples}}
+
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
+
+\pagebreak
+\renewcommand*{\mkbibnamefamily}[1]{\textbf{#1}}
+\renewcommand*{\mkbibnamegiven}[1]{\textbf{#1}}
+\renewcommand*{\mkbibnameprefix}[1]{\textbf{#1}}
+\renewcommand*{\mkbibnamesuffix}[1]{\textbf{#1}}
+\printbibliography[title=References]
+
+\newpage
+\textbf{Eidesstattliche Versicherung}
+
+\bigskip
+
+Ich versichere an Eides statt durch meine Unterschrift, dass ich die vorstehende Arbeit selbständig und ohne fremde Hilfe angefertigt und alle Stellen, die ich wörtlich oder annähernd wörtlich aus Veröffentlichungen entnommen habe, als solche kenntlich gemacht habe, mich auch keiner anderen als der angegebenen Literatur oder sonstiger Hilfsmittel bedient habe. Die Arbeit hat in dieser oder ähnlicher Form noch keiner anderen Prüfungsbehörde vorgelegen.
+
+\vspace{1cm}
+\rule{0pt}{2\baselineskip} %
+\par\noindent\makebox[2.25in]{\indent Essen, den \hrulefill} \hfill\makebox[2.25in]{\hrulefill}%
+\par\noindent\makebox[2.25in][l]{} \hfill\makebox[2.25in][c]{Alexander
+Langnau, Öcal Kaptan, Sunyoung Ji}%
+
+
+\end{document}
