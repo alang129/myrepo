@@ -46,8 +46,17 @@ library(purrr)
 # Introduction
 
 Monte Carlo, named after a casino in Monaco, simulates complex probabilistic events using simple random events, such as the tossing of a pair of dice to simulate the casino’s overall business model. In Monte Carlo computing, a pseudo-random number generator is repeatedly called which returns a real number in [0, 1], and the results are used to generate a distribution of samples that is a fair representation of the target probability distribution under study. [@Barbu, Adrian_2022]
-Monte Carlo Method is combined with programming in modern research and contributes to various studies. The task in this paper is to create the wrapper functions providing a convenient interface for Monte Carlo Simulations.
+Monte Carlo Method is combined with programming in modern research and contributes to various studies. 
 
+This paper was the final project of the course "Advanced R for econometricians" at the chair of econometrics at university Duisburg Essen. The goal is to use a functional programming aproach to create a collection of different wrapper functions in R, that 
++ providing a convenient interface for Monte Carlo Simulations
++ create a paramter grid
++ iterate homogenous function calls over the parameter grid
++ provides an informative summary of the simulation results
++ can be visualized by ggplot-methods
++ offers the possibility to use parallelised processing (using furrr package)
+
+A functional programming approach is well suited to implement the different steps. The structure of this paper underlying code in general follows this approach: In chapter xyz we introduce different functions, that each specifically solve the task of the bullet points mentioned above. In the beginning we´ll underline the motivation and problem behind each function and showcase the code. At the end of each section we provide a minimal working example, that illustrates the function and its output. We tried to implement in a way, that the function works for as much cases, as possible. If there are some restrictions regarding the usage of those functions, we´ll briefly discuss them as well.
 
 # Preprocess
 
