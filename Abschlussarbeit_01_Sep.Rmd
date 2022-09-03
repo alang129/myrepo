@@ -46,15 +46,20 @@ library(purrr)
 # Introduction
 
 Monte Carlo, named after a casino in Monaco, simulates complex probabilistic events using simple random events, such as the tossing of a pair of dice to simulate the casino’s overall business model. In Monte Carlo computing, a pseudo-random number generator is repeatedly called which returns a real number in [0, 1], and the results are used to generate a distribution of samples that is a fair representation of the target probability distribution under study. [@Barbu, Adrian_2022]
-Monte Carlo Method is combined with programming in modern research and contributes to various studies. 
+Monte Carlo Method is combined with programming in modern research and contributes to various studies.
+
+Monte Carlo simulations are and will stay an important method in the tool box of any
+econometrician, statistican or data scientist. Since these simulations  may be needed on a regular basis or are run over a complex set of functions and parameters, its time well spend to implement some
+tools, that allow the user to easily create a variety of different Monte Carlo studies. 
 
 This paper was the final project of the course "Advanced R for econometricians" at the chair of econometrics at university Duisburg Essen. The goal is to use a functional programming aproach to create a collection of different wrapper functions in R, that 
-+ providing a convenient interface for Monte Carlo Simulations
-+ create a paramter grid
-+ iterate homogenous function calls over the parameter grid
-+ provides an informative summary of the simulation results
-+ can be visualized by ggplot-methods
-+ offers the possibility to use parallelised processing (using furrr package)
+
+- providing a convenient interface for Monte Carlo Simulations
+- create a paramter grid
+- iterate homogenous function calls over the parameter grid
+- provides an informative summary of the simulation results
+- can be visualized by ggplot-methods
+- offers the possibility to use parallelised processing (using `furrr` package)
 
 A functional programming approach is well suited to implement the different steps.
 The structure of this paper underlying code in general follows this approach:
@@ -63,7 +68,7 @@ In chapter xyz we introduce different functions, that each specifically solve th
 
 At the end of each section we provide a minimal working example, that illustrates the function and its output. We tried to implement in a way, that the function works for as much cases, as possible. If there are some restrictions regarding the usage of those functions, we´ll briefly discuss them as well.
 
-# Preprocess
+# Preprocess / Helper functions
 
 ## Function for creating grid  
 
@@ -367,6 +372,15 @@ create_array_function(comb=comb1, parameters=param_list3x, nrep=1)
 
 
 # Conclusion
+
+The above section illustrates the power of our implemented model and gives the fairly easy 
+to use tool, that still allows for a variety of different specifications in terms of used parameters,
+data generation processes and summary functions. Researchers, who use Monte Carlo studys on a regular basis, may save a lot of time using a tool like this in the long run.
+
+By nature, there may be cases, where our implementation doesnt satisfy the needs of the user to the fullest, but for a wide variety of examples we showed, that it worked well and served the goal that we aimed for. Our functional programming approach allows for easy and flexible adjustments in case the use of our functions should be expanded, f.e. if a grid of more than 3 (or 4?) parameters is needed.
+
+Theoretically, this work could be implemented as an R package to share it with the R community. But since the `MonteCarlo()` function of the `vigniette` package already provides a well working alternative to our
+work besides some minor differences, there is currently no need in doing that.
 
 
 

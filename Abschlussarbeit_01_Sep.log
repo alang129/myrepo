@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.3)  3 SEP 2022 14:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.3)  3 SEP 2022 18:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -643,7 +643,7 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
-(./Abschlussarbeit_01_Sep.aux)
+No file Abschlussarbeit_01_Sep.aux.
 \openout1 = `Abschlussarbeit_01_Sep.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 162.
@@ -726,8 +726,8 @@ Package biblatex Info: Automatic encoding selection.
 \openout3 = `Abschlussarbeit_01_Sep.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'Abschlussarbeit_01_Sep.bbl' found.
-(./Abschlussarbeit_01_Sep.bbl)
+Package biblatex Info: ... file 'Abschlussarbeit_01_Sep.bbl' not found.
+No file Abschlussarbeit_01_Sep.bbl.
 Package biblatex Info: Reference section=0 on input line 162.
 Package biblatex Info: Reference segment=0 on input line 162.
 (c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
@@ -743,7 +743,6 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 Package hyperref Info: Link coloring ON on input line 162.
-(./Abschlussarbeit_01_Sep.out) (./Abschlussarbeit_01_Sep.out)
 \@outlinefile=\write5
 \openout5 = `Abschlussarbeit_01_Sep.out'.
 
@@ -814,7 +813,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 171.
 (c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<Includes/duelogo_en.png, id=40, 230.8625pt x 89.33376pt>
+<Includes/duelogo_en.png, id=4, 230.8625pt x 89.33376pt>
 File: Includes/duelogo_en.png Graphic file (type png)
 <use Includes/duelogo_en.png>
 Package pdftex.def Info: Includes/duelogo_en.png  used on input line 175.
@@ -862,17 +861,20 @@ Overfull \hbox (104.8617pt too wide) in paragraph at lines 239--245
 [1
 
 
-{c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./includes/duelogo_en.png>] (./Abschlussarbeit_01_Sep.toc)
+{c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./includes/duelogo_en.png>]
+No file Abschlussarbeit_01_Sep.toc.
 \tf@toc=\write6
 \openout6 = `Abschlussarbeit_01_Sep.toc'.
 
 [1
 
-] (./Abschlussarbeit_01_Sep.lot)
+]
+No file Abschlussarbeit_01_Sep.lot.
 \tf@lot=\write7
 \openout7 = `Abschlussarbeit_01_Sep.lot'.
 
-[2] (./Abschlussarbeit_01_Sep.lof)
+[2]
+No file Abschlussarbeit_01_Sep.lof.
 \tf@lof=\write8
 \openout8 = `Abschlussarbeit_01_Sep.lof'.
 
@@ -880,66 +882,16 @@ Overfull \hbox (104.8617pt too wide) in paragraph at lines 239--245
 
 LaTeX Warning: Citation 'Barbu' on page 1 undefined on input line 274.
 
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 286.
-(c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 294.
-
-pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.320 \end{Shaded}
-                   [1] [2] [3] [4]
-Overfull \hbox (16.15204pt too wide) in paragraph at lines 552--552
-[]\T1/lmtt/m/n/10.95 ##  [1]  8  8  8 12  7  6 10  9  5  8 19 12  7 12 13  7  3  9  7 15  6 13 11 15  8[] 
- []
-
-[5] [6]
-Underfull \vbox (badness 10000) detected at line 673
- []
-
-
-Underfull \vbox (badness 10000) detected at line 673
- []
-
-[7]
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 679.
-(c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
-File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [8] [9]
-
-LaTeX Warning: Empty bibliography on input line 748.
-
-[10] (./Abschlussarbeit_01_Sep.aux)
-
-LaTeX Warning: There were undefined references.
-
-Package rerunfilecheck Info: File `Abschlussarbeit_01_Sep.out' has not changed.
-(rerunfilecheck)             Checksum: 1D5DD5E53A0DA6E3E6892B45CC8DA45B;1271.
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                Abschlussarbeit_01_Sep
-(biblatex)                and rerun LaTeX afterwards.
-
-Package logreq Info: Writing requests to 'Abschlussarbeit_01_Sep.run.xml'.
-\openout1 = `Abschlussarbeit_01_Sep.run.xml'.
-
- ) 
+! Undefined control sequence.
+l.283 \tightlist
+                 
 Here is how much of TeX's memory you used:
- 20639 strings out of 477005
- 367760 string characters out of 5825127
- 1219030 words of memory out of 5000000
- 41447 multiletter control sequences out of 15000+600000
- 507064 words of font info for 57 fonts, out of 8000000 for 9000
+ 20485 strings out of 477005
+ 365148 string characters out of 5825127
+ 1212480 words of memory out of 5000000
+ 41348 multiletter control sequences out of 15000+600000
+ 502803 words of font info for 52 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,6n,70p,695b,5044s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}<c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Abschlussarbeit_01_Sep.pdf (14 pages, 259739 bytes).
-PDF statistics:
- 187 PDF objects out of 1000 (max. 8388607)
- 147 compressed objects within 2 object streams
- 35 named destinations out of 1000 (max. 500000)
- 84 words of extra memory for PDF output out of 10000 (max. 10000000)
 
+!  ==> Fatal error occurred, no output PDF file produced!
