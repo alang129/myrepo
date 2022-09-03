@@ -772,4 +772,52 @@ max.cores <- detectCores()
 if(cores>max.cores){
   stop("Number of Cores cannot be bigger than total number of cores")
 }
+  
+  
+  
+  #####################Lets check the execution time for paralel process###
+
+ols_f <- function(n,mu,sd){
+  e <- rnorm(n,mu,sd)
+  x <- runif(n)
+  y <- 0.5*x + e
+  ols.hat <- t(x) %*% y / t(x)%*%x
+  return("ols"=ols.hat)}
+
+gls_f <- function(n,mu,sd){
+  e <- rnorm(n,mu,sd)
+  x <- runif(n)
+  y <- 0.5*x + e
+  v.inv <- diag(1/(1:n))
+  c <- chol(v.inv)
+  cy <- c %*% y
+  cx <- c %*% x
+  gls_hat <- t(cx) %*% cy / t(cx)%*%cx
+  return("gls"=gls_hat)
+}
+
+param_list <- list(c("n",100,1000,100),c("mu",0,1,0.25),c("sd",1,2,.5))
+
+ols <- main_function(parameters = param_list,nrep=5,simulation = ols_f,sum_fun="mean",seed=123,cores=1)
+#Ols function is less demanding than gls function thats why parallelization will be checked for gls function. 
+
+#Lets check the execution times of gls function with 1 core and 8 cores
+gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=1)
+#With one core it took 47 seconds
+
+gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=8)
+#only 24 seconds. So, it works.
+
+
+#Now lets visualise it 
+gls$average <-  gls$average %>% mutate(mse =(2-avg)^2 )
+ols$average <-  ols$average %>% mutate(mse =(2-avg)^2 )
+
+ols$average %>% ggplot(aes(x=avg,y=mu,col="OLS"))+
+  facet_grid(n~mean(mse))+geom_line()+
+ geom_line(data=gls$average,aes(x=avg,y=mu,col="GLS"))+
+  scale_color_manual(name = "Estimation", values = c("OLS" = "blue", "GLS" = "red"))
+###or any other combinations
+
+  
 
