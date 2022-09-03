@@ -7,6 +7,7 @@ library(future)
 library(parallel)
 
 
+test 
 # Part 1:  creating grid --------------------------------------------------
 'First step, built a function that creates a parameter grid with all permutations
 of the given parameters'
