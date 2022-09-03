@@ -284,24 +284,12 @@ different Monte Carlo studies.
 This paper was the final project of the course ``Advanced R for
 econometricians'' at the chair of econometrics at university Duisburg
 Essen. The goal is to use a functional programming aproach to create a
-collection of different wrapper functions in R, that
-
-\begin{itemize}
-\tightlist
-\item
-  providing a convenient interface for Monte Carlo Simulations
-\item
-  create a paramter grid
-\item
-  iterate homogenous function calls over the parameter grid
-\item
-  provides an informative summary of the simulation results
-\item
-  can be visualized by ggplot-methods
-\item
-  offers the possibility to use parallelised processing (using
-  \texttt{furrr} package)
-\end{itemize}
+collection of different wrapper functions in R, that - providing a
+convenient interface for Monte Carlo Simulations - create a paramter
+grid - iterate homogenous function calls over the parameter grid -
+provides an informative summary of the simulation results - can be
+visualized by ggplot-methods - offers the possibility to use
+parallelised processing (using \texttt{furrr} package)
 
 A functional programming approach is well suited to implement the
 different steps. The structure of this paper underlying code in general
@@ -800,7 +788,7 @@ a grid of more than 3 (or 4?) parameters is needed.
 Theoretically, this work could be implemented as an R package to share
 it with the R community. But since the \texttt{MonteCarlo()} function of
 the \texttt{vigniette} package already provides a well working
-alternative to our work besides some minor differences, there is
+alternative to our project besides some minor differences, there is
 currently no need in doing that.
 
 \pagebreak

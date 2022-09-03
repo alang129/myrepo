@@ -53,7 +53,6 @@ econometrician, statistican or data scientist. Since these simulations  may be n
 tools, that allow the user to easily create a variety of different Monte Carlo studies. 
 
 This paper was the final project of the course "Advanced R for econometricians" at the chair of econometrics at university Duisburg Essen. The goal is to use a functional programming aproach to create a collection of different wrapper functions in R, that 
-
 - providing a convenient interface for Monte Carlo Simulations
 - create a paramter grid
 - iterate homogenous function calls over the parameter grid
@@ -384,7 +383,9 @@ project besides some minor differences, there is currently no need in doing that
 
 
 
+# References
 
+# Contributions
 
 
 
