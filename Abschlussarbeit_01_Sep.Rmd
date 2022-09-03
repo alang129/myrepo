@@ -1,6 +1,6 @@
 ---
 title: "A Functional Approach to (Parallelised) Monte Carlo Simulation"
-subtitle: "Advance R for Econometricians"
+subtitle: "Advanced R for Econometricians"
 type: "Final Project"
 author: "Alexander Langnau, Öcal Kaptan, Sunyoung Ji"
 discipline: "M.Sc. Econometircs"
