@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.3)  3 SEP 2022 18:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.3)  3 SEP 2022 19:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -883,7 +883,7 @@ No file Abschlussarbeit_01_Sep.lof.
 LaTeX Warning: Citation 'Barbu' on page 1 undefined on input line 274.
 
 ! Undefined control sequence.
-l.283 \tightlist
+l.290 \tightlist
                  
 Here is how much of TeX's memory you used:
  20485 strings out of 477005

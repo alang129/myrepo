@@ -274,6 +274,13 @@ target probability distribution under study.
 \autocite[Adrian\_2022]{Barbu} Monte Carlo Method is combined with
 programming in modern research and contributes to various studies.
 
+Monte Carlo simulations are and will stay an important method in the
+tool box of any econometrician, statistican or data scientist. Since
+these simulations may be needed on a regular basis or are run over a
+complex set of functions and parameters, its time well spend to
+implement some tools, that allow the user to easily create a variety of
+different Monte Carlo studies.
+
 This paper was the final project of the course ``Advanced R for
 econometricians'' at the chair of econometrics at university Duisburg
 Essen. The goal is to use a functional programming aproach to create a
@@ -776,8 +783,25 @@ Funcion}\label{monte-carlo-simulation-funcion}}
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
-Monte Carlo simulations are and will stay an important method in the
-tool box of any econometrician, statistican or data scientist.
+The above section illustrates the power of our implemented model and
+gives the fairly easy to use tool, that still allows for a variety of
+different specifications in terms of used parameters, data generation
+processes and summary functions. Researchers, who use Monte Carlo studys
+on a regular basis, may save a lot of time using a tool like this in the
+long run.
+
+By nature, there may be cases, where our implementation doesnt satisfy
+the needs of the user to the fullest, but for a wide variety of examples
+we showed, that it worked well and served the goal that we aimed for.
+Our functional programming approach allows for easy and flexible
+adjustments in case the use of our functions should be expanded, f.e. if
+a grid of more than 3 (or 4?) parameters is needed.
+
+Theoretically, this work could be implemented as an R package to share
+it with the R community. But since the \texttt{MonteCarlo()} function of
+the \texttt{vigniette} package already provides a well working
+alternative to our work besides some minor differences, there is
+currently no need in doing that.
 
 \pagebreak
 \renewcommand*{\mkbibnamefamily}[1]{\textbf{#1}}

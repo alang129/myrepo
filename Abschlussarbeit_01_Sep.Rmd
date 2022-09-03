@@ -380,7 +380,7 @@ data generation processes and summary functions. Researchers, who use Monte Carl
 By nature, there may be cases, where our implementation doesnt satisfy the needs of the user to the fullest, but for a wide variety of examples we showed, that it worked well and served the goal that we aimed for. Our functional programming approach allows for easy and flexible adjustments in case the use of our functions should be expanded, f.e. if a grid of more than 3 (or 4?) parameters is needed.
 
 Theoretically, this work could be implemented as an R package to share it with the R community. But since the `MonteCarlo()` function of the `vigniette` package already provides a well working alternative to our
-work besides some minor differences, there is currently no need in doing that.
+project besides some minor differences, there is currently no need in doing that.
 
 
 
