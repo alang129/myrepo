@@ -56,7 +56,12 @@ This paper was the final project of the course "Advanced R for econometricians" 
 + can be visualized by ggplot-methods
 + offers the possibility to use parallelised processing (using furrr package)
 
-A functional programming approach is well suited to implement the different steps. The structure of this paper underlying code in general follows this approach: In chapter xyz we introduce different functions, that each specifically solve the task of the bullet points mentioned above. In the beginning we´ll underline the motivation and problem behind each function and showcase the code. At the end of each section we provide a minimal working example, that illustrates the function and its output. We tried to implement in a way, that the function works for as much cases, as possible. If there are some restrictions regarding the usage of those functions, we´ll briefly discuss them as well.
+A functional programming approach is well suited to implement the different steps.
+The structure of this paper underlying code in general follows this approach:
+
+In chapter xyz we introduce different functions, that each specifically solve the task of the bullet points mentioned above. In the beginning we´ll underline the motivation and problem behind each function and showcase the code.
+
+At the end of each section we provide a minimal working example, that illustrates the function and its output. We tried to implement in a way, that the function works for as much cases, as possible. If there are some restrictions regarding the usage of those functions, we´ll briefly discuss them as well.
 
 # Preprocess
 
