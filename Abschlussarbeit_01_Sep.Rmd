@@ -41,6 +41,8 @@ set.seed(123)
 require(utils)
 library(tidyverse)
 library(purrr)
+library(parallel)
+library(furrr)
 ```
 
 # Introduction
@@ -141,60 +143,37 @@ head(create_grid(param_list0, nrep=3), n=20)
 
 Our second helper function called `data_generation()` uses the parameter grid (`grid`) and a user defined function for data generation (specified as input named `simulation`), f.e. `rnorm()`, `runif()` or `rpois()` to create data under the exact parameters specified in the grid. The draw of data points for each row of the parameter grid gets stored as a seperate element in a list. 
 
-Depenend on how many parameters were specified by the user, different functions of the `purrr`-package are are used, to run the specified function over the parameter grid.
+Depenend on how many parameters were specified by the user, different functions of the `purrr`-package are are used, to run the specified function over the parameter grid. In case the user is looking to improve performance, a way of choosing a parallelised processing function of the `furrr`-package is offered.
 
-- `map()` is used for one parameter
-- `map2()` is used for two parameters
-- `pmap()` is used for three or more parameters
+- `map()` is used for one parameter and `future_map()` function is used  for parallel process instead of `map()` function. Same for  other `map()` functions as seen below.
+- `map2()` is used for two parameters and  `future_map2()` function is used  for parallel process instead of `map2()` function.
+- `pmap()` is used for three or more parameters and `future_pmap()` function is used  for parallel process instead of `pmap()` function.
+
+ `options = furrr_options(seed = TRUE)` is used for reproducible random number generation process. This argument
+takes control of the RNG process for paralleization. It generates the same numbers for the given seed. More details can be found by running the command
+`?furrr_options` in RStudio.
 
 
-```{r data generation without parallelisation}
-data_generation <- function(simulation, grid){ 
-
+```{r data generation and parallel process}
+data_generation <- function(simulation, grid){ #this is for use inside the function
   
   if(ncol(grid)==2){
     var1 <- c(unlist(grid[,1]))
-    data <- map(var1, simulation) 
+    if(cores>1){
+      data <- future_map(var1, simulation,.options = furrr_options(seed = TRUE))
+    }else{
+      data <- map(var1, simulation)
+    }
   }
   
   if(ncol(grid)==3){
     var1 <- c(unlist(grid[,1]))
     var2 <- c(unlist(grid[,2]))
-    data <- map2(var1, var2, simulation)
-  } 
-  
-  if(ncol(grid)==4){ 
-    var1 <- c(unlist(grid[,1]))
-    var2 <- c(unlist(grid[,2]))
-    var3 <- c(unlist(grid[,3]))
-    list1 <- list(var1,var2,var3)
-    data <- pmap(list1, .f=simulation)
-  } 
-  
-  return(data)
-}
-```
-
-Monte Carlo simulations can become quickly very demanding in terms of computing time. Parallelisation is a way of BLABLABLA
-
-(https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html)
-
-In case the user is looking to improve performance, a way of choosing a parallelised processing function of the `furrr`-package is offered. At this point we waive running an example with the parallelised version of our data generating function, since the output wouldn't look different compared to the previous example. At a later point in the paper we´ll showcase the difference in computation time for the different functions.
-
-```{r data generation with parallelisation}
-
-data_generation_parallelised <- function(simulation, grid){ #this is for use inside the function
-  
-  if(ncol(grid)==2){
-    var1 <- c(unlist(grid[,1]))
-    data <- future_map(var1, simulation,.options = furrr_options(seed = TRUE))
-    
-  }
-  
-  if(ncol(grid)==3){
-    var1 <- c(unlist(grid[,1]))
-    var2 <- c(unlist(grid[,2]))
-    data <- future_map2(var1, var2, simulation,.options = furrr_options(seed = TRUE))
+    if(cores>1){
+      data <- future_map2(var1, var2, simulation,.options = furrr_options(seed = TRUE))
+    } else{
+      data <- map2(var1, var2, simulation)
+    }
   } 
   
   if(ncol(grid)==4){ #need to implement more than 3?!
@@ -202,23 +181,26 @@ data_generation_parallelised <- function(simulation, grid){ #this is for use ins
     var2 <- c(unlist(grid[,2]))
     var3 <- c(unlist(grid[,3]))
     list1 <- list(var1,var2,var3)
-    data <- future_pmap(list1, .f=simulation,.options = furrr_options(seed = TRUE))
-  } 
+    if(cores>1){
+      data <- future_pmap(list1, .f=simulation,.options = furrr_options(seed = TRUE))
+    }else{
+      data <- pmap(list1, .f=simulation)
+    }
+  }
   
   return(data)
 }
-
-
 ```
 
 
 
-Following, we´d like to demonstrate the unparallelised function with a simple example using the normal distribution (`rpois()`)  as the underlying data generating process:
+
+Following, we´d like to demonstrate the data genaration function with a simple example using the normal distribution (`rpois()`)  as the underlying data generating process. At this point we waive running an example without parallel process of our data generating function, since the output wouldn't look different compared to the previous example. At a later point in the paper we´ll showcase the difference in computation time for the different functions.
 
 
 `data_generation()` Example:
 ```{r test data_generation()}
-
+cores <- 1
 #param_list1 <- list(c("n", 10, 20, 10))
 
 param_list2 <- list(c("n", 10, 20, 10)
@@ -419,36 +401,242 @@ create_array_function(comb=comb1, parameters=param_list3x, nrep=3)
 We see, that an array with the right dimensions is created.
 
 
+## Average function
+
+```{r}
+
+average_function <- function(grid_for_avg, summary, nrep){
+  grid_for_avg <- grid_for_avg[-ncol(grid_for_avg)] #remove column for reps
+  n_rows <- nrow(grid_for_avg)
+  n_col <- ncol(grid_for_avg)
+  
+  for(i in 1:n_rows){
+    start <- 1 + (i-1)*nrep
+    end <- i*nrep
+    grid_for_avg[i, n_col+1] <- mean(summary[start:end, ])
+  }
+  
+  grid_plus_mc <- data.frame(grid_for_avg)
+  
+  colnames(grid_plus_mc)[n_col+1] <- "avg"
+  
+  return(grid_plus_mc)
+  
+}
+```
 
 
 
+## Output Function
+
+ Goal is to create a function, that takes the Monte Carlo simulation results and all parameter input
+and converts it onto output format that prints nicely into the console. `Output_function` 
+created for this purpose to store simulation results. `array_1`,`average_over_reps`,`parameters`,`cores`,`simulation`,
+`nrep`,`cpt`  are used as input parameters in the `output_function`. Except  the parameter `cpt`, other parameters are defined  and explanied before this section. `cpt` parameters will be  explanied in the section `Main Function`. It is basically saving the execution time of the simulation. 
+Lets go to  the each code line and explain them briefly.
+
+ Firstly, `out` object is created to store simulation results, averaged results and  summary of the result in list `list()` format. The name `Eco` implemented as a class of the list `out`, since the spesific class had to implemented for the simulation results as a part of the task in visualisation.
+ The results from `array_1` saved here as `out$results` also result for `average_over_reps` saved as `out$average`. Next, same class name is assigned to to `out$results` and `out$average`  also default classes of the both list objects kept as a class. The reason is to prevent the future error while using the ggplot2 methods for simulation results. Because ggplot2 methos works only some spesific classses ( data.frame ,etc.). After that the reporting part is created as a report of simulation result by using `cat()` function. At the end function returned to the object `out`. 
+
+```{r echo=TRUE}
+output_function <- function(array_1,average_over_reps,parameters,cores,simulation,
+                            nrep,cpt){
+  
+  out <- list()#Create a emptly list to store simulation result and average result.
+  class(out) <- "Eco"  #We have to implement a class. I just gave a random name. "Eco"
+  out$results <- array_1 # Saved the simulation result
+  out$average <- average_over_reps # And this is the result from average function. All the result collected in the list "out"
+  #Because output_function will return the list "out".
+  
+  #To us ggplot function Alex has created a average function that takes average of the simulation results.
+  class(out$average) <- c("Eco",class(out$average))#Again, name the class of the average result
+  class(out$results) <- c("Eco",class(out$results))#Also same for the simulation result.
+  
+  if(cores>1){
+    parallel = "Multisession"
+  } else {       
+    parallel = "Sequential"
+  }
+  #This part is just a report. It will be shown at the end of the simulation result.
+  text <-  cat("\n",
+           "Repetition(nrep)      : ",nrep,"\n\n",
+           "Parallelization Type  : ",parallel,"\n\n",
+           "Number of Cores Used in  Parallelization : ",cores," out of",detectCores(),"\n\n",
+           "Input Parameters : ",paste(parameters),"\n\n",
+           "Simulation Length :",length(array_1),"\n",
+           "Minumum :",min(array_1),"\n",
+           "Maximum :",max(array_1),"\n",
+           "Mean    :", mean(array_1),"\n",
+           "Median  :",median(array_1),"\n\n",
+           "Execution Time of Monte Carlo Simulation",as.numeric(cpt),"secs \n\n",
+           "Name of The Class :",class(out))
+  
+  return(out)
+}
+
+```
+Output of  `output_function` will be as same as the `main_function`.That's no further example is needed here. It will be covered in the next topic called "Main function".
 
 
 
+## Main Function
+
+The "main_function" is a function that consist of the helper functions that created above. Here, all the helper functions are included and additionaly some commands and functions added to improve the simulation results. Here only additional arguments will be explained, since the helper functions are explained before.
+
+First, `if()&else()` commands are added to check the number of cores are used in the main function is bigger than maximum number of the cores or not.
+Logically the computer cannot use the cores that doesn't exist. `max.cores` is a numeric object that stores the maximum number of the cores in the CPU.
+By using the function `detectCores()` from  "parallel" packeage ,maximum number of the cores are stored in `max.cores`. The next is to check if the seed is provided by user or not. If the seed is not provided by the user , the function `sample.int()`generates a random number and uses it as a seed for reproducibility of the simulation. After the function `set.seed()` , `Sys.time()`function is implemented to check execution time of the simulation. `startTime` saves the startind time of the simulation ans endTime saves the ending time of the simulation. At the end , `startTime`is subtracted from `endtTime` and `cpt`is created to store execution time. As explained before ,cpt is used in `output_function` as a part of summary. Lastly, `plan()` function is used for the parallelisation to run the methods "sequential" or "multisession". "Sequential" runs the simulation with 1 core which means no parallelisation is used and  "Multisession" runs the simulation in parallel by using the number of cores that provided by user. For more details please  run the command `?future::plan` in RStudio.
 
 
+```{r}
+main_function <-  function(parameters #list of parameters
+                           , nrep #number of repetitions
+                           , simulation #data genereation
+                           , sum_fun #summary statistics
+                           ,seed = NULL#Reproducibility
+                           ,cores=NULL){
+ 
+    
+  #Number of cores
+  max.cores <- detectCores()
+  if(cores>max.cores){
+    stop("Number of Cores cannot be bigger than total number of cores")
+  }
+  if(!is.null(seed)) {#Reproducibility
+    set.seed(seed)}#If seed provided then set.seed takes the number
+  else {
+    warning("No seed provided!", call. = FALSE)
+    seed <- sample.int(10000, 1)#if its not provided then we generate random seed
+    set.seed(seed)
+    message("Random seed = ", seed, "\n")} 
+  
+  
+  startTime <- Sys.time()#Starting time 
+  
+  
+  
+  grid <- create_grid(parameters, nrep) #Step 1: create grid
+  
+  if(cores > 1){
+    plan(multisession,workers = cores)
+  } else{
+    plan(sequential)
+  }
+  suppressMessages(raw_data <- data_generation(simulation, grid))
+  
+  summary <- summary_function(sum_fun, data_input=raw_data) #Step 3: Summary statistics
+  
+  average_over_reps <- average_function(grid_for_avg=create_grid(parameters, 1), summary, nrep)
+  
+  comb <- cbind(grid, summary) #Step 4: Combine resuluts with parameters
+  
+  array_1 <- create_array_function(comb, parameters, nrep) #Step 5: Create array
+  
+  endTime <- Sys.time()#Endtime
+  
+  cpt <- endTime - startTime#Execution time
+  
+  summary_1 <- output_function(array_1,average_over_reps,parameters,cores,simulation,
+                           nrep,cpt)
+  
+return(summary_1)
+}
+
+```
 
 
+Lets test the main function by using `rnorm` Monter Carlo simulation.
+```{r, Testing main function}
+param_list3x <- list(c("n", 10, 100, 10)
+                     ,c("mu", 0, 10, 1)
+                     ,c("sd", 0, 5, 1))
 
+test_me <- main_function(parameters=param_list3x
+              , nrep = 5
+              , simulation = rnorm
+              , sum_fun="mean"
+              ,seed=123 
+              ,cores=1)
 
+```
+Here there are simulation results, average of simulation result and a summary about simulation. Now, lets check the `ggplot2` methods for this simulation results. `out$average` is created  for visualisation purpose since working with arrays sometimes are trouble.`Ggplot2` methods can be used without any problem by taking average of the simulation.
 
+Lets try it.
+```{r,ggplot2}
+ggplot(test_me$average,aes(x=avg,y=n))+geom_line()
 
+```
+Also with `facet_grid()` function.
+```{r,facet}
+ggplot(test_me$average,aes(x=avg))+facet_grid(n~.)+geom_density()
 
-
-
-
-
-
-
-
-
-
-# Monte Carlo Simulation Funcion
-
-
-
+```
+As proven above ,the simulation result works well with ggplot2 methods.
 
 # Examples
+As an example to Monte Carlo Simulation , `OLS` and `GLS` $beta2$ coeffients are simulated by using parallelisation and also without parallelisation to show execution time of the parallel process.
+```{r,ols-gls}
+ols_f <- function(n,mu,sd){
+  e <- rnorm(n,mu,sd)
+  x <- runif(n)
+  y <- 0.5*x + e
+  ols.hat <- t(x) %*% y / t(x)%*%x
+  return("ols"=ols.hat)}
+
+gls_f <- function(n,mu,sd){
+  e <- rnorm(n,mu,sd)
+  x <- runif(n)
+  y <- 0.5*x + e
+  v.inv <- diag(1/(1:n))
+  c <- chol(v.inv)
+  cy <- c %*% y
+  cx <- c %*% x
+  gls_hat <- t(cx) %*% cy / t(cx)%*%cx
+  return("gls"=gls_hat)
+  
+  param_list <- list(c("n",100,1000,100),c("mu",0,1,0.25),c("sd",1,2,.5))
+}
+```
+As seen as above, simple `OLS` and `GLS` functions are defined to find $beta2$ coefficients and also parameter list defined. Here, the execution time of the  `GLS` function would be much more longer than `OLS` function. That's why parallelisation is used for `GLS`function which is more demanding because of `The Cholesky Decomposition`.
+
+Lets run the simulation for `OLS` function first.
+```{r}
+ols <- main_function(parameters = param_list,nrep=5,simulation = ols_f,sum_fun="mean",seed=123,cores=1)
+ols
+```
+
+Now lets run it for `GLS` function with parallelisation and check the execution time.On MacBook Air with 8 cores total execution time is 16.84 seconds.
+```{r}
+gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=8)
+gls
+``
+Now without parallelisation (with 1 core)
+
+```{r}
+gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=1)
+gls
+``
+As seen on the summary part, total execution time is 36.35 seconds which also proves that parallel process works well. 
+
+Now, lets use the simulation results and visualise them by using ggplot2 methods.Here, additionaly `MSE`(Mean Square Error) are calculated for each simulation and saved as `out$average$mse`.
+
+```{r}
+gls$average <-  gls$average %>% mutate(mse =(2-avg)^2 )
+ols$average <-  ols$average %>% mutate(mse =(2-avg)^2 )
+
+ols$average %>% ggplot(aes(x=avg,y=mu,col="OLS"))+
+  facet_grid(n~mean(mse))+geom_line()+
+ geom_line(data=gls$average,aes(x=avg,y=mu,col="GLS"))+
+  scale_color_manual(name = "Estimation", values = c("OLS" = "blue", "GLS" = "red"))
+
+```
+
+Also density graph of `MSE` for `GLS` and `OLS $beta2$ coefficients.
+```{r}
+ggplot(ols$average,aes(x=mse,col="OLS"))+facet_grid(n~.)+geom_density()+
+  geom_density(data=gls$average,aes(x=avg,col="GLS"))+
+  scale_color_manual(name = "Estimation", values = c("OLS" = "blue", "GLS" = "red"))
+```
 
 
 
