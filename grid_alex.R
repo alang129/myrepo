@@ -95,14 +95,21 @@ data_generation <- function(simulation, grid){ #this is for use inside the funct
   
   if(ncol(grid)==2){
     var1 <- c(unlist(grid[,1]))
+if(cores>1){
     data <- future_map(var1, simulation,.options = furrr_options(seed = TRUE))
-    
+    }else{
+    data <- map(var1, simulation)
+    }
   }
   
   if(ncol(grid)==3){
     var1 <- c(unlist(grid[,1]))
     var2 <- c(unlist(grid[,2]))
+if(cores>1){
     data <- future_map2(var1, var2, simulation,.options = furrr_options(seed = TRUE))
+    } else{
+ data <- map2(var1, var2, simulation)
+   }
   } 
   
   if(ncol(grid)==4){ #need to implement more than 3?!
@@ -110,8 +117,12 @@ data_generation <- function(simulation, grid){ #this is for use inside the funct
     var2 <- c(unlist(grid[,2]))
     var3 <- c(unlist(grid[,3]))
     list1 <- list(var1,var2,var3)
+if(cores>1){
     data <- future_pmap(list1, .f=simulation,.options = furrr_options(seed = TRUE))
-  } 
+  }else{
+    data <- pmap(list1, .f=simulation)
+   }
+}
   
   return(data)
 }
