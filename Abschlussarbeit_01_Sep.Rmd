@@ -71,8 +71,11 @@ At the end of each section we provide a minimal working example, that illustrate
 
 ## Function for creating grid  
 
-`create_grid` is the function hat creates a parameter grid with all permutations of the given parameters. This is necessary to try all possible combinations to find the optimal parameters. This function tunes parameters to improve performance of Monte Carlo Simulation function.
+In order to efficiently run a Monte Carlo simulation, we first need to specify for which set of parameters we want to run the simulation process. In case more than one variable is defined, it reasonable to create a parameter grid for each different combination of parameters.
 
+
+                      
+  
 ```{r create grid}
 create_grid <- function(parameters, nrep){
   input <- parameters
@@ -101,53 +104,59 @@ create_grid <- function(parameters, nrep){
 }
 ```
 
+`create_grid` is the function hat creates a parameter grid with all permutations of the given parameters. The user has to input the parameters as a list, thats specified in the following way: 
+
+
+
+`parameter_list` <- `list(c("variable name 1", from, to, by)`
+                      `,c("variable name 2", from, to, by)`
+                      `,c("variable name 3", from, to, by)`
+                      `,c("variable name 4", from, to, by))`
+
+                      
+The function works with a minimum of 1 and a maximum of 4 variables. The structure of the remaining arguments is kept similar to the way the way R´s build in function`seq()` is specified: The first argument after the variable name defines the start of the sequence, the second one the end and the last one the steps, by which each variable specified for the parameter grid.
+
+It would be fairly easy to adapt this helper function for more parameters, but it is assumed, that a parameter grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the infromation of the input parameter list and creates a parameter grid with 
+`tidyr::expand_grid()`. The function also makes sure that the columns are named after the correct variable and also creates a different row for each number repetition, that the user specified in the second argument of `create_grid()`, namely `nrep`.
+
+Following is a demonstration of how the input and output of this function looks like:
+                      
+
 `create_grid()` Example:
 ```{r testing create_grid}
 
-#One parameter (works)
-param_list1 <- list(c("n", 10, 20, 10))
-tail(create_grid(param_list1, nrep=10), 2)
-tail(create_grid(param_list1, nrep=1), 2)
-
-#two parameter (works)
-param_list2 <- list(c("n", 10, 20, 10)
-                    ,c("mu", 0, 1, 0.25))
-tail(create_grid(param_list1, nrep=10), 2)
-
-#three parameters (works)
-param_list3 <- list(c("n", 10, 20, 10)
-                    ,c("mu", 0, 1, 0.25)
-                    ,c("sd", 0, 0.3, 0.1))
-tail(create_grid(param_list3, nrep=10), 2)
-
-
-
-#four parameters (works)
-param_list4 <- list(c("n", 10, 20, 10)
-                    ,c("mu", 0, 1, 0.25)
+#four parameters 
+param_list0 <- list(c("n", 10, 20, 10)
+                    ,c("mu", 0, 0.5, 0.25)
                     ,c("sd", 0, 0.3, 0.1)
                     ,c("gender", 0, 1, 1))
 
-tail(create_grid(param_list4, nrep=5),2)
+head(create_grid(param_list0, nrep=3), n=20)
 
-grid_4 <- create_grid(param_list4, nrep=50)
-tail(grid_4,2)
 ```
+
+
 
 ## Data generation function
 
-`data_generation` allows users to flexibly change data while keeping the summary statistics and to choose the number of inputs by using different `purrr` mapping functions: map, map2, and pmap for a input, two inputs, and p inputs respectively.
+Our second helper function called `data_generation()` uses the parameter grid (`grid`) and a user defined function for data generation (specified as input named `simulation`), f.e. `rnorm()`, `runif()` or `rpois()` to create data under the exact parameters specified in the grid. The draw of data points for each row of the parameter grid gets stored as a seperate element in a list. 
 
-In the function below, `simulation` means a distribution of data, and `grid` is a list of parameters. 
+Depenend on how many parameters were specified by the user, different functions of the `purrr`-package are are used, to run the specified function over the parameter grid.
 
-```{r data generate}
+- `map()` is used for one parameter
+- `map2()` is used for two parameters
+- `pmap()` is used for three or more parameters
+
+
+
+
+```{r data generation without parallelisation}
 data_generation <- function(simulation, grid){ 
-  #this is for use inside the function
+
   
   if(ncol(grid)==2){
     var1 <- c(unlist(grid[,1]))
     data <- map(var1, simulation) 
-    #different purrr-functions depending on how many input variables we use
   }
   
   if(ncol(grid)==3){
@@ -168,13 +177,64 @@ data_generation <- function(simulation, grid){
 }
 ```
 
+
+
+Monte Carlo simulations can become quickly very demanding in terms of computing time. Parallelisation is a way of blablabla
+
+(https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html)
+
+In case the user is looking to improve performance, a way of choosing a parallelised processing function of the `furrr`-package is offered. At this point we waive running an example with the parallelised version of our data generating function, since the output wouldnt look different compared to the previous example.
+
+```{r data generation with parallelisation}
+
+data_generation_parallelised <- function(simulation, grid){ #this is for use inside the function
+  
+  if(ncol(grid)==2){
+    var1 <- c(unlist(grid[,1]))
+    data <- future_map(var1, simulation,.options = furrr_options(seed = TRUE))
+    
+  }
+  
+  if(ncol(grid)==3){
+    var1 <- c(unlist(grid[,1]))
+    var2 <- c(unlist(grid[,2]))
+    data <- future_map2(var1, var2, simulation,.options = furrr_options(seed = TRUE))
+  } 
+  
+  if(ncol(grid)==4){ #need to implement more than 3?!
+    var1 <- c(unlist(grid[,1]))
+    var2 <- c(unlist(grid[,2]))
+    var3 <- c(unlist(grid[,3]))
+    list1 <- list(var1,var2,var3)
+    data <- future_pmap(list1, .f=simulation,.options = furrr_options(seed = TRUE))
+  } 
+  
+  return(data)
+}
+
+
+```
+
+
+
+
+
+
 `data_generation()` Example:
 ```{r test gb}
-grid1 <- create_grid(param_list1, nrep=3)
-tail(data_generation(simulation=rnorm, grid=grid1),1)
+
+param_list1 <- list(c("n", 10, 20, 10))
+
+param_list2 <- list(c("n", 10, 20, 10)
+                  ,c("mu", 0.5, 1, 0.25))
+#create_grid(param_list1, nrep=10)
+#create_grid(param_list1, nrep=1)
+
+'grid1 <- create_grid(param_list1, nrep=3)
+tail(data_generation(simulation=rnorm, grid=grid1),1)'
 
 grid2 <- create_grid(param_list2, nrep=3)
-tail(data_generation(simulation=rnorm, grid=grid2),1)
+data_generation(simulation=rnorm, grid=grid2)
  
 ```
 
@@ -225,6 +285,10 @@ summary_function <- function(sum_fun, data_input){
 
 `summary_function` Example:
 ```{r summary test}
+param_list3 <- list(c("n", 10, 20, 10)
+                    ,c("mu", 0, 1, 0.25)
+                    ,c("sd", 0, 0.3, 0.1))
+
 grid_test <- create_grid(param_list3, nrep=3)
 test_data <- data_generation(simulation=rnorm, grid=grid_test)
 tail(summary_function(sum_fun=list("mean"), data_input=test_data),2)

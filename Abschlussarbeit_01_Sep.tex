@@ -314,11 +314,10 @@ functions}\label{preprocess-helper-functions}}
 \subsection{Function for creating
 grid}\label{function-for-creating-grid}}
 
-\texttt{create\_grid} is the function hat creates a parameter grid with
-all permutations of the given parameters. This is necessary to try all
-possible combinations to find the optimal parameters. This function
-tunes parameters to improve performance of Monte Carlo Simulation
-function.
+In order to efficiently run a Monte Carlo simulation, we first need to
+specify for which set of parameters we want to run the simulation
+process. In case more than one variable is defined, it reasonable to
+create a parameter grid for each different combination of parameters.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -350,106 +349,74 @@ function.
 \end{Highlighting}
 \end{Shaded}
 
+\texttt{create\_grid} is the function hat creates a parameter grid with
+all permutations of the given parameters. The user has to input the
+parameters as a list, thats specified in the following way:
+
+\texttt{parameter\_list} \textless-
+\texttt{list(c("variable\ name\ 1",\ from,\ to,\ by)}
+\texttt{,c("variable\ name\ 2",\ from,\ to,\ by)}
+\texttt{,c("variable\ name\ 3",\ from,\ to,\ by)}
+\texttt{,c("variable\ name\ 4",\ from,\ to,\ by))}
+
+The function works with a minimum of 1 and a maximum of 4 variables. The
+structure of the remaining arguments is kept similar to the way the way
+R´s build in function\texttt{seq()} is specified: The first argument
+after the variable name defines the start of the sequence, the second
+one the end and the last one the steps, by which each variable specified
+for the parameter grid.
+
+It would be fairly easy to adapt this helper function for more
+parameters, but it is assumed, that a parameter grid with up to 4
+parameters offers enough complexity for the simulation. The function
+basically takes the infromation of the input parameter list and creates
+a parameter grid with \texttt{tidyr::expand\_grid()}. The function also
+makes sure that the columns are named after the correct variable and
+also creates a different row for each number repetition, that the user
+specified in the second argument of \texttt{create\_grid()}, namely
+\texttt{nrep}.
+
+Following is a demonstration of how the input and output of this
+function looks like:
+
 \texttt{create\_grid()} Example:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#One parameter (works)}
-\NormalTok{param\_list1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{))}
-\FunctionTok{tail}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list1, }\AttributeTok{nrep=}\DecValTok{10}\NormalTok{), }\DecValTok{2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 2 x 2
-##       n   rep
-##   <dbl> <int>
-## 1    20     9
-## 2    20    10
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{tail}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list1, }\AttributeTok{nrep=}\DecValTok{1}\NormalTok{), }\DecValTok{2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 2 x 2
-##       n   rep
-##   <dbl> <int>
-## 1    10     1
-## 2    20     1
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#two parameter (works)}
-\NormalTok{param\_list2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
-\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"mu"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.25}\NormalTok{))}
-\FunctionTok{tail}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list1, }\AttributeTok{nrep=}\DecValTok{10}\NormalTok{), }\DecValTok{2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 2 x 2
-##       n   rep
-##   <dbl> <int>
-## 1    20     9
-## 2    20    10
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#three parameters (works)}
-\NormalTok{param\_list3 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
-\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"mu"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.25}\NormalTok{)}
-\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"sd"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.1}\NormalTok{))}
-\FunctionTok{tail}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list3, }\AttributeTok{nrep=}\DecValTok{10}\NormalTok{), }\DecValTok{2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 2 x 4
-##       n    mu    sd   rep
-##   <dbl> <dbl> <dbl> <int>
-## 1    20     1   0.3     9
-## 2    20     1   0.3    10
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#four parameters (works)}
-\NormalTok{param\_list4 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
-\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"mu"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.25}\NormalTok{)}
+\CommentTok{\#four parameters }
+\NormalTok{param\_list0 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"mu"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.25}\NormalTok{)}
 \NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"sd"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.1}\NormalTok{)}
 \NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"gender"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
 
-\FunctionTok{tail}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list4, }\AttributeTok{nrep=}\DecValTok{5}\NormalTok{),}\DecValTok{2}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(}\FunctionTok{create\_grid}\NormalTok{(param\_list0, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{), }\AttributeTok{n=}\DecValTok{20}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## # A tibble: 2 x 5
-##       n    mu    sd gender   rep
-##   <dbl> <dbl> <dbl>  <dbl> <int>
-## 1    20     1   0.3      1     4
-## 2    20     1   0.3      1     5
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{grid\_4 }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list4, }\AttributeTok{nrep=}\DecValTok{50}\NormalTok{)}
-\FunctionTok{tail}\NormalTok{(grid\_4,}\DecValTok{2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 2 x 5
-##       n    mu    sd gender   rep
-##   <dbl> <dbl> <dbl>  <dbl> <int>
-## 1    20     1   0.3      1    49
-## 2    20     1   0.3      1    50
+## # A tibble: 20 x 5
+##        n    mu    sd gender   rep
+##    <dbl> <dbl> <dbl>  <dbl> <int>
+##  1    10     0   0        0     1
+##  2    10     0   0        0     2
+##  3    10     0   0        0     3
+##  4    10     0   0        1     1
+##  5    10     0   0        1     2
+##  6    10     0   0        1     3
+##  7    10     0   0.1      0     1
+##  8    10     0   0.1      0     2
+##  9    10     0   0.1      0     3
+## 10    10     0   0.1      1     1
+## 11    10     0   0.1      1     2
+## 12    10     0   0.1      1     3
+## 13    10     0   0.2      0     1
+## 14    10     0   0.2      0     2
+## 15    10     0   0.2      0     3
+## 16    10     0   0.2      1     1
+## 17    10     0   0.2      1     2
+## 18    10     0   0.2      1     3
+## 19    10     0   0.3      0     1
+## 20    10     0   0.3      0     2
 \end{verbatim}
 
 \hypertarget{data-generation-function}{%
@@ -497,32 +464,119 @@ and \texttt{grid} is a list of parameters.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{grid1 }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list1, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{)}
-\FunctionTok{tail}\NormalTok{(}\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{rnorm, }\AttributeTok{grid=}\NormalTok{grid1),}\DecValTok{1}\NormalTok{)}
+\NormalTok{param\_list1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{))}
+
+\NormalTok{param\_list2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{                  ,}\FunctionTok{c}\NormalTok{(}\StringTok{"mu"}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.25}\NormalTok{))}
+\CommentTok{\#create\_grid(param\_list1, nrep=10)}
+\CommentTok{\#create\_grid(param\_list1, nrep=1)}
+
+\StringTok{\textquotesingle{}grid1 \textless{}{-} create\_grid(param\_list1, nrep=3)}
+\StringTok{tail(data\_generation(simulation=rnorm, grid=grid1),1)\textquotesingle{}}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## $n6
-##  [1] -0.491031166 -2.309168876  1.005738524 -0.709200763 -0.688008616
-##  [6]  1.025571370 -0.284773007 -1.220717712  0.181303480 -0.138891362
-## [11]  0.005764186  0.385280401 -0.370660032  0.644376549 -0.220486562
-## [16]  0.331781964  1.096839013  0.435181491 -0.325931586  1.148807618
+## [1] "grid1 <- create_grid(param_list1, nrep=3)\ntail(data_generation(simulation=rnorm, grid=grid1),1)"
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{grid2 }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list2, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{)}
-\FunctionTok{tail}\NormalTok{(}\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{rnorm, }\AttributeTok{grid=}\NormalTok{grid2),}\DecValTok{1}\NormalTok{)}
+\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{rnorm, }\AttributeTok{grid=}\NormalTok{grid2)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## $n30
-##  [1]  1.9672673  0.8917199  0.3015793  0.7240548  2.1146485  1.5500440
-##  [7]  2.2366758  1.1390979  1.4102751  0.4415431  1.6053707  0.4936665
-## [13] -0.4205655  1.1279930  2.9458512  1.8009143  2.1652534  1.3588557
-## [19]  0.3914428  0.7977591
+## $n1
+##  [1] -0.06047565  0.26982251  2.05870831  0.57050839  0.62928774  2.21506499
+##  [7]  0.96091621 -0.76506123 -0.18685285  0.05433803
+## 
+## $n2
+##  [1]  1.72408180  0.85981383  0.90077145  0.61068272 -0.05584113  2.28691314
+##  [7]  0.99785048 -1.46661716  1.20135590  0.02720859
+## 
+## $n3
+##  [1] -0.5678237  0.2820251 -0.5260044 -0.2288912 -0.1250393 -1.1866933
+##  [7]  1.3377870  0.6533731 -0.6381369  1.7538149
+## 
+## $n4
+##  [1] 1.1764642 0.4549285 1.6451257 1.6281335 1.5715811 1.4386403 1.3039177
+##  [8] 0.6880883 0.4440373 0.3695290
+## 
+## $n5
+##  [1]  0.05529302  0.54208272 -0.51539635  2.91895597  1.95796200 -0.37310858
+##  [7]  0.34711516  0.28334465  1.52996512  0.66663093
+## 
+## $n6
+##  [1]  1.0033185  0.7214532  0.7071295  2.1186023  0.5242290  2.2664706
+##  [7] -0.7987528  1.3346137  0.8738542  0.9659416
+## 
+## $n7
+##  [1]  1.37963948  0.49767655  0.66679262 -0.01857538 -0.07179123  1.30352864
+##  [7]  1.44820978  1.05300423  1.92226747  3.05008469
+## 
+## $n8
+##  [1]  0.5089688 -1.3091689  2.0057385  0.2907992  0.3119914  2.0255714
+##  [7]  0.7152270 -0.2207177  1.1813035  0.8611086
+## 
+## $n9
+##  [1] 1.0057642 1.3852804 0.6293400 1.6443765 0.7795134 1.3317820 2.0968390
+##  [8] 1.4351815 0.6740684 2.1488076
+## 
+## $n10
+##  [1]  1.4935039  1.0483970  0.7387317 -0.1279061  1.8606524 -0.1002596
+##  [7]  2.6873330  2.0326106  0.2642996 -0.5264209 -0.2104066  0.7568837
+## [13]  0.2533081  0.1524574 -0.4516186  0.4549723 -0.2849045 -1.1679419
+## [19]  0.1197735  1.4189966
+## 
+## $n11
+##  [1] -0.075346963  1.107964322 -1.117882708  0.444438034  1.019407204
+##  [6]  0.801153362  0.605676194 -0.140706008 -0.349704346 -0.524128791
+## [11]  0.617646597 -0.447474614  0.009442556  0.243907808  2.343862005
+## [16] -0.151949902  0.735386572  0.577960850 -0.461856634  0.428691914
+## 
+## $n12
+##  [1]  1.94455086  0.95150405  0.54123292  0.07750317 -1.55324722  1.63133721
+##  [7] -0.96064007  1.23994751  2.40910357 -0.94389316  1.20178434  0.23780251
+## [13] -1.07214416 -1.01466765 -1.10153617 -0.03090652 -0.96175558  1.18791677
+## [19]  2.60010894 -0.78703048
+## 
+## $n13
+##  [1]  1.5377388  1.5190422  1.0822026 -0.2583766  0.6305474  0.4696047
+##  [7]  1.3129895  0.3775612  1.7269734  0.3754191  1.8027115 -0.2991770
+## [13] -0.5101552  3.9910399  0.3331424  1.0482276  1.3865697  0.2662194
+## [19]  1.2668620  1.1189645
+## 
+## $n14
+##  [1]  0.534619492  0.815293034  0.715932746  2.878451899  0.008663904
+##  [6] -0.345996267  0.787788399  1.060480749  1.186523479  0.291634667
+## [11] -0.313326134  2.013185176  0.400349612 -0.115512863  0.513720431
+## [16]  0.552824106  1.859920290  0.834737292  1.504053785  0.250707983
+## 
+## $n15
+##  [1]  0.96444531  0.42531409  0.84458353 -0.14536336 -0.56080153  2.74721338
+##  [7]  1.35070882 -0.50127136  0.13883408 -0.43548008  2.94881035  2.06241298
+## [13]  0.48485494  1.29319406  0.33566005  0.27375311 -0.03860284  0.15538273
+## [19]  2.40090747  0.69597187
+## 
+## $n16
+##  [1]  1.11924524  1.24368743  2.23247588  0.48393617  0.00749285  2.67569693
+##  [7]  0.55883678  0.27693403 -0.23627312 -0.28471572  0.42602652  1.61798582
+## [13]  2.10984814  1.70758835  0.63634270  1.05974994  0.29540354  0.28278184
+## [19]  1.88465050 -0.01559258
+## 
+## $n17
+##  [1]  2.9552940  0.9096804  1.2145388  0.2614723  0.4256113 -0.3170161
+##  [7]  0.8170746  1.4189824  1.3243043  0.2184635  0.2113780  0.4978013
+## [13]  2.4960607 -0.1373036  0.8209484  2.9023618  0.8990251 -0.3598407
+## [19]  0.3352306  1.4854600
+## 
+## $n18
+##  [1]  0.6243971  0.4381236  0.6560828  1.0904966  2.5985088  0.9114349
+##  [7]  2.0807995  1.6307541  0.8863601 -0.5329020  0.4788827  0.5101295
+## [13]  1.0471544  2.3001987  3.2930790  2.5475811  0.8668490 -0.7565274
+## [19]  0.6112201  1.0892072
 \end{verbatim}
 
 Users can apply many distributions such as normal, uniform, poisson
@@ -543,11 +597,11 @@ distributions by putting existing functions in r as \texttt{simulation}.
 
 \begin{verbatim}
 ## $n9
-##  [1] 0.004638151 0.277560080 0.325203143 0.588706277 0.249684701 0.043117281
-##  [7] 0.110678788 0.703753812 0.939021239 0.311169018 0.078492930 0.321744091
-## [13] 0.624905537 0.440241850 0.801345301 0.279283805 0.570713193 0.042128012
-## [19] 0.190717455 0.727086471 0.826690050 0.510721075 0.567726166 0.001155820
-## [25] 0.143778103 0.865967083 0.082561061 0.244570682 0.981543157 0.577581279
+##  [1] 0.039780637 0.634800510 0.539560914 0.140103550 0.283711777 0.583030595
+##  [7] 0.165025892 0.096301111 0.428613091 0.355761566 0.844933540 0.260132474
+## [13] 0.023144492 0.862399540 0.334587961 0.631788872 0.546426259 0.376444493
+## [19] 0.185873015 0.428940591 0.630773599 0.520842351 0.659621337 0.729360931
+## [25] 0.486822873 0.384456616 0.006833509 0.003684228 0.994936440 0.107886880
 \end{verbatim}
 
 \begin{Shaded}
@@ -578,8 +632,8 @@ distributions by putting existing functions in r as \texttt{simulation}.
 
 \begin{verbatim}
 ## $n99
-##  [1]  8  8  8 12  7  6 10  9  5  8 19 12  7 12 13  7  3  9  7 15  6 13 11 15  8
-## [26] 13  9  7  9  5
+##  [1] 14 13  9  9  8 14  8 10  6 13 12  6 12  9  9 12 13 21 11  6  9 14  9  8  8
+## [26]  9  8 10  8  9
 \end{verbatim}
 
 \hypertarget{summary-function}{%
@@ -613,6 +667,10 @@ choose.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{param\_list3 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"mu"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.25}\NormalTok{)}
+\NormalTok{                    ,}\FunctionTok{c}\NormalTok{(}\StringTok{"sd"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.1}\NormalTok{))}
+
 \NormalTok{grid\_test }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list3, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{)}
 \NormalTok{test\_data }\OtherTok{\textless{}{-}} \FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{rnorm, }\AttributeTok{grid=}\NormalTok{grid\_test)}
 \FunctionTok{tail}\NormalTok{(}\FunctionTok{summary\_function}\NormalTok{(}\AttributeTok{sum\_fun=}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{), }\AttributeTok{data\_input=}\NormalTok{test\_data),}\DecValTok{2}\NormalTok{)}
@@ -620,9 +678,9 @@ choose.
 \end{Shaded}
 
 \begin{verbatim}
-##           mean
-## [119,] 1.03361
-## [120,] 1.01786
+##             mean
+## [119,] 1.0418098
+## [120,] 0.9500136
 \end{verbatim}
 
 \hypertarget{summary-array-funcation}{%
@@ -736,9 +794,9 @@ grid.
 \end{Shaded}
 
 \begin{verbatim}
-##    n mu sd rep       mean
-## 1 10  0  0   1  0.0000000
-## 2 10  0  1   1 -0.6031898
+##    n mu sd rep      mean
+## 1 10  0  0   1 0.0000000
+## 2 10  0  1   1 0.5813486
 \end{verbatim}
 
 \begin{Shaded}
@@ -756,9 +814,9 @@ grid.
 ## 
 ## , , sd=1, rep=1
 ## 
-##            mu=0      mu=1     mu=2     mu=3     mu=4     mu=5
-## n=10 -0.6031898 1.1547493 1.768505 2.799209 4.297611 5.240045
-## n=20 -0.1950611 0.7933902 1.609615 2.815089 4.066077 4.798390
+##             mu=0      mu=1     mu=2     mu=3     mu=4     mu=5
+## n=10  0.58134864 0.8653182 2.625167 2.869693 4.061384 5.575393
+## n=20 -0.01528894 0.5086328 1.861943 2.822552 4.252306 4.919115
 \end{verbatim}
 
 \hypertarget{monte-carlo-simulation-funcion}{%
@@ -790,6 +848,12 @@ it with the R community. But since the \texttt{MonteCarlo()} function of
 the \texttt{vigniette} package already provides a well working
 alternative to our project besides some minor differences, there is
 currently no need in doing that.
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\hypertarget{contributions}{%
+\section{Contributions}\label{contributions}}
 
 \pagebreak
 \renewcommand*{\mkbibnamefamily}[1]{\textbf{#1}}

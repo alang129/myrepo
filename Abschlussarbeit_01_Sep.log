@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.3)  3 SEP 2022 19:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.3)  5 SEP 2022 20:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -814,7 +814,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 171.
 (c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<Includes/duelogo_en.png, id=40, 230.8625pt x 89.33376pt>
+<Includes/duelogo_en.png, id=48, 230.8625pt x 89.33376pt>
 File: Includes/duelogo_en.png Graphic file (type png)
 <use Includes/duelogo_en.png>
 Package pdftex.def Info: Includes/duelogo_en.png  used on input line 175.
@@ -889,31 +889,49 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 30
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 325.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 324.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.351 \end{Shaded}
-                   [1] [2] [3] [4] [5]
-Overfull \hbox (16.15204pt too wide) in paragraph at lines 583--583
-[]\T1/lmtt/m/n/10.95 ##  [1]  8  8  8 12  7  6 10  9  5  8 19 12  7 12 13  7  3  9  7 15  6 13 11 15  8[] 
+l.350 \end{Shaded}
+                   [1]
+Underfull \hbox (badness 10000) in paragraph at lines 356--361
+\T1/lmtt/m/n/10.95 from, to, by) ,c("variable name 3", from, to, by) ,c("variable name 4", from,
  []
 
-[6] [7]
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 710.
+[2] [3]
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 474.
 (c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [8] [9] [10]
+)
+Overfull \hbox (148.37291pt too wide) in paragraph at lines 481--481
+[]\T1/lmtt/m/n/10.95 ## [1] "grid1 <- create_grid(param_list1, nrep=3)\ntail(data_generation(simulation=rnorm, grid=grid1),1)"[] 
+ []
 
-LaTeX Warning: Empty bibliography on input line 799.
+[4] [5] [6]
+Overfull \hbox (16.15204pt too wide) in paragraph at lines 637--637
+[]\T1/lmtt/m/n/10.95 ##  [1] 14 13  9  9  8 14  8 10  6 13 12  6 12  9  9 12 13 21 11  6  9 14  9  8  8[] 
+ []
 
-[11] (./Abschlussarbeit_01_Sep.aux)
+[7] [8]
+Underfull \vbox (badness 10000) detected at line 762
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 762
+ []
+
+[9] [10] [11] [12]
+
+LaTeX Warning: Empty bibliography on input line 863.
+
+[13] (./Abschlussarbeit_01_Sep.aux)
 
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `Abschlussarbeit_01_Sep.out' has not changed.
-(rerunfilecheck)             Checksum: 7ED0790E017B44EF43230D9D8E6C3A97;1375.
+(rerunfilecheck)             Checksum: A496D3C124D4B21DB009DF9B4CD02CC3;1578.
 
 Package biblatex Warning: Please (re)run Biber on the file:
 (biblatex)                Abschlussarbeit_01_Sep
@@ -924,18 +942,18 @@ Package logreq Info: Writing requests to 'Abschlussarbeit_01_Sep.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 20673 strings out of 477005
- 368696 string characters out of 5825127
- 1218049 words of memory out of 5000000
- 41476 multiletter control sequences out of 15000+600000
- 507429 words of font info for 58 fonts, out of 8000000 for 9000
+ 20686 strings out of 477005
+ 368846 string characters out of 5825127
+ 1223123 words of memory out of 5000000
+ 41482 multiletter control sequences out of 15000+600000
+ 507734 words of font info for 59 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,6n,70p,695b,5044s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}<c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Uni/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Abschlussarbeit_01_Sep.pdf (15 pages, 265846 bytes).
+Output written on Abschlussarbeit_01_Sep.pdf (17 pages, 271756 bytes).
 PDF statistics:
- 194 PDF objects out of 1000 (max. 8388607)
- 152 compressed objects within 2 object streams
- 36 named destinations out of 1000 (max. 500000)
- 84 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 220 PDF objects out of 1000 (max. 8388607)
+ 175 compressed objects within 2 object streams
+ 42 named destinations out of 1000 (max. 500000)
+ 100 words of extra memory for PDF output out of 10000 (max. 10000000)
 
