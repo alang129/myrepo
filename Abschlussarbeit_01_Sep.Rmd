@@ -148,8 +148,6 @@ Depenend on how many parameters were specified by the user, different functions 
 - `pmap()` is used for three or more parameters
 
 
-
-
 ```{r data generation without parallelisation}
 data_generation <- function(simulation, grid){ 
 
@@ -177,13 +175,11 @@ data_generation <- function(simulation, grid){
 }
 ```
 
-
-
-Monte Carlo simulations can become quickly very demanding in terms of computing time. Parallelisation is a way of blablabla
+Monte Carlo simulations can become quickly very demanding in terms of computing time. Parallelisation is a way of BLABLABLA
 
 (https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html)
 
-In case the user is looking to improve performance, a way of choosing a parallelised processing function of the `furrr`-package is offered. At this point we waive running an example with the parallelised version of our data generating function, since the output wouldnt look different compared to the previous example.
+In case the user is looking to improve performance, a way of choosing a parallelised processing function of the `furrr`-package is offered. At this point we waive running an example with the parallelised version of our data generating function, since the output wouldn't look different compared to the previous example. At a later point in the paper we´ll showcase the difference in computation time for the different functions.
 
 ```{r data generation with parallelisation}
 
@@ -217,28 +213,38 @@ data_generation_parallelised <- function(simulation, grid){ #this is for use ins
 
 
 
-
+Following, we´d like to demonstrate the unparallelised function with a simple example using the normal distribution (`rpois()`)  as the underlying data generating process:
 
 
 `data_generation()` Example:
-```{r test gb}
+```{r test data_generation()}
 
-param_list1 <- list(c("n", 10, 20, 10))
+#param_list1 <- list(c("n", 10, 20, 10))
 
 param_list2 <- list(c("n", 10, 20, 10)
-                  ,c("mu", 0.5, 1, 0.25))
+                  ,c("lambda", 0.5, 1, 0.5))
 #create_grid(param_list1, nrep=10)
 #create_grid(param_list1, nrep=1)
 
 'grid1 <- create_grid(param_list1, nrep=3)
 tail(data_generation(simulation=rnorm, grid=grid1),1)'
 
-grid2 <- create_grid(param_list2, nrep=3)
-data_generation(simulation=rnorm, grid=grid2)
+grid2 <- create_grid(param_list2, nrep=1)
+sim1 <- data_generation(simulation=rpois, grid=grid2)
+
+grid2
+str(sim1)
+sim1
  
 ```
 
-Users can apply many distributions such as normal, uniform, poisson distributions by putting existing functions in r as `simulation`.
+We see a list containg one variable for each row of the parameter grid, where all the generated data points are stored. For example, the last row (stored under `sim1$n4`) specified n = 10 draws from the normal distribution with $\lambda = 1$. Since we set `nrep = 1` in order to save space, the draw only happened once.
+
+The format list offers alot of flexibility, but is not very overseeable. At this point we can use the raw data to run summary statistics on, which we´ll do in the next passage.
+
+
+
+
 
 ```{r, dg application}
 # Application to Uniform distribution
@@ -262,7 +268,9 @@ tail(data_generation(simulation=rpois, grid=grid_pois),1)
 
 ## Summary function
 
-`summary_function` offers summary statistics that users can choose.
+Using the tools we showed before the user is able to generate the *raw* data from an underlying distribution of his choice. The next step is to introduce a way of applying a defined summary statistics onto that data, which we realised using the function called  `summary_function()`.
+
+This function basically just applys the user defined summary function (under the input `sum_fun`) onto the raw data using a `sapply()`-loop. The results gets stored in a nrow(grid ) x 1 dimensional matrix, which will be combined with the parameter grid in the next step, in order to correctly allocate each result to the related set of parameters.
 
 ```{r summary}
 #summary function for one input
@@ -283,20 +291,27 @@ summary_function <- function(sum_fun, data_input){
 }
 ```
 
+The example to demonstrate this function uses rnorm()-function as underlying DGB, where we specified a parameter grid over three parameters (n, $\mu$ and the standard deviation).
+
+
 `summary_function` Example:
 ```{r summary test}
 param_list3 <- list(c("n", 10, 20, 10)
-                    ,c("mu", 0, 1, 0.25)
-                    ,c("sd", 0, 0.3, 0.1))
+                    ,c("mu", 1, 2, 0.25)
+                    ,c("sd", 0.5, 1, 0.1))
 
 grid_test <- create_grid(param_list3, nrep=3)
 test_data <- data_generation(simulation=rnorm, grid=grid_test)
-tail(summary_function(sum_fun=list("mean"), data_input=test_data),2)
+summary_data <- summary_function(sum_fun=list("mean"), data_input=test_data)
+head(summary_data)
 ```
 
 ## Summary array funcation
 
-The outcome of `create_array_function` illustrates the combination of user defined grid and the summary statistics. This function product dataframes with all permutations and results that allow, thus users can look any possible parameter regarding specific grid.
+Even tough we specified a fairly small parameter grid in the example above, our simulation consisted retuned 180 summarised data points for the specified simulation. In the main_function() the results from the previous step get merged with the parameter grid into one data frame. This way of storing the data allows the user to apply further data wrangling processes, but is not suitable for printing the output in a tidy and clear way. A multt-dimensional array is better suited for this case.
+
+The function `create_array_function()` takes all relevant data from the steps before (parameter grid and the results of the Monte Carlo simulation) and transforms it into an array with the correct dimensions. 
+
 
 ```{r, array}
 create_array_function <- function(comb, parameters, nrep){
@@ -366,8 +381,12 @@ create_array_function <- function(comb, parameters, nrep){
 
 ```
 
+In order to test this function, we need to set up an altered version of the main_function(), that is introduced in the next passage.
+
+
 `create_array_function` Example:
 ```{r, array ex}
+
 # PREP TEST `create_array_function`
 main_function_array_test <-  function(parameters #list of parameters
                                       , nrep #number of repetitions
@@ -385,19 +404,19 @@ main_function_array_test <-  function(parameters #list of parameters
 
 param_list3x <- list(c("n", 10, 20, 10)
                      ,c("mu", 0, 5, 1)
-                     ,c("sd", 0, 1, 1))
+                     ,c("sd", 0, 3, 1))
 
 comb1 <- main_function_array_test(parameters=param_list3x
-                                  , nrep = 1
+                                  , nrep = 3
                                   , simulation = rnorm
                                   , sum_fun="mean")
 
-head(comb1,2)
+comb1
 
-create_array_function(comb=comb1, parameters=param_list3x, nrep=1)
+create_array_function(comb=comb1, parameters=param_list3x, nrep=3)
 ```
 
-
+We see, that an array with the right dimensions is created.
 
 
 

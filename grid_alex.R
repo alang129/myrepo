@@ -12,7 +12,7 @@ test
 'First step, built a function that creates a parameter grid with all permutations
 of the given parameters'
 
-'create_grid <- function(parameters, nrep){
+create_grid <- function(parameters, nrep){
   input <- parameters
   storage <- list()
   name_vec <- c()
@@ -37,7 +37,7 @@ of the given parameters'
   
   return(grid)
   #return(list(storage, grid))
-}'
+}
 
 
 
@@ -91,7 +91,7 @@ parameters = list of parameters, f.e. param_list3
 Takes parameter list and some data generating function as a input and returns the
 simulated data.'
 
-'data_generation <- function(simulation, grid){ #this is for use inside the function
+data_generation <- function(simulation, grid){ #this is for use inside the function
   
   if(ncol(grid)==2){
     var1 <- c(unlist(grid[,1]))
@@ -116,7 +116,7 @@ simulated data.'
   return(data)
 }
 
-'
+
 
 
 
