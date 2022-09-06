@@ -101,7 +101,7 @@ parameter_list <- list(c("variable name 1", from, to, by)
 `parameter_list` works with a minimum of 1 and a maximum of 4 variables. The structure of arguments is similar to `seq()` in R: A line of arguments is composed with variable name, the start and the end of sequence, the steps. It would be easy to adapt this helper function for more parameters, but it is assumed that a grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the information of the input parameter list and creates a grid with  `tidyr::expand_grid()`. The structure of `create_grid` makes sure that the columns are located after the corresponding variable and creates a different row for each number of repetition(`nrep`).
 
 **`create_grid()` Example:**
-```{r testing create_grid}
+```{r example create_grid}
 
 #four parameters 
 param_list0 <- list(c("n", 10, 20, 10)
@@ -109,7 +109,8 @@ param_list0 <- list(c("n", 10, 20, 10)
                     ,c("sd", 0, 0.3, 0.1)
                     ,c("gender", 0, 1, 1))
 
-head(create_grid(param_list0, nrep=3), n=2)
+head(create_grid(param_list0, nrep=3), n=10)
+
 
 ```
 
@@ -133,7 +134,7 @@ The n data points created for each set of parameters get stored as seperate elem
 
 
 ```{r data generation and parallel process}
-data_generation <- function(simulation, grid){ #this is for use inside the function
+data_generation <- function(simulation, grid){
   
   if(ncol(grid)==2){
     var1 <- c(unlist(grid[,1]))
@@ -154,7 +155,7 @@ data_generation <- function(simulation, grid){ #this is for use inside the funct
     }
   } 
   
-  if(ncol(grid)==4){ #need to implement more than 3?!
+  if(ncol(grid)==4){
     var1 <- c(unlist(grid[,1]))
     var2 <- c(unlist(grid[,2]))
     var3 <- c(unlist(grid[,3]))
@@ -178,17 +179,12 @@ Monte Carlo simulations can quickly become very demanding in terms of computing 
 **`data_generation()` Example:**
 The example below demonstrates a non-parallel processing function with a Poisson distribution. The time difference between parallel and non-parallel functions will be dealt with in the Chapter 3.
 
-```{r test data_generation()}
+```{r first example data generation}
 cores <- 1
-#param_list1 <- list(c("n", 10, 20, 10))
 
 param_list2 <- list(c("n", 10, 20, 10)
                   ,c("lambda", 0.5, 1, 0.5))
-#create_grid(param_list1, nrep=10)
-#create_grid(param_list1, nrep=1)
 
-'grid1 <- create_grid(param_list1, nrep=3)
-tail(data_generation(simulation=rnorm, grid=grid1),1)'
 
 grid2 <- create_grid(param_list2, nrep=1)
 sim1 <- data_generation(simulation=rpois, grid=grid2)
@@ -201,36 +197,34 @@ sim1
  
 ```
 
-`sim1` contains the generated data by `data_generation` with grid2 and `rpois()` (the Poisson distribution) as input.
-The below function shows the application of `data_generation` to uniform and poisson distribution:
+`sim1` contains the generated data by `data_generation` with grid2 and `rpois()` (the Poisson distribution) as input. The second example below uses a uniform distribution as underlying data generating process, using the `runif()` function and a different parameter list.
 
-```{r, dg application}
+
+
+```{r second example data generation}
 # Application to Uniform distribution
 param_list_runif <- list(c("n", 10, 30, 10)
-                         ,c("min", 0, 0, 0)
-                         ,c("max", 1, 1, 0))
+                         ,c("min", 0, 1, 0.5)
+                         ,c("max", 2, 3, 0.5))
 
 
 grid_unif <- create_grid(param_list_runif, nrep=3)
-tail(data_generation(simulation=runif, grid=grid_unif),1)
+head(data_generation(simulation=runif, grid=grid_unif), 5)
 
-# Application to Poisson distribution
 
-param_list_rpois <- list(c("n", 10, 30, 10)
-                         , c("lambda", 0, 10, 1))
-
-grid_pois <- create_grid(param_list_rpois, nrep=3)
-tail(grid_pois,2) # nrow(grid_pois) = 99
-tail(data_generation(simulation=rpois, grid=grid_pois),1)
 ```
 
-## Summary function
+Like explained before, the data gets stores in a list, where the data points for each set of parameters are stored under a different variable in the list. The first variable (saved under `$n1`) are based on 10 draws from a uniform distribution with min = 0 and max = 2. Each variable in the list relates to a row in the parameter grid.
 
-So far, the paper explain the way to create a *raw* data that is distributed as users choose by using `create_grid` and  `data_generation`. Based on the raw data, this chapter introduces `summary_function()` that produces summary statistics that users require.
-The function basically extracts the user-defined summary function (`sum_fun`) from the raw data using a `sapply()`-loop. Results are stored in a $(nrow(grid ) * 1)$-dimensional matrix, which is combined with a parameter grid in the next step.
 
-```{r summary}
-#summary function for one input
+## summary_function()
+
+In the previous passages the process of creating *raw* data has been demonstrated by using `create_grid()` and  `data_generation()`. Based on the raw data, this sub-chapter introduces another function called `summary_function()`, which calculates summary statistics that the user defines. The function uses two inputs, namely `sum_fun`, that is the summary function the user wants to apply to the raw data. Secondly, it also uses the list containing the raw data, that was introduced earlier.
+
+The function basically applies the user-defined summary function (`sum_fun`) on the raw data using a `sapply()`-loop. Results are stored in a $(nrow(grid ) * 1)$-dimensional matrix, which is combined with the parameter grid in the next step.
+
+```{r summary_function}
+
 summary_function <- function(sum_fun, data_input){
   
   count <- length(data_input)
@@ -241,27 +235,34 @@ summary_function <- function(sum_fun, data_input){
     output <- sapply(sum_fun, do.call, input)
     summary_matrix[i] <- output
   }
-  #output <- as.data.frame(summary_matrix)
-  #names(output) <- sum_fun
+
   colnames(summary_matrix) <- sum_fun
   return(summary_matrix)
 }
 ```
+
 **`summary_function` Example:**
-`summary_data` shows `mean` of the generated data which is normally distributed and corresponds given with the n, $\mu$ and the standard deviation
+For this example data created from a normal distribution was used, with the respective parameters n, $\mu$ and the standard deviation specified in the parameter list. The list containing the raw data using `data_generation()` is stored in the object `test_data`, which is the data input for `summary_function()`. The arithmetic mean, using R´s built in `mean()` - function is used as second input in order to calculate the mean of all data points, that were created under a unique set of parameters. This output relates exactly to each row of the used parameter grid. At a later point, these summary statistics get merged with the parameter grid in a data frame.
+
+
 
 ```{r summary test}
 param_list3 <- list(c("n", 10, 20, 10)
                     ,c("mu", 1, 2, 0.25)
                     ,c("sd", 0.5, 1, 0.1))
+
 grid_test <- create_grid(param_list3, nrep=3)
 test_data <- data_generation(simulation=rnorm, grid=grid_test)
 summary_data <- summary_function(sum_fun=list("mean"), data_input=test_data)
 head(summary_data)
+nrow(summary_data)
 ```
-## Summary array funcation
 
-Even tough we specified a fairly small parameter grid in the example above, our simulation consisted retuned 180 summarised data points for the specified simulation. In the main_function() the results from the previous step get merged with the parameter grid into one data frame. This way of storing the data allows the user to apply further data wrangling processes, but is not suitable for printing the output in a tidy and clear way. A multt-dimensional array is better suited for this case.
+
+## create_array_function()
+
+Even tough a relatively small parameter grid was used in the example above, the resulting parameter grid span over 180 rows. Storing the simulation results in a data frame like previously mentioned offers some benefits, since this way of storing the data allows the easy application of further operations, f.e. filtering or grouping. But printing a data frame containing many hundreds or thousands of rows may be not the most overseeable option to displaying the data. A multi-dimensional array is better suited for this purpose, since it organizes the output in a clear and readable way.
+
 The function `create_array_function()` takes all relevant data from the steps before (parameter grid and the results of the Monte Carlo simulation) and transforms it into an array with the correct dimensions. 
 
 
@@ -271,14 +272,12 @@ create_array_function <- function(comb, parameters, nrep){
   name_vec <- c()
   
   for(i in 1:length(parameters)){ 
-    #this creates the sequences of parameters
     a <- as.numeric(parameters[[i]][[2]])
     b <- as.numeric(parameters[[i]][[3]])
     c <- as.numeric(parameters[[i]][[4]])
     output <- seq(from=a, to=b, by=c)
     storage[[i]] <-  output
     name_vec[i] <- parameters[[i]][[1]] 
-    #this just stores the names of the variables
   }
   
   
@@ -325,7 +324,6 @@ create_array_function <- function(comb, parameters, nrep){
   
   
   array1 <- array(comb_ordered[,ncol(comb)] 
-                  #change to automatically adjust dim
                   , dim = dimension_array
                   , dim_names_list)
   return(array1)
@@ -333,7 +331,7 @@ create_array_function <- function(comb, parameters, nrep){
 
 ```
 
-In order to test this function, we need to set up an altered version of the main_function(), that is introduced in the next passage.
+In order to test this function, it is required to set up an slightly altered version of the `main_function()`, that is introduced in the next passage. Also, a slightly modified version of the example using the `rnorm()` is used, where the parameter grid spans over a larger sequence.
 
 
   
@@ -356,24 +354,30 @@ main_function_array_test <-  function(parameters #list of parameters
   return(comb)
 }
 
-param_list3x <- list(c("n", 10, 20, 10)
-                     ,c("mu", 0, 5, 1)
-                     ,c("sd", 0, 3, 1))
+
+
+
+
+param_list3x <- list(c("n", 10, 60, 10)
+                     ,c("mu", 0, 6, 1)
+                     ,c("sd", 1, 2, 1))
 
 comb1 <- main_function_array_test(parameters=param_list3x
-                                  , nrep = 3
+                                  , nrep = 2
                                   , simulation = rnorm
                                   , sum_fun="mean")
 
-comb1
+array_test <- create_array_function(comb=comb1, parameters=param_list3x, nrep=2)
 
-create_array_function(comb=comb1, parameters=param_list3x, nrep=3)
+array_test
 ```
 
-We see, that an array with the right dimensions is created.
+Under these specifications, the data was transformed into an 4-dimensional array. Sample size n and the sample mean $\mu$ are the variables  at the side of each row and column. Also, it was specified, that two repetitions are done for each set of parameters, while two values ($\sigma = \{1, 2\}$) were given for the standard deviation. The output contains the correct amount of tables (4). This style of output allows the user to easily oversee a broad variety of different parameter constellation.
 
 
-## Average function
+## average_function()
+
+The example above used just 2 repetitions for each parameter constellation, to keep the 
 
 ```{r}
 
