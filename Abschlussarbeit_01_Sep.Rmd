@@ -47,7 +47,7 @@ library(furrr)
 
 # Introduction
 
-
+test
 Monte Carlo simulates complex probabilistic events using simple random events, such as the tossing of a pair of dice to simulate the casino’s overall business model. In Monte Carlo computing, a pseudo-random number generator is repeatedly called which returns a real number in [0, 1], and the results are used to generate a distribution of samples that is a fair representation of the target probability distribution under study [@Barbu_2022]. Monte Carlo Method is combined with programming in modern research and contributes to various studies in statistics, economics, and many other science fields. 
 The paper make a progress on developing a collection of different wrapper functions. The main function provides a convenient interface for Monte Carlo simulations and allows users to create a parameter grid and to iterate homogenous function calls over the parameter grid. It also offers an informative summary statistics including visualization with ggplot-methods and an option to use a parallelization process by using `furrr` package.
 The paper proceeds as follows. Chapter 2 describes preprocesses to establish the Monte Carlo simulation function. The preprocesses includes functions to create grid and dataset with random variables in user-defined distributions, along with functions that provide summary statistics. Chanter 3 details the main Monte Carlo simulation function which consists of functions in the chapter 2. Chapter 4 presents examples with the main function. Finally, chapter 5 concludes.
