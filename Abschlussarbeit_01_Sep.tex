@@ -83,6 +83,7 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -384,40 +385,35 @@ repetition(\texttt{nrep}).
 \hypertarget{data-generation-function}{%
 \subsection{Data generation function}\label{data-generation-function}}
 
-Our second helper function called \texttt{data\_generation()} uses the
-parameter grid (\texttt{grid}) and a user defined function for data
-generation (specified as input named \texttt{simulation}), f.e.
-\texttt{rnorm()}, \texttt{runif()} or \texttt{rpois()} to create data
-under the exact parameters specified in the grid. The draw of data
-points for each row of the parameter grid gets stored as a seperate
-element in a list.
+\texttt{data\_generation()} takes \texttt{grid} and \texttt{simulation}
+as inputs. Users can define a probability distribution of data by
+entering the name of R packages into the function, such as normal
+distribution(\texttt{rnorm}) and uniform distribution(\texttt{runif}).
 
-Depenend on how many parameters were specified by the user, different
-functions of the \texttt{purrr}-package are are used, to run the
-specified function over the parameter grid. In case the user is looking
-to improve performance, a way of choosing a parallelised processing
-function of the \texttt{furrr}-package is offered.
+\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#?draw of
+data points? The draw of data points for each row of the parameter grid
+gets stored as a seperate element in a list.
 
-\begin{itemize}
+\texttt{data\_generation()} chooses a mapping function itself based on
+the number of parameters. The table below shows Mapping function,
+Mapping function for parallelization and the number of parameters that
+is used in \texttt{data\_generation()}:
 
-\item
-  \texttt{map()} is used for one parameter and \texttt{future\_map()}
-  function is used for parallel process instead of \texttt{map()}
-  function. Same for other \texttt{map()} functions as seen below.
-\item
-  \texttt{map2()} is used for two parameters and \texttt{future\_map2()}
-  function is used for parallel process instead of \texttt{map2()}
-  function.
-\item
-  \texttt{pmap()} is used for three or more parameters and
-  \texttt{future\_pmap()} function is used for parallel process instead
-  of \texttt{pmap()} function.
-\end{itemize}
+\begin{longtable}[]{@{}ccc@{}}
+\toprule()
+Map & Map for Parallelization & Number of parameters \\
+\midrule()
+\endhead
+map() & future\_map & \(n \leq 1\) \\
+map2() & future\_map2 & \(n \leq 2\) \\
+pmap & future\_pmap & otherwise \\
+\bottomrule()
+\end{longtable}
 
-\texttt{options\ =\ furrr\_options(seed\ =\ TRUE)} is used for
-reproducible random number generation process. This argument takes
-control of the RNG process for paralleization. It generates the same
-numbers for the given seed. More details can be found by running the
+\texttt{options\ =\ furrr\_options(seed\ =\ TRUE)} is for reproducible
+random number generation(RNG) process. This argument takes control of
+the RNG process for parallelization and generates the same numbers
+according to the given seed. More details can be found by running the
 command \texttt{?furrr\_options} in RStudio.
 
 \begin{Shaded}
@@ -460,15 +456,18 @@ command \texttt{?furrr\_options} in RStudio.
 \end{Highlighting}
 \end{Shaded}
 
-Following, we´d like to demonstrate the data genaration function with a
-simple example using the normal distribution (\texttt{rpois()}) as the
-underlying data generating process. At this point we waive running an
-example without parallel process of our data generating function, since
-the output wouldn't look different compared to the previous example. At
-a later point in the paper we´ll showcase the difference in computation
-time for the different functions.
+Monte Carlo simulations can become quickly very demanding in terms of
+computing time. In that case, Parallel processing is useful. Processes
+are parallel if at any time both of them are simultaneously executed,
+for instance, processes are executed by separate, distributed processors
+interconnected by communication channel\autocite{Czech_2017}.
+\texttt{data\_generation\_parallelised} uses \texttt{furrr\_options()}
+that is a parallel processing function in \texttt{furrr} package.
 
-\texttt{data\_generation()} Example:
+\textbf{\texttt{data\_generation()} Example:} The example below
+demonstrates a non-parallel processing function with a Poisson
+distribution. The time difference between parallel and non-parallel
+functions will be dealt with in the Chapter 3.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -494,6 +493,9 @@ time for the different functions.
 \NormalTok{grid2 }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list2, }\AttributeTok{nrep=}\DecValTok{1}\NormalTok{)}
 \NormalTok{sim1 }\OtherTok{\textless{}{-}} \FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{rpois, }\AttributeTok{grid=}\NormalTok{grid2)}
 
+
+\FunctionTok{names}\NormalTok{(sim1) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"n=10, lamda = 0.5"}\NormalTok{,}\StringTok{"n=10, lamda = 1"}\NormalTok{,}
+                 \StringTok{"n=20, lamda = 0.5"}\NormalTok{,}\StringTok{"n=20, lamda = 1"}\NormalTok{)}
 \NormalTok{grid2}
 \end{Highlighting}
 \end{Shaded}
@@ -510,47 +512,28 @@ time for the different functions.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{str}\NormalTok{(sim1)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## List of 4
-##  $ n1: int [1:10] 0 1 0 1 2 0 0 1 0 0
-##  $ n2: int [1:10] 3 1 1 1 0 2 0 0 0 3
-##  $ n3: int [1:20] 1 1 1 3 1 1 0 0 0 0 ...
-##  $ n4: int [1:20] 0 1 1 1 0 0 0 1 0 2 ...
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{sim1}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## $n1
+## $`n=10, lamda = 0.5`
 ##  [1] 0 1 0 1 2 0 0 1 0 0
 ## 
-## $n2
+## $`n=10, lamda = 1`
 ##  [1] 3 1 1 1 0 2 0 0 0 3
 ## 
-## $n3
+## $`n=20, lamda = 0.5`
 ##  [1] 1 1 1 3 1 1 0 0 0 0 2 1 1 1 0 0 1 0 0 0
 ## 
-## $n4
+## $`n=20, lamda = 1`
 ##  [1] 0 1 1 1 0 0 0 1 0 2 0 1 2 0 1 0 0 2 2 1
 \end{verbatim}
 
-We see a list containg one variable for each row of the parameter grid,
-where all the generated data points are stored. For example, the last
-row (stored under \texttt{sim1\$n4}) specified n = 10 draws from the
-normal distribution with \(\lambda = 1\). Since we set
-\texttt{nrep\ =\ 1} in order to save space, the draw only happened once.
-
-The format list offers alot of flexibility, but is not very overseeable.
-At this point we can use the raw data to run summary statistics on,
-which we´ll do in the next passage.
+\texttt{sim1} contains the generated data by \texttt{data\_generation}
+with grid2 and poisson distribution as inputs. The below function shows
+the application of \texttt{data\_generation} to uniform and poisson
+distribution:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1228,7 +1211,7 @@ simulation.
 ## 
 ##  Parallelization Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelization :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "10", "100", "10") c("mu", "0", "10", "1") c("sd", "0", "5", "1") 
 ## 
@@ -1238,7 +1221,7 @@ simulation.
 ##  Mean    : 5.001471 
 ##  Median  : 5 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.20595 secs 
+##  Execution Time of Monte Carlo Simulation 0.244014 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1258,8 +1241,8 @@ Lets try it.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/ggplot2-1.pdf} Also
-with \texttt{facet\_grid()} function.
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/ggplot2-1.pdf}
+Also with \texttt{facet\_grid()} function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1267,8 +1250,8 @@ with \texttt{facet\_grid()} function.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/facet-1.pdf} As proven
-above ,the simulation result works well with ggplot2 methods.
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/facet-1.pdf}
+As proven above ,the simulation result works well with ggplot2 methods.
 
 \hypertarget{examples}{%
 \section{Examples}\label{examples}}
@@ -1325,7 +1308,7 @@ one core is used.
 ## 
 ##  Parallelization Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelization :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1335,7 +1318,7 @@ one core is used.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.09625506 secs 
+##  Execution Time of Monte Carlo Simulation 0.1450081 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1718,15 +1701,15 @@ one core is used.
 ## [1] "Eco"
 \end{verbatim}
 
-Same function ,\texttt{OLS} is now used in parallel with 8 cores.
+Same function ,\texttt{OLS} is now used in parallel with 4 cores.
 Execution time of the simulation is 3.85 seconds.
 
 Now lets run \texttt{GLS} function in parallel and check the execution
-time. Execution time of the simulation is 16.84 seconds (with 8 cores).
+time. Execution time of the simulation is 16.84 seconds (with 4 cores).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gls }\OtherTok{\textless{}{-}} \FunctionTok{main\_function}\NormalTok{(}\AttributeTok{parameters =}\NormalTok{ param\_list,}\AttributeTok{nrep=}\DecValTok{5}\NormalTok{,}\AttributeTok{simulation =}\NormalTok{ gls\_f,}\AttributeTok{sum\_fun=}\StringTok{"mean"}\NormalTok{,}\AttributeTok{seed=}\DecValTok{123}\NormalTok{,}\AttributeTok{cores=}\DecValTok{8}\NormalTok{)}
+\NormalTok{gls }\OtherTok{\textless{}{-}} \FunctionTok{main\_function}\NormalTok{(}\AttributeTok{parameters =}\NormalTok{ param\_list,}\AttributeTok{nrep=}\DecValTok{5}\NormalTok{,}\AttributeTok{simulation =}\NormalTok{ gls\_f,}\AttributeTok{sum\_fun=}\StringTok{"mean"}\NormalTok{,}\AttributeTok{seed=}\DecValTok{123}\NormalTok{,}\AttributeTok{cores=}\DecValTok{4}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1736,7 +1719,7 @@ time. Execution time of the simulation is 16.84 seconds (with 8 cores).
 ## 
 ##  Parallelization Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelization :  8  out of 8 
+##  Number of Cores Used in  Parallelization :  4  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1746,7 +1729,7 @@ time. Execution time of the simulation is 16.84 seconds (with 8 cores).
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 30.72541 secs 
+##  Execution Time of Monte Carlo Simulation 33.83294 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2143,7 +2126,7 @@ Now without parallelization (with 1 core)
 ## 
 ##  Parallelization Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelization :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -2153,7 +2136,7 @@ Now without parallelization (with 1 core)
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 29.35861 secs 
+##  Execution Time of Monte Carlo Simulation 34.56598 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2558,7 +2541,7 @@ for each simulation and saved as \texttt{out\$average\$mse}.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/unnamed-chunk-4-1.pdf}
 
 Also density graph of \texttt{MSE} for \texttt{GLS} and `OLS \(beta2\)
 coefficients.
@@ -2571,7 +2554,7 @@ coefficients.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/unnamed-chunk-5-1.pdf}
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
@@ -2601,6 +2584,28 @@ currently no need in doing that.
 
 \hypertarget{contributions}{%
 \section{Contributions}\label{contributions}}
+
+\begin{longtable}[]{@{}cccc@{}}
+\toprule()
+& Öcal Kaptan & Sunyoung Ji & Alexander Langnau \\
+\midrule()
+\endhead
+Planning & 0 & 0 & 0 \\
+Create\_grid & 0 & 0 & 0 \\
+Data\_generation & 0 & 0 & 0 \\
+Summary\_function & 0 & 0 & 0 \\
+Create\_array\_function & 0 & 0 & 0 \\
+Average\_function & 0 & 0 & 0 \\
+Output\_function & 0 & 0 & 0 \\
+ggplot part & 0 & 0 & 0 \\
+Data\_generation & 0 & 0 & 0 \\
+Formatting & 0 & 0 & 0 \\
+Writing the report & 0 & 0 & 0 \\
+Proof-reading & 0 & 0 & 0 \\
+\bottomrule()
+\end{longtable}
+
+Alexander Langnau, Öcal Kaptan, Sunyoung Ji
 
 \pagebreak
 \renewcommand*{\mkbibnamefamily}[1]{\textbf{#1}}

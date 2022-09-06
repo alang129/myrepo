@@ -8,8 +8,8 @@ date: "today"
 studid: "232907, 230914, 229979"
 supervisor: "Prof. Dr. Christoph Hanck"
 secondsupervisor: "M.Sc. Martin C. Arnold, M.Sc. Jens Klenke"
-ssemester: "1"
-estdegree_emester: "Summer Term 2022"
+ssemester: "Summer Term 2022"
+estdegree_emester: "???"
 deadline: "09. 09. 2022"
 output:
   pdf_document:
@@ -48,7 +48,7 @@ library(furrr)
 # Introduction
 
 
-Monte Carlo simulates complex probabilistic events using simple random events, such as the tossing of a pair of dice to simulate the casino’s overall business model. In Monte Carlo computing, a pseudo-random number generator is repeatedly called which returns a real number in [0, 1], and the results are used to generate a distribution of samples that is a fair representation of the target probability distribution under study [@Barbu_2022]. Monte Carlo Method is combined with programming in modern research and contributes to various studies in statistics, economics, and many other science fields. 
+Monte Carlo studys simulate complex probabilistic events using simple random events, such as tossing a pair of dice to simulate the casino’s overall business model. In Monte Carlo computing, a pseudo-random number generator is repeatedly called, which returns a real number in [0, 1], and the results are used to generate a distribution of samples that is a fair representation of the target probability distribution ?under study? [@Barbu_2022]. Monte Carlo studys get combined with programming in modern research and contributes to various studies in statistics, economics, and many other science fields. 
 The paper make a progress on developing a collection of different wrapper functions. The main function provides a convenient interface for Monte Carlo simulations and allows users to create a parameter grid and to iterate homogenous function calls over the parameter grid. It also offers an informative summary statistics including visualization with ggplot-methods and an option to use a parallelization process by using `furrr` package.
 The paper proceeds as follows. Chapter 2 describes preprocesses to establish the Monte Carlo simulation function. The preprocesses includes functions to create grid and dataset with random variables in user-defined distributions, along with functions that provide summary statistics. Chanter 3 details the main Monte Carlo simulation function which consists of functions in the chapter 2. Chapter 4 presents examples with the main function. Finally, chapter 5 concludes.
 Each chapter contains a simple example to show that a function is applicable to as many cases as possible. If there is a restriction, It will be covered and discussed as well.
@@ -578,13 +578,13 @@ Total execution time of `OLS` simulation is 8.46 seconds. Only one core is used.
 ols <- main_function(parameters = param_list,nrep=5,simulation = ols_f,sum_fun="mean",seed=123,cores=1)
 ols
 ```
-Same function ,`OLS` is now used in parallel with 8 cores. Execution time of the simulation is 3.85 seconds.
+Same function ,`OLS` is now used in parallel with 4 cores. Execution time of the simulation is 3.85 seconds.
 ```{r, parallel ols}
 
 ```
-Now lets run  `GLS` function in parallel and check the execution time. Execution time of the simulation is 16.84 seconds (with 8 cores). 
+Now lets run  `GLS` function in parallel and check the execution time. Execution time of the simulation is 16.84 seconds (with 4 cores). 
 ```{r,gls in parallel}
-gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=8)
+gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=4)
 gls
 ```
 Now without parallelization (with 1 core)
@@ -635,7 +635,20 @@ project besides some minor differences, there is currently no need in doing that
 
 # Contributions
 
-
+|   | Alexander Langnau | Öcal Kaptan | Sunyoung Ji |
+| :------: | :------: | :------: | :------: |
+| Planning | 0 | 0 | 0 |
+| Create_grid | 0 | 0 | 0 |
+| Data_generation  | 0 | 0 | 0 | 
+| Summary_function  | 0 | 0 | 0 | 
+| Create_array_function  | 0 | 0 | 0 | 
+| Average_function  | 0 | 0 | 0 | 
+| Output_function  | 0 | 0 | 0 | 
+| ggplot part   | 0 | 0 | 0 | 
+| Data_generation  | 0 | 0 | 0 | 
+| Formatting  | 0 | 0 | 0 | 
+| Writing the report  | 0 | 0 | 0 | 
+| Proof-reading  | 0 | 0 | 0 | 
 
 
 
