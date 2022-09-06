@@ -377,7 +377,7 @@ Under these specifications, the data was transformed into an 4-dimensional array
 
 ## average_function()
 
-The example above used just 2 repetitions for each parameter constellation, to keep the 
+The example above used just 2 repetitions for each parameter constellation, to keep the output simple. In praxis, the user would probaly repeat the simulations over a higher number of repitions, which would also drastically increase the size of the array. `average_function()` calculates the average over all repetitions and stores in an array with a dimension, that is reduced by one, since the dimension for repetitions is not relevant anymore.
 
 ```{r}
 
@@ -403,7 +403,9 @@ average_function <- function(grid_for_avg, summary, nrep){
 
 
 
-## Output Function
+
+
+## output_function()
 
  Goal is to create a function, that takes the Monte Carlo simulation results and all parameter input
 and converts it onto output format that prints nicely into the console. `Output_function` 
