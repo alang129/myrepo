@@ -57,7 +57,7 @@ Each chapter contains a simple example to show that a function is applicable to 
 
 
 
-## Function for creating grid  
+## create_grid()
 
 `create_grid` is one of the functions to improve performance of the main Monte Carlo simulation function. That creates a hyper-parameter grid with all permutations of the given parameters. Hyper-parameters are the variables that are required to be introduced before implementing a learning algorithm. It is typically unknown in advance about the hyper-parameters that should be harmonized, their valid ranges and which values in these ranges are most likely to yield a high performance[@Rana_2022]. Users can make their combination of hyper-parameters, then apply it into MC simulation in the main function.
   
@@ -98,7 +98,7 @@ parameter_list <- list(c("variable name 1", from, to, by)
                       ,c("variable name 4", from, to, by))
 ```
 
-`parameter_list` works with a minimum of 1 and a maximum of 4 variables. The structure of arguments is similar to `seq()` in R: A line of arguments is composed with variable name, the start and the end of sequence, the steps. It would be fairly easy to adapt this helper function for more parameters, but it is assumed that a grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the information of the input parameter list and creates a grid with  `tidyr::expand_grid()`. The structure of `create_grid` makes sure that the columns are located after the corresponding variable and creates a different row for each number of repetition(`nrep`).
+`parameter_list` works with a minimum of 1 and a maximum of 4 variables. The structure of arguments is similar to `seq()` in R: A line of arguments is composed with variable name, the start and the end of sequence, the steps. It would be easy to adapt this helper function for more parameters, but it is assumed that a grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the information of the input parameter list and creates a grid with  `tidyr::expand_grid()`. The structure of `create_grid` makes sure that the columns are located after the corresponding variable and creates a different row for each number of repetition(`nrep`).
 
 **`create_grid()` Example:**
 ```{r testing create_grid}
@@ -117,14 +117,11 @@ head(create_grid(param_list0, nrep=3), n=2)
 
 
 
-## Data generation function
+## data_generation()
 
-`data_generation()` takes `grid` and `simulation` as inputs. Users can define a probability distribution of data by entering the name of R packages into the function, such as normal distribution(`rnorm`) and uniform distribution(`runif`).
+`data_generation()` takes `grid` and `simulation` as inputs. The user can define a probability distribution of data by entering the name of R packages into the function, f.e. the normal distribution(`rnorm`) or uniform distribution(`runif`).
 
-###############################?draw of data points?
-The draw of data points for each row of the parameter grid gets stored as a seperate element in a list. 
-
-`data_generation()` chooses a mapping function itself based on the number of parameters. The table below shows Mapping function, Mapping function for parallelization and the number of parameters that is used in `data_generation()`:
+The n data points created for each set of parameters get stored as seperate elements in a list, since since format is a very flexible way of storing data. `data_generation()` chooses a mapping function itself based on the number of parameters. The table below shows Mapping function, Mapping function for parallelization and the number of parameters that is used in `data_generation()`:
 
 | Map | Map for Parallelization | Number of parameters |
 | :------: | :------: | :------: |
