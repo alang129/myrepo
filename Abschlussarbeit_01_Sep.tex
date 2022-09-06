@@ -437,7 +437,6 @@ to improve performance, a way of choosing a parallelised processing
 function of the \texttt{furrr}-package is offered.
 
 \begin{itemize}
-
 \item
   \texttt{map()} is used for one parameter and \texttt{future\_map()}
   function is used for parallel process instead of \texttt{map()}
@@ -1283,7 +1282,7 @@ simulation.
 ##  Mean    : 5.001471 
 ##  Median  : 5 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.1980982 secs 
+##  Execution Time of Monte Carlo Simulation 0.2983031 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1348,13 +1347,14 @@ without parallelisation to show execution time of the parallel process.
 \end{Shaded}
 
 As seen as above, simple \texttt{OLS} and \texttt{GLS} functions are
-defined to find \(beta2\) coefficients and also parameter list defined.
-Here, the execution time of the \texttt{GLS} function would be much more
-longer than \texttt{OLS} function. That's why parallelisation is used
-for \texttt{GLS}function which is more demanding because of
-\texttt{The\ Cholesky\ Decomposition}.
+defined to find \(beta2\) coefficients. Here, the execution time of the
+\texttt{GLS} function would be much more longer than \texttt{OLS}
+function.The reason for that in \texttt{GLS} function
+\texttt{The\ Cholesky\ Decomposition} is used.Lets run the simulation
+for \texttt{OLS} function.
 
-Lets run the simulation for \texttt{OLS} function first.
+Total execution time of \texttt{OLS} simulation is 8.46 seconds. Only
+one core is used.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1379,7 +1379,7 @@ Lets run the simulation for \texttt{OLS} function first.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.08770418 secs 
+##  Execution Time of Monte Carlo Simulation 0.09586287 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1762,9 +1762,11 @@ Lets run the simulation for \texttt{OLS} function first.
 ## [1] "Eco"
 \end{verbatim}
 
-Now lets run it for \texttt{GLS} function with parallelisation and check
-the execution time.On MacBook Air with 8 cores total execution time is
-16.84 seconds.
+Same function ,\texttt{OLS} is now used in parallel with 8 cores.
+Execution time of the simulation is 3.85 seconds.
+
+Now lets run \texttt{GLS} function in parallel and check the execution
+time. Execution time of the simulation is 16.84 seconds (with 8 cores).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1788,7 +1790,7 @@ the execution time.On MacBook Air with 8 cores total execution time is
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 30.97112 secs 
+##  Execution Time of Monte Carlo Simulation 30.88275 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2171,7 +2173,7 @@ the execution time.On MacBook Air with 8 cores total execution time is
 ## [1] "Eco"
 \end{verbatim}
 
-Now without parallelisation (with 1 core)
+Now without parallelization (with 1 core)
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2195,7 +2197,7 @@ Now without parallelisation (with 1 core)
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 29.63072 secs 
+##  Execution Time of Monte Carlo Simulation 29.00723 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2578,11 +2580,14 @@ Now without parallelisation (with 1 core)
 ## [1] "Eco"
 \end{verbatim}
 
-As seen on the summary part, total execution time is 36.35 seconds which
-also proves that parallel process works well.
+As seen as on the summary part, total execution time of the simulation
+took 36.35 seconds which also proves that parallel process works well.As
+a reminder, those simulations ran on MacBook Air 10 with total 8 (4
+performance and 4 efficiency) cores. Execution times of the simulation
+might differ on other computers.
 
-Now, lets use the simulation results and visualise them by using ggplot2
-methods.Here, additionaly \texttt{MSE}(Mean Square Error) are calculated
+Now, lets use the simulation results and visualize them by using ggplot2
+methods.Here, additional \texttt{MSE}(Mean Square Error) are calculated
 for each simulation and saved as \texttt{out\$average\$mse}.
 
 \begin{Shaded}
@@ -2597,7 +2602,7 @@ for each simulation and saved as \texttt{out\$average\$mse}.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-7-1.pdf}
+\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf}
 
 Also density graph of \texttt{MSE} for \texttt{GLS} and `OLS \(beta2\)
 coefficients.
@@ -2610,7 +2615,7 @@ coefficients.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-8-1.pdf}
+\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf}
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
