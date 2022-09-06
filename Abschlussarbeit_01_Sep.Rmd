@@ -119,17 +119,20 @@ head(create_grid(param_list0, nrep=3), n=2)
 
 ## Data generation function
 
-Our second helper function called `data_generation()` uses the parameter grid (`grid`) and a user defined function for data generation (specified as input named `simulation`), f.e. `rnorm()`, `runif()` or `rpois()` to create data under the exact parameters specified in the grid. The draw of data points for each row of the parameter grid gets stored as a seperate element in a list. 
+`data_generation()` takes `grid` and `simulation` as inputs. Users can define a probability distribution of data by entering the name of R packages into the function, such as normal distribution(`rnorm`) and uniform distribution(`runif`).
 
-Depenend on how many parameters were specified by the user, different functions of the `purrr`-package are are used, to run the specified function over the parameter grid. In case the user is looking to improve performance, a way of choosing a parallelised processing function of the `furrr`-package is offered.
+###############################?draw of data points?
+The draw of data points for each row of the parameter grid gets stored as a seperate element in a list. 
 
-- `map()` is used for one parameter and `future_map()` function is used  for parallel process instead of `map()` function. Same for  other `map()` functions as seen below.
-- `map2()` is used for two parameters and  `future_map2()` function is used  for parallel process instead of `map2()` function.
-- `pmap()` is used for three or more parameters and `future_pmap()` function is used  for parallel process instead of `pmap()` function.
+`data_generation()` chooses a mapping function itself based on the number of parameters. The table below shows Mapping function, Mapping function for parallelization and the number of parameters that is used in `data_generation()`:
 
- `options = furrr_options(seed = TRUE)` is used for reproducible random number generation process. This argument
-takes control of the RNG process for paralleization. It generates the same numbers for the given seed. More details can be found by running the command
-`?furrr_options` in RStudio.
+| Map | Map for Parallelization | Number of parameters |
+| :------: | :------: | :------: |
+| map() | future_map | $n \leq 1$ |
+| map2() | future_map2 | $n \leq 2$ | 
+| pmap | future_pmap | otherwise | 
+
+`options = furrr_options(seed = TRUE)` is for reproducible random number generation(RNG) process. This argument takes control of the RNG process for parallelization and generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
 
 
 ```{r data generation and parallel process}
@@ -170,13 +173,11 @@ data_generation <- function(simulation, grid){ #this is for use inside the funct
 }
 ```
 
+Monte Carlo simulations can become quickly very demanding in terms of computing time. In that case, Parallel processing is useful. Processes are parallel if at any time both of them are simultaneously executed, for instance, processes are executed by separate, distributed processors interconnected by communication channel[@Czech_2017]. `data_generation_parallelised` uses `furrr_options()` that is a parallel processing function in `furrr` package. 
 
+**`data_generation()` Example:**
+The example below demonstrates a non-parallel processing function with a Poisson distribution. The time difference between parallel and non-parallel functions will be dealt with in the Chapter 3.
 
-
-Following, we´d like to demonstrate the data genaration function with a simple example using the normal distribution (`rpois()`)  as the underlying data generating process. At this point we waive running an example without parallel process of our data generating function, since the output wouldn't look different compared to the previous example. At a later point in the paper we´ll showcase the difference in computation time for the different functions.
-
-
-`data_generation()` Example:
 ```{r test data_generation()}
 cores <- 1
 #param_list1 <- list(c("n", 10, 20, 10))
@@ -192,19 +193,16 @@ tail(data_generation(simulation=rnorm, grid=grid1),1)'
 grid2 <- create_grid(param_list2, nrep=1)
 sim1 <- data_generation(simulation=rpois, grid=grid2)
 
+
+names(sim1) <- c("n=10, lamda = 0.5","n=10, lamda = 1",
+                 "n=20, lamda = 0.5","n=20, lamda = 1")
 grid2
-str(sim1)
 sim1
  
 ```
 
-We see a list containg one variable for each row of the parameter grid, where all the generated data points are stored. For example, the last row (stored under `sim1$n4`) specified n = 10 draws from the normal distribution with $\lambda = 1$. Since we set `nrep = 1` in order to save space, the draw only happened once.
-
-The format list offers alot of flexibility, but is not very overseeable. At this point we can use the raw data to run summary statistics on, which we´ll do in the next passage.
-
-
-
-
+`sim1` contains the generated data by `data_generation` with grid2 and poisson distribution as inputs.
+The below function shows the application of `data_generation` to uniform and poisson distribution:
 
 ```{r, dg application}
 # Application to Uniform distribution
@@ -650,7 +648,6 @@ project besides some minor differences, there is currently no need in doing that
 
 
 \pagebreak
-
 
 
 
