@@ -129,7 +129,7 @@ The n data points created for each set of parameters get stored as seperate elem
 | map2() | future_map2 | $n \leq 2$ | 
 | pmap | future_pmap | otherwise | 
 
-`options = furrr_options(seed = TRUE)` is for reproducible random number generation(RNG) process. This argument takes control of the RNG process for parallelization and generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
+`options = furrr_options(seed = TRUE)` is for reproducible random number generation (RNG) process. This argument takes control of the RNG process for parallelization and generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
 
 
 ```{r data generation and parallel process}
@@ -170,7 +170,10 @@ data_generation <- function(simulation, grid){ #this is for use inside the funct
 }
 ```
 
-Monte Carlo simulations can become quickly very demanding in terms of computing time. In that case, Parallel processing is useful. Processes are parallel if at any time both of them are simultaneously executed, for instance, processes are executed by separate, distributed processors interconnected by communication channel[@Czech_2017]. `data_generation_parallelised` uses `furrr_options()` that is a parallel processing function in `furrr` package. 
+Monte Carlo simulations can quickly become very demanding in terms of computing time. In that case, it mparallel processing is a way to reduce the overall computing time. Processes are parallel if at any time both of them are simultaneously executed, for instance, processes are executed by separate, distributed processors interconnected by communication channel[@Czech_2017]. 
+
+
+`data_generation()` automatically used the right function from the `furrrr`-package, if the user specified more than 1 core. 
 
 **`data_generation()` Example:**
 The example below demonstrates a non-parallel processing function with a Poisson distribution. The time difference between parallel and non-parallel functions will be dealt with in the Chapter 3.
@@ -198,7 +201,7 @@ sim1
  
 ```
 
-`sim1` contains the generated data by `data_generation` with grid2 and poisson distribution as inputs.
+`sim1` contains the generated data by `data_generation` with grid2 and `rpois()` (the Poisson distribution) as input.
 The below function shows the application of `data_generation` to uniform and poisson distribution:
 
 ```{r, dg application}
