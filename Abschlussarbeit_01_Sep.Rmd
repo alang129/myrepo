@@ -8,8 +8,8 @@ date: "today"
 studid: "232907, 230914, 229979"
 supervisor: "Prof. Dr. Christoph Hanck"
 secondsupervisor: "M.Sc. Martin C. Arnold, M.Sc. Jens Klenke"
-ssemester: "Summer Term 2022"
-estdegree_emester: "???"
+ssemester: "1"
+estdegree_emester: "Summer Term 2022"
 deadline: "09. 09. 2022"
 output:
   pdf_document:
