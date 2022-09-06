@@ -404,9 +404,15 @@ is used in \texttt{data\_generation()}:
 Map & Map for Parallelization & Number of parameters \\
 \midrule()
 \endhead
+<<<<<<< HEAD
 map() & future\_map & \(n = 1\) \\
 map2() & future\_map2 & \(n = 2\) \\
 pmap & future\_pmap & \(n \geq 3\) \\
+=======
+map() & future\_map & \(n \leq 1\) \\
+map2() & future\_map2 & \(n \leq 2\) \\
+pmap & future\_pmap & otherwise \\
+>>>>>>> da014b0c1fed64157a0e64de6e95c1fefb435f68
 \bottomrule()
 \end{longtable}
 
@@ -1069,7 +1075,7 @@ simulation.
 ## 
 ##  Parallelization Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelization :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "10", "100", "10") c("mu", "0", "10", "1") c("sd", "0", "5", "1") 
 ## 
@@ -1079,7 +1085,11 @@ simulation.
 ##  Mean    : 5.001471 
 ##  Median  : 5 
 ## 
+<<<<<<< HEAD
 ##  Execution Time of Monte Carlo Simulation 0.3788722 secs 
+=======
+##  Execution Time of Monte Carlo Simulation 0.244014 secs 
+>>>>>>> da014b0c1fed64157a0e64de6e95c1fefb435f68
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1166,7 +1176,7 @@ one core is used.
 ## 
 ##  Parallelization Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelization :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1176,7 +1186,11 @@ one core is used.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
+<<<<<<< HEAD
 ##  Execution Time of Monte Carlo Simulation 0.213414 secs 
+=======
+##  Execution Time of Monte Carlo Simulation 0.1450081 secs 
+>>>>>>> da014b0c1fed64157a0e64de6e95c1fefb435f68
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1559,15 +1573,15 @@ one core is used.
 ## [1] "Eco"
 \end{verbatim}
 
-Same function ,\texttt{OLS} is now used in parallel with 8 cores.
+Same function ,\texttt{OLS} is now used in parallel with 4 cores.
 Execution time of the simulation is 3.85 seconds.
 
 Now lets run \texttt{GLS} function in parallel and check the execution
-time. Execution time of the simulation is 16.84 seconds (with 8 cores).
+time. Execution time of the simulation is 16.84 seconds (with 4 cores).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gls }\OtherTok{\textless{}{-}} \FunctionTok{main\_function}\NormalTok{(}\AttributeTok{parameters =}\NormalTok{ param\_list,}\AttributeTok{nrep=}\DecValTok{5}\NormalTok{,}\AttributeTok{simulation =}\NormalTok{ gls\_f,}\AttributeTok{sum\_fun=}\StringTok{"mean"}\NormalTok{,}\AttributeTok{seed=}\DecValTok{123}\NormalTok{,}\AttributeTok{cores=}\DecValTok{8}\NormalTok{)}
+\NormalTok{gls }\OtherTok{\textless{}{-}} \FunctionTok{main\_function}\NormalTok{(}\AttributeTok{parameters =}\NormalTok{ param\_list,}\AttributeTok{nrep=}\DecValTok{5}\NormalTok{,}\AttributeTok{simulation =}\NormalTok{ gls\_f,}\AttributeTok{sum\_fun=}\StringTok{"mean"}\NormalTok{,}\AttributeTok{seed=}\DecValTok{123}\NormalTok{,}\AttributeTok{cores=}\DecValTok{4}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1577,7 +1591,7 @@ time. Execution time of the simulation is 16.84 seconds (with 8 cores).
 ## 
 ##  Parallelization Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelization :  8  out of 8 
+##  Number of Cores Used in  Parallelization :  4  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1587,7 +1601,11 @@ time. Execution time of the simulation is 16.84 seconds (with 8 cores).
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
+<<<<<<< HEAD
 ##  Execution Time of Monte Carlo Simulation 57.62402 secs 
+=======
+##  Execution Time of Monte Carlo Simulation 33.83294 secs 
+>>>>>>> da014b0c1fed64157a0e64de6e95c1fefb435f68
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1984,7 +2002,7 @@ Now without parallelization (with 1 core)
 ## 
 ##  Parallelization Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelization :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1994,7 +2012,11 @@ Now without parallelization (with 1 core)
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
+<<<<<<< HEAD
 ##  Execution Time of Monte Carlo Simulation 52.99871 secs 
+=======
+##  Execution Time of Monte Carlo Simulation 34.56598 secs 
+>>>>>>> da014b0c1fed64157a0e64de6e95c1fefb435f68
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2413,8 +2435,11 @@ coefficients.
 \end{Shaded}
 
 \includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/unnamed-chunk-5-1.pdf}
+<<<<<<< HEAD
 
 \pagebreak
+=======
+>>>>>>> da014b0c1fed64157a0e64de6e95c1fefb435f68
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
@@ -2448,6 +2473,28 @@ currently no need in doing that.
 
 \hypertarget{contributions}{%
 \section{Contributions}\label{contributions}}
+
+\begin{longtable}[]{@{}cccc@{}}
+\toprule()
+& Öcal Kaptan & Sunyoung Ji & Alexander Langnau \\
+\midrule()
+\endhead
+Planning & 0 & 0 & 0 \\
+Create\_grid & 0 & 0 & 0 \\
+Data\_generation & 0 & 0 & 0 \\
+Summary\_function & 0 & 0 & 0 \\
+Create\_array\_function & 0 & 0 & 0 \\
+Average\_function & 0 & 0 & 0 \\
+Output\_function & 0 & 0 & 0 \\
+ggplot part & 0 & 0 & 0 \\
+Data\_generation & 0 & 0 & 0 \\
+Formatting & 0 & 0 & 0 \\
+Writing the report & 0 & 0 & 0 \\
+Proof-reading & 0 & 0 & 0 \\
+\bottomrule()
+\end{longtable}
+
+Alexander Langnau, Öcal Kaptan, Sunyoung Ji
 
 \pagebreak
 \renewcommand*{\mkbibnamefamily}[1]{\textbf{#1}}
