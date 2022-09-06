@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.30)  6 SEP 2022 00:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.30)  6 SEP 2022 13:03
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1101,31 +1101,31 @@ le name 4", from,
 
 [2] [3] [4]
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-521.
+520.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Overfull \hbox (148.37291pt too wide) in paragraph at lines 528--528
+Overfull \hbox (148.37291pt too wide) in paragraph at lines 527--527
 []\T1/lmtt/m/n/10.95 ## [1] "grid1 <- create_grid(param_list1, nrep=3)\ntail(da
 ta_generation(simulation=rnorm, grid=grid1),1)"[] 
  []
 
 [5] [6]
-Overfull \hbox (16.15204pt too wide) in paragraph at lines 645--645
+Overfull \hbox (16.15204pt too wide) in paragraph at lines 644--644
 []\T1/lmtt/m/n/10.95 ##  [1] 11  8 11  6  5  8 11  9 13 12  9  8 14 16  8 20  9
   8 10  5 13 14  4  8 10[] 
  []
 
 [7] [8]
-Underfull \vbox (badness 10000) detected at line 796
+Underfull \vbox (badness 10000) detected at line 795
  []
 
 
-Underfull \vbox (badness 10000) detected at line 796
+Underfull \vbox (badness 10000) detected at line 795
  []
 
 [9] [10] [11] [12] [13] [14] [15]
-Overfull \hbox (40.3003pt too wide) in paragraph at lines 1092--1103
+Overfull \hbox (40.3003pt too wide) in paragraph at lines 1091--1102
 \T1/lmr/m/n/10.95 (-20) for this pur-pose to store sim-u-la-tion re-sults. \T1/
 lmtt/m/n/10.95 array_1\T1/lmr/m/n/10.95 (-20) ,\T1/lmtt/m/n/10.95 average_over_
 reps\T1/lmr/m/n/10.95 (-20) ,\T1/lmtt/m/n/10.95 parameters\T1/lmr/m/n/10.95 (-2
@@ -1134,19 +1134,19 @@ ion\T1/lmr/m/n/10.95 (-20) ,
  []
 
 [16]
-Overfull \vbox (0.59683pt too high) detected at line 1157
+Overfull \vbox (0.59683pt too high) detected at line 1156
  []
 
 [17] [18]
-Underfull \vbox (badness 10000) detected at line 1250
+Underfull \vbox (badness 10000) detected at line 1249
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1250
+Underfull \vbox (badness 10000) detected at line 1249
  []
 
 [19]
-Overfull \hbox (96.63431pt too wide) in paragraph at lines 1289--1289
+Overfull \hbox (96.63431pt too wide) in paragraph at lines 1288--1288
 []\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "10", "100", "10") c("mu", 
 "0", "10", "1") c("sd", "0", "5", "1")[] 
  []
@@ -1157,14 +1157,14 @@ Overfull \hbox (96.63431pt too wide) in paragraph at lines 1289--1289
 File: Seminararbeit_files/figure-latex/ggplot2-1.pdf Graphic file (type pdf)
 <use Seminararbeit_files/figure-latex/ggplot2-1.pdf>
 Package pdftex.def Info: Seminararbeit_files/figure-latex/ggplot2-1.pdf  used o
-n input line 1306.
+n input line 1305.
 (pdftex.def)             Requested size: 455.26445pt x 313.4935pt.
 <Seminararbeit_files/figure-latex/facet-1.pdf, id=145, 459.7175pt x 318.18875pt
 >
 File: Seminararbeit_files/figure-latex/facet-1.pdf Graphic file (type pdf)
 <use Seminararbeit_files/figure-latex/facet-1.pdf>
 Package pdftex.def Info: Seminararbeit_files/figure-latex/facet-1.pdf  used on 
-input line 1315.
+input line 1314.
 (pdftex.def)             Requested size: 455.26903pt x 315.10977pt.
  [21 <./Seminararbeit_files/figure-latex/ggplot2-1.pdf>] [22 <./Seminararbeit_f
 iles/figure-latex/facet-1.pdf>]
@@ -1174,39 +1174,39 @@ Overfull \hbox (136.87544pt too wide) in paragraph at lines 1385--1385
  []
 
 [23] [24] [25] [26] [27] [28] [29] [30] [31]
-Overfull \hbox (136.87544pt too wide) in paragraph at lines 1794--1794
+Overfull \hbox (136.87544pt too wide) in paragraph at lines 1796--1796
 []\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
 ", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
  []
 
 [32] [33] [34] [35] [36] [37] [38] [39] [40] [41]
-Overfull \hbox (136.87544pt too wide) in paragraph at lines 2201--2201
+Overfull \hbox (136.87544pt too wide) in paragraph at lines 2203--2203
 []\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
 ", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
  []
 
 [42] [43] [44] [45] [46] [47] [48] [49] [50]
-<Seminararbeit_files/figure-latex/unnamed-chunk-7-1.pdf, id=288, 451.6875pt x 3
+<Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf, id=288, 451.6875pt x 3
 15.1775pt>
-File: Seminararbeit_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (type
+File: Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type
  pdf)
-<use Seminararbeit_files/figure-latex/unnamed-chunk-7-1.pdf>
-Package pdftex.def Info: Seminararbeit_files/figure-latex/unnamed-chunk-7-1.pdf
-  used on input line 2600.
+<use Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf>
+Package pdftex.def Info: Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf
+  used on input line 2605.
 (pdftex.def)             Requested size: 451.71394pt x 315.19595pt.
  [51]
-<Seminararbeit_files/figure-latex/unnamed-chunk-8-1.pdf, id=295, 453.695pt x 31
+<Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf, id=295, 453.695pt x 31
 3.17pt>
-File: Seminararbeit_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type
+File: Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type
  pdf)
-<use Seminararbeit_files/figure-latex/unnamed-chunk-8-1.pdf>
-Package pdftex.def Info: Seminararbeit_files/figure-latex/unnamed-chunk-8-1.pdf
-  used on input line 2613.
+<use Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf>
+Package pdftex.def Info: Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf
+  used on input line 2618.
 (pdftex.def)             Requested size: 453.6939pt x 313.16922pt.
- [52 <./Seminararbeit_files/figure-latex/unnamed-chunk-7-1.pdf>] [53 <./Seminar
-arbeit_files/figure-latex/unnamed-chunk-8-1.pdf>]
+ [52 <./Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf>] [53 <./Seminar
+arbeit_files/figure-latex/unnamed-chunk-5-1.pdf>]
 
-LaTeX Warning: Empty bibliography on input line 2649.
+LaTeX Warning: Empty bibliography on input line 2654.
 
 [54] (./Seminararbeit.aux)
 
@@ -1233,11 +1233,11 @@ Package logreq Info: Writing requests to 'Seminararbeit.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 22732 strings out of 478268
- 401042 string characters out of 5846347
+ 22734 strings out of 478268
+ 401064 string characters out of 5846347
  1233822 words of memory out of 5000000
  40400 multiletter control sequences out of 15000+600000
- 517077 words of font info for 119 fonts, out of 8000000 for 9000
+ 517160 words of font info for 120 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  60i,6n,70p,1010b,5033s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local
@@ -1253,7 +1253,7 @@ st/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/typ
 e1/public/lm/lmri10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/
 lm/lmtk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt10.
 pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Seminararbeit.pdf (58 pages, 439753 bytes).
+Output written on Seminararbeit.pdf (58 pages, 440048 bytes).
 PDF statistics:
  410 PDF objects out of 1000 (max. 8388607)
  305 compressed objects within 4 object streams
