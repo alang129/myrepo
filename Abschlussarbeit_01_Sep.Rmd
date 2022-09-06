@@ -597,28 +597,33 @@ gls_f <- function(n,mu,sd){
   param_list <- list(c("n",100,1000,100),c("mu",0,1,0.25),c("sd",1,2,.5))
 }
 ```
-As seen as above, simple `OLS` and `GLS` functions are defined to find $beta2$ coefficients and also parameter list defined. Here, the execution time of the  `GLS` function would be much more longer than `OLS` function. That's why parallelisation is used for `GLS`function which is more demanding because of `The Cholesky Decomposition`.
+As seen as above, simple `OLS` and `GLS` functions are defined to find $beta2$ coefficients. Here, the execution time of the  `GLS` function would be much more longer than `OLS` function.The reason for that in `GLS` function `The Cholesky Decomposition` is used.Lets run the simulation for `OLS` function. 
 
-Lets run the simulation for `OLS` function first.
-```{r}
+
+Total execution time of `OLS` simulation is 8.46 seconds. Only one core is used.  
+```{r , ols}
+ param_list <- list(c("n",100,1000,100),c("mu",0,1,0.25),c("sd",1,2,.5))
 ols <- main_function(parameters = param_list,nrep=5,simulation = ols_f,sum_fun="mean",seed=123,cores=1)
 ols
 ```
+Same function ,`OLS` is now used in parallel with 8 cores. Execution time of the simulation is 3.85 seconds.
+```{r, parallel ols}
 
-Now lets run it for `GLS` function with parallelisation and check the execution time.On MacBook Air with 8 cores total execution time is 16.84 seconds.
-```{r}
+```
+Now lets run  `GLS` function in parallel and check the execution time. Execution time of the simulation is 16.84 seconds (with 8 cores). 
+```{r,gls in parallel}
 gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=8)
 gls
-``
-Now without parallelisation (with 1 core)
+```
+Now without parallelization (with 1 core)
 
-```{r}
+```{r,gls}
 gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=1)
 gls
-``
-As seen on the summary part, total execution time is 36.35 seconds which also proves that parallel process works well. 
+```
+As seen as  on the summary part, total execution time of the simulation took 36.35 seconds which also proves that parallel process works well.As a reminder, those simulations ran on MacBook Air 10 with  total 8 (4 performance and 4 efficiency) cores. Execution times of the simulation might differ on other computers.
 
-Now, lets use the simulation results and visualise them by using ggplot2 methods.Here, additionaly `MSE`(Mean Square Error) are calculated for each simulation and saved as `out$average$mse`.
+Now, lets use the simulation results and visualize them by using ggplot2 methods.Here, additional `MSE`(Mean Square Error) are calculated for each simulation and saved as `out$average$mse`.
 
 ```{r}
 gls$average <-  gls$average %>% mutate(mse =(2-avg)^2 )
