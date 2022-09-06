@@ -48,7 +48,7 @@ library(furrr)
 # Introduction
 
 
-Monte Carlo simulates complex probabilistic events using simple random events, such as the tossing of a pair of dice to simulate the casino’s overall business model. In Monte Carlo computing, a pseudo-random number generator is repeatedly called which returns a real number in [0, 1], and the results are used to generate a distribution of samples that is a fair representation of the target probability distribution under study [@Barbu_2022]. Monte Carlo Method is combined with programming in modern research and contributes to various studies in statistics, economics, and many other science fields. 
+Monte Carlo method simulates complex probabilistic events using simple random events, such as the tossing of a pair of dice to simulate the casino’s overall business model. In Monte Carlo computing, a pseudo-random number generator is repeatedly called which returns a real number in [0, 1], and the results are used to generate a distribution of samples that is a fair representation of the target probability distribution under study [@Barbu_2022]. Monte Carlo Method is combined with programming in modern research and contributes to various studies in statistics, economics, and many other science fields. 
 The paper make a progress on developing a collection of different wrapper functions. The main function provides a convenient interface for Monte Carlo simulations and allows users to create a parameter grid and to iterate homogenous function calls over the parameter grid. It also offers an informative summary statistics including visualization with ggplot-methods and an option to use a parallelization process by using `furrr` package.
 The paper proceeds as follows. Chapter 2 describes preprocesses to establish the Monte Carlo simulation function. The preprocesses includes functions to create grid and dataset with random variables in user-defined distributions, along with functions that provide summary statistics. Chanter 3 details the main Monte Carlo simulation function which consists of functions in the chapter 2. Chapter 4 presents examples with the main function. Finally, chapter 5 concludes.
 Each chapter contains a simple example to show that a function is applicable to as many cases as possible. If there is a restriction, It will be covered and discussed as well.
@@ -128,9 +128,9 @@ The draw of data points for each row of the parameter grid gets stored as a sepe
 
 | Map | Map for Parallelization | Number of parameters |
 | :------: | :------: | :------: |
-| map() | future_map | $n \leq 1$ |
-| map2() | future_map2 | $n \leq 2$ | 
-| pmap | future_pmap | otherwise | 
+| map() | future_map | $n = 1$ |
+| map2() | future_map2 | $n = 2$ | 
+| pmap | future_pmap | $n \geq 3$ | 
 
 `options = furrr_options(seed = TRUE)` is for reproducible random number generation(RNG) process. This argument takes control of the RNG process for parallelization and generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
 
@@ -220,8 +220,8 @@ param_list_rpois <- list(c("n", 10, 30, 10)
                          , c("lambda", 0, 10, 1))
 
 grid_pois <- create_grid(param_list_rpois, nrep=3)
-tail(grid_pois,2) # nrow(grid_pois) = 99
-tail(data_generation(simulation=rpois, grid=grid_pois),1)
+head(grid_pois,2) # nrow(grid_pois) = 99
+head(data_generation(simulation=rpois, grid=grid_pois),1)
 ```
 
 ## Summary function
@@ -247,6 +247,7 @@ summary_function <- function(sum_fun, data_input){
   return(summary_matrix)
 }
 ```
+
 **`summary_function` Example:**
 `summary_data` shows `mean` of the generated data which is normally distributed and corresponds given with the n, $\mu$ and the standard deviation
 
@@ -257,13 +258,15 @@ param_list3 <- list(c("n", 10, 20, 10)
 grid_test <- create_grid(param_list3, nrep=3)
 test_data <- data_generation(simulation=rnorm, grid=grid_test)
 summary_data <- summary_function(sum_fun=list("mean"), data_input=test_data)
-head(summary_data)
+head(summary_data,2)
 ```
+
 ## Summary array funcation
 
-Even tough we specified a fairly small parameter grid in the example above, our simulation consisted retuned 180 summarised data points for the specified simulation. In the main_function() the results from the previous step get merged with the parameter grid into one data frame. This way of storing the data allows the user to apply further data wrangling processes, but is not suitable for printing the output in a tidy and clear way. A multt-dimensional array is better suited for this case.
-The function `create_array_function()` takes all relevant data from the steps before (parameter grid and the results of the Monte Carlo simulation) and transforms it into an array with the correct dimensions. 
-
+Even though the example above includes a fairly small range of parameter grid, the simulation returns 180 summaried data points. In `main_function`, the results from the previous step get merged with the parameter grid into one data frame. 
+####################### data wrangling processes??
+This way to store the data allows users to apply further data wrangling processes. A multi-dimensional array is more suitable for printing the output in a tidy and clear way. `create_array_function()` takes all relevant data from the previous steps (parameter grid and the results of the Monte Carlo simulation) and transforms it into an array with the correct dimensions. 
+################### correct dimension?
 
 ```{r, array}
 create_array_function <- function(comb, parameters, nrep){
@@ -333,24 +336,21 @@ create_array_function <- function(comb, parameters, nrep){
 
 ```
 
-In order to test this function, we need to set up an altered version of the main_function(), that is introduced in the next passage.
+In order to test `create_array_function`, we need to set up an altered version of `main_function`. The `main_function` is discussed in the next chapter.
 
-
-  
-
-`create_array_function` Example:
+**`create_array_function` Example:**
 ```{r, array ex}
 
 # PREP TEST `create_array_function`
 main_function_array_test <-  function(parameters #list of parameters
                                       , nrep #number of repetitions
-                                      , simulation #data genereation
+                                      , simulation #data generation
                                       , sum_fun){ #summary statistics
   
   grid <- create_grid(parameters, nrep) #Step 1: create grid
-  raw_data <- data_generation(simulation, grid) #Step 2: simlate data
+  raw_data <- data_generation(simulation, grid) #Step 2: simulate data
   summary <- summary_function(sum_fun, data_input=raw_data) #Step 3: Summary statistics
-  comb <- cbind(grid, summary) #Step 4: Combine resuluts with parameters
+  comb <- cbind(grid, summary) #Step 4: Combine results with parameters
   array_1 <- create_array_function(comb, parameters, nrep) #Step 5: Create array
   
   return(comb)
@@ -365,13 +365,11 @@ comb1 <- main_function_array_test(parameters=param_list3x
                                   , simulation = rnorm
                                   , sum_fun="mean")
 
-comb1
-
+head(comb1, 2)
+################################ need to reduce a range of grid and nrep?
 create_array_function(comb=comb1, parameters=param_list3x, nrep=3)
 ```
-
-We see, that an array with the right dimensions is created.
-
+Through `create_array_function`, users can obtain all combinations corresponding each grid, the number of repetition, and the summary function that users require, such as `mean` in this case.
 
 ## Average function
 
@@ -401,59 +399,61 @@ average_function <- function(grid_for_avg, summary, nrep){
 
 ## Output Function
 
- Goal is to create a function, that takes the Monte Carlo simulation results and all parameter input
-and converts it onto output format that prints nicely into the console. `Output_function` 
-created for this purpose to store simulation results. `array_1`,`average_over_reps`,`parameters`,`cores`,`simulation`,
-`nrep`,`cpt`  are used as input parameters in the `output_function`. Except  the parameter `cpt`, other parameters are defined  and explanied before this section. `cpt` parameters will be  explanied in the section `Main Function`. It is basically saving the execution time of the simulation. 
-Lets go to  the each code line and explain them briefly.
+`Output_function`  is the last part of preprocess. This function takes results and parameters of Monte Carlo simulation as inputs, as well as, converts them to output format on the console. Thus, users can win the tidy form of summary of simulation.
 
- Firstly, `out` object is created to store simulation results, averaged results and  summary of the result in list `list()` format. The name `Eco` implemented as a class of the list `out`, since the spesific class had to implemented for the simulation results as a part of the task in visualisation.
- The results from `array_1` saved here as `out$results` also result for `average_over_reps` saved as `out$average`. Next, same class name is assigned to to `out$results` and `out$average`  also default classes of the both list objects kept as a class. The reason is to prevent the future error while using the ggplot2 methods for simulation results. Because ggplot2 methos works only some spesific classses ( data.frame ,etc.). After that the reporting part is created as a report of simulation result by using `cat()` function. At the end function returned to the object `out`. 
+################################## need to explain?
+`array_1`,`average_over_reps`,`parameters`,`cores`,`simulation`,
+`nrep`,`cpt`  are used as input parameters in the `output_function`.
+`cpt` means excution time for simulation. More detail will be adressed in the next chapter.
+
+When it comes to the structure `output_function`, (1) `out` is an empty list for storing simulation results, averaged results and result summary. (2) `Eco` is the class name of `out`. The class should be assigned to visualize simulation result with ggplot-method. (3) Results from `array_1` and `average_over_reps` are assigned as `out$results` and `out$average` respectively. (4) These results have the classes which is their own names: `out$results` and `out$average`, thereby preventing the future error during visualizing simulation results with ggplot-method. ggplot-method requires specific classes, such as `data.frame`. (5) `cat` is useful for producing output in user-defined functions. It converts its arguments to character vectors, concatenates them to a single character vector, appends the given $`sep` =  string(s)$ to each element and then outputs them[@DataCamp]. (6) The neat output is returned at the end.
 
 ```{r echo=TRUE}
+
+
 output_function <- function(array_1,average_over_reps,parameters,cores,simulation,
                             nrep,cpt){
-  
-  out <- list()#Create a emptly list to store simulation result and average result.
-  class(out) <- "Eco"  #We have to implement a class. I just gave a random name. "Eco"
-  out$results <- array_1 # Saved the simulation result
-  out$average <- average_over_reps # And this is the result from average function. All the result collected in the list "out"
-  #Because output_function will return the list "out".
-  
-  #To us ggplot function Alex has created a average function that takes average of the simulation results.
-  class(out$average) <- c("Eco",class(out$average))#Again, name the class of the average result
-  class(out$results) <- c("Eco",class(out$results))#Also same for the simulation result.
-  
+  # (1)
+  out <- list() 
+  # (2) 
+  class(out) <- "Eco" 
+  # (3)
+  out$results <- array_1 
+  out$average <- average_over_reps 
+  # (4)
+  class(out$average) <- c("Eco",class(out$average))
+  class(out$results) <- c("Eco",class(out$results))
+  # (5)
   if(cores>1){
     parallel = "Multisession"
   } else {       
     parallel = "Sequential"
   }
-  #This part is just a report. It will be shown at the end of the simulation result.
   text <-  cat("\n",
            "Repetition(nrep)      : ",nrep,"\n\n",
            "Parallelization Type  : ",parallel,"\n\n",
-           "Number of Cores Used in  Parallelization : ",cores," out of",detectCores(),"\n\n",
+           "Number of Cores Used in  Parallelization : ",cores,
+           " out of",detectCores(),"\n\n",
            "Input Parameters : ",paste(parameters),"\n\n",
            "Simulation Length :",length(array_1),"\n",
            "Minumum :",min(array_1),"\n",
            "Maximum :",max(array_1),"\n",
            "Mean    :", mean(array_1),"\n",
            "Median  :",median(array_1),"\n\n",
-           "Execution Time of Monte Carlo Simulation",as.numeric(cpt),"secs \n\n",
+           "Execution Time of Monte Carlo Simulation",
+           as.numeric(cpt),"secs \n\n",
            "Name of The Class :",class(out))
-  
+  # (6)
   return(out)
 }
 
 ```
-Output of  `output_function` will be as same as the `main_function`.That's no further example is needed here. It will be covered in the next topic called "Main function".
 
+`output_function` represents the output of the main Monte Carlo simulation function in the next chapter.
 
+# Main Function: Monte Calro simulation function
 
-## Main Function
-
-The "main_function" is a function that consist of the helper functions that created above. Here, all the helper functions are included and additionaly some commands and functions added to improve the simulation results. Here only additional arguments will be explained, since the helper functions are explained before.
+The `main_function` is a function that consist of the helper functions that created above. Here, all the helper functions are included and additionaly some commands and functions added to improve the simulation results. Here only additional arguments will be explained, since the helper functions are explained before.
 
 First, `if()&else()` commands are added to check the number of cores are used in the main function is bigger than maximum number of the cores or not.
 Logically the computer cannot use the cores that doesn't exist. `max.cores` is a numeric object that stores the maximum number of the cores in the CPU.
@@ -615,8 +615,7 @@ ggplot(ols$average,aes(x=mse,col="OLS"))+facet_grid(n~.)+geom_density()+
   scale_color_manual(name = "Estimation", values = c("OLS" = "blue", "GLS" = "red"))
 ```
 
-
-
+\pagebreak
 
 # Conclusion
 
@@ -630,8 +629,11 @@ Theoretically, this work could be implemented as an R package to share it with t
 project besides some minor differences, there is currently no need in doing that.
 
 
+\pagebreak
 
 # References
+
+\pagebreak
 
 # Contributions
 
