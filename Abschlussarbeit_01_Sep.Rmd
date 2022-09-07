@@ -48,14 +48,14 @@ library(furrr)
 # Introduction
 
 
-The Monte Carlo method is a simulation method for calculating the probabilistic value of the desired function using random numbers. A repeated pseudo-random number generator estimates sample statistics and returns a probability distribution of the sample, representing the parameter[@Barbu_2020]. Monte Carlo methods are combined with programming in modern research and contribute to various studies in statistics, economics, and many other scientific fields. 
+The Monte Carlo method is a simulation method for calculating the probabilistic value of the desired function using random numbers. A repeated pseudo-random number generator estimates sample statistics and returns a probability distribution of the sample, representing the parameter[@Barbu_2020]. Monte Carlo methods are combined with programming in modern research and contribute to various studies in statistics, economics and many other scientific fields. 
 This paper progresses on developing a collection of different wrapper functions to partially automatize the process of running a Monte Carlo simulation. The main function provides a convenient interface for Monte Carlo simulations and allows users to create a parameter grid and iterate homogenous function calls over the parameter grid. It also offers informative summary statistics, including visualization with ggplot2-methods and an option to use a parallelization process using the `furrr` package.
 The paper proceeds as follows: Chapter 2 describes pre-processes to establish the Monte Carlo simulation function. The pre-processes include functions to create a parameter grid and the respective data points drawn from random variables from a user-defined distribution, along with functions that provide summary statistics. Chapter 3 details the main Monte Carlo simulation function, which consists of the helper functions introduced in chapter 2. Chapter 4 presents specific examples for the simulation process. Finally, chapter 5 summarizes the work presented in this paper.
 
 
 # Preprocess: Creating Helper functions
 
-The preprocess comprises 5 helper functions: `create_grid()`, `data_generation()`, `summary_function()`, `create_array_function()`, and `output_function()`. The functions are named in a way that the underlying purpose is directly clear. These functions are the building blocks of the `main_function()`, which takes the user input and runs the Monte Carlo simulation by itself.
+The preprocess comprises 5 helper functions: `create_grid()`, `data_generation()`, `summary_function()`, `create_array_function()` and `output_function()`. The functions are named in a way that the underlying purpose is directly clear. These functions are the building blocks of the `main_function()`, which takes the user input and runs the Monte Carlo simulation by itself.
 
 ## create_grid()
 
@@ -99,7 +99,7 @@ parameter_list <- list(c("variable name 1", from, to, by)
                       ,c("variable name 4", from, to, by))
 ```
 
-`parameter_list` works with a minimum of 1 and a maximum of 4 variables. The structure of arguments is similar to `seq()` in R: Each vector contained in the list needs four arguments specified, that is, the function name, the start of the sequence, the end of the sequence, and the steps, by which the interval gets divided. It would be easy to adapt this helper function for more parameters, but it is assumed that a grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the information of the input parameter list and creates a grid with  `tidyr::expand_grid()`. The argument `nrep` specifies how many repetitions per parameter constellation are created, where a separate row in the parameter grid gets created for each repetition.
+`parameter_list` works with a minimum of 1 and a maximum of 4 variables. The structure of arguments is similar to `seq()` in R: Each vector contained in the list needs four arguments specified, that is, the function name, the start of the sequence, the end of the sequence and the steps, by which the interval gets divided. It would be easy to adapt this helper function for more parameters, but it is assumed that a grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the information of the input parameter list and creates a grid with  `tidyr::expand_grid()`. The argument `nrep` specifies how many repetitions per parameter constellation are created, where a separate row in the parameter grid gets created for each repetition.
 
 **`create_grid()` Example:**
 ```{r example create_grid}
@@ -253,7 +253,7 @@ summary_function <- function(sum_fun, data_input){
 ```
 
 **`summary_function` Example:**
-For this example, data is generated using the normal distribution, with the respective parameters n, $\mu$, and the standard deviation specified in the parameter list. The list containing the raw data using `data_generation()` is stored in the object `test_data`, which is the data input for `summary_function()`. The arithmetic mean, using R´s built-in `mean()` - function is used as the second input to calculate the mean of all the data points created under a unique set of parameters. This output relates exactly to each row of the used parameter grid. Later, these summary statistics merged with the parameter grid in a data frame.
+For this example, data is generated using the normal distribution, with the respective parameters n, $\mu$ and the standard deviation specified in the parameter list. The list containing the raw data using `data_generation()` is stored in the object `test_data`, which is the data input for `summary_function()`. The arithmetic mean, using R´s built-in `mean()` - function is used as the second input to calculate the mean of all the data points created under a unique set of parameters. This output relates exactly to each row of the used parameter grid. Later, these summary statistics merged with the parameter grid in a data frame.
 
 
 ```{r summary test}
@@ -380,7 +380,7 @@ array_test
 ```
 
 Under these specifications, the data was transformed into a 4-dimensional array. Sample size n and the sample mean $\mu$ are the variables at the side of each row and column. Also, it was specified that two repetitions are done for each set of parameters, while two values ($\sigma = \{1, 2\}$) were given for the standard deviation. The output contains the correct amount of tables (4). This output style allows the user to oversee a wide variety of different parameter constellations easily.
-Through `create_array_function`, users can obtain all combinations corresponding to each grid, the number of repetitions, and the summary function that users require, such as `mean` in this case.
+Through `create_array_function`, users can obtain all combinations corresponding to each grid, the number of repetitions and the summary function that users require, such as `mean` in this case.
 
 
 ## average_function()
@@ -422,7 +422,7 @@ average_function <- function(grid_for_avg, summary, nrep){
 `nrep`,`cpt`  are used as input parameters in the `output_function`.
 `cpt` means execution time for simulation. More detail will be addressed in the next chapter.
 
-Regarding the structure `output_function`, (1) `out` is an empty list for storing simulation results, averaged results, and summary. (2) `Eco` is the class name of `out`. The class should be assigned to visualize simulation results with `ggplot2` methods. (3) Results from `array_1` and `average_over_reps` are assigned as `out$results` and `out$average` respectively. (4) These results have the classes with their own names: `out$results` and `out$average`, thereby preventing future error when visualizing simulation results with `ggplot2` methods. `ggplot2` methods require specific classes, such as `data.frame`. (5) `cat` is useful for producing output in user-defined functions. It converts its arguments to character vectors, concatenates them to a single character vector, appends the given $`sep` =  string(s)$ to each element, and then outputs them[@rdocumentation]. (6) The neat output is returned at the end.
+Regarding the structure `output_function`, (1) `out` is an empty list for storing simulation results, averaged results and summary. (2) `Eco` is the class name of `out`. The class should be assigned to visualize simulation results with `ggplot2` methods. (3) Results from `array_1` and `average_over_reps` are assigned as `out$results` and `out$average` respectively. (4) These results have the classes with their own names: `out$results` and `out$average`, thereby preventing future error when visualizing simulation results with `ggplot2` methods. `ggplot2` methods require specific classes, such as `data.frame`. (5) `cat` is useful for producing output in user-defined functions. It converts its arguments to character vectors, concatenates them to a single character vector, appends the given $`sep` =  string(s)$ to each element and then outputs them[@rdocumentation]. (6) The neat output is returned at the end.
 
 
 ```{r echo=TRUE}
@@ -471,7 +471,7 @@ output_function <- function(array_1,average_over_reps,parameters,cores,simulatio
 
 # Main Function: Monte Carlo simulation function
 
-The `main_function` is built up by the helper functions in chapter 2 and includes additional arguments to improve the performance of the function. (1) `parameters` is a parameter list, `nrep` is the number of repetitions, simulation is a `data_generation`, `sum_fun` is a summary function that users require, `seed set` is for reproducibility of simulation, and `cores` is the number of cores that exist in the  CPU. (2) `if and else` commands check how many cores are used in the main function and whether cores are more than the maximum number of cores. By using `detectCores()` in the parallel package, the maximum number of the cores in the CPU is saved in the object `max.cores`. (3) Setting the seed is an important step to get the same result for randomization. `main_function` either takes the seed that users decide or set the random seed when there is no seed provided. `sample.int()` generates a random number and uses it as a seed for reproducibility of the simulation. (4) `Sys.time()` function confirms the execution time of the simulation. `startTime` and `endTime` save the simulation's starting time and ending time, respectively. The difference between them is the execution time `cpt`, which is also included in summary statistics. (5) `plan()` is used to parallelize simulation. `plan()` has two arguments, “sequential” or “multisession”. "Sequential" runs non-parallel processing with one core. On the other hand, users can define the number of cores with the "Multisession" argument. Lastly, (6) main_function produces tidy summary statistics with output_function in chapter 2.
+The `main_function` is built up by the helper functions in chapter 2 and includes additional arguments to improve the performance of the function. (1) `parameters` is a parameter list, `nrep` is the number of repetitions, simulation is a `data_generation`, `sum_fun` is a summary function that users require, `seed set` is for reproducibility of simulation and `cores` is the number of cores that exist in the  CPU. (2) `if and else` commands check how many cores are used in the main function and whether cores are more than the maximum number of cores. By using `detectCores()` in the parallel package, the maximum number of the cores in the CPU is saved in the object `max.cores`. (3) Setting the seed is an important step to get the same result for randomization. `main_function` either takes the seed that users decide or set the random seed when there is no seed provided. `sample.int()` generates a random number and uses it as a seed for reproducibility of the simulation. (4) `Sys.time()` function confirms the execution time of the simulation. `startTime` and `endTime` save the simulation's starting time and ending time, respectively. The difference between them is the execution time `cpt`, which is also included in summary statistics. (5) `plan()` is used to parallelize simulation. `plan()` has two arguments, “sequential” or “multisession”. "Sequential" runs non-parallel processing with one core. On the other hand, users can define the number of cores with the "Multisession" argument. Lastly, (6) main_function produces tidy summary statistics with output_function in chapter 2.
 
 
 ```{r}
@@ -552,7 +552,7 @@ test_me <- main_function(parameters=param_list3x
 
 ```
 
-All summary components, results, average result, and simulation summary are clear.
+All summary components, results, average result and simulation summary are clear.
 
 
 ## Test2: Visualization performance
@@ -657,7 +657,7 @@ ggplot(ols$average,aes(x=mse,col="OLS"))+facet_grid(n~.)+geom_density()+
 
 # Conclusion
 
-The above section illustrates the power of our implemented model and gives the fairly easy-to-use tool that still allows for various specifications in terms of used parameters, data generation processes, and summary functions. Researchers who use Monte Carlo studies regularly may save much time using a tool like this in the long run.
+The above section illustrates the power of our implemented model and gives the fairly easy-to-use tool that still allows for various specifications in terms of used parameters, data generation processes and summary functions. Researchers who use Monte Carlo studies regularly may save much time using a tool like this in the long run.
 
 By nature, there may be cases where our implementation does not satisfy the user's needs to the fullest, but for a wide variety of examples we showed, it worked well and served the goal we aimed for. Furthermore, our functional programming approach allows for easy and flexible adjustments in case the use of our functions should be expanded, f.e. if a grid of more than 3 (or 4?) parameters is needed.
 
