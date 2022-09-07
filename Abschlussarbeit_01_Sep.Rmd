@@ -120,19 +120,19 @@ head(create_grid(param_list0, nrep=3), n=10)
 
 ## data_generation()
 
-`data_generation()` takes `grid` and `simulation` as inputs. Users can define a probability distribution of data by entering the name of R packages into the function, such as normal distribution(`rnorm`) and uniform distribution(`runif`).
+`data_generation()` takes `grid` and `simulation` as inputs. Users can define a probability distribution for the data generation process by entering the name of an respective R function, f.e. the normal distribution(`rnorm`) or uniform distribution(`runif`).
 
-The n data points created for each set of parameters get stored as separate elements in a list, since format is a very flexible way of storing data. 
+The n data points created for each set of parameters get stored as separate elements in a list, since this format is a very flexible way of storing data. 
 
-`data_generation()` chooses a mapping function itself based on the number of parameters. The table below shows Mapping function, Mapping function for parallelization and the number of parameters that is used in `data_generation()`:
+`data_generation()` chooses a mapping function itself based on the number of parameters. Regarding the number of parameters and if parallelization is chosen or not, different mapping functions of the `purrrr` package (without parallelization) or `furrr`-package (with parallelisation) are used. The table below gives an overview over the different constellations:
 
 | Map | Map for Parallelization | Number of parameters |
 | :------: | :------: | :------: |
-| map() | future_map | $n = 1$ |
-| map2() | future_map2 | $n = 2$ | 
-| pmap | future_pmap | $n \geq 3$ | 
+| purrr:map() | furrr:future_map | $n = 1$ |
+| purrr:map2() | furrr:future_map2 | $n = 2$ | 
+| purrr:pmap | furrr:future_pmap | $n \geq 3$ | 
 
-`options = furrr_options(seed = TRUE)` is for reproducible random number generation(RNG) process. This argument takes control of the RNG process for parallelization and generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
+`options = furrr_options(seed = TRUE)` is for reproducible random number generation(RNG) processes. This argument takes control of the RNG process for parallelization and always generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
 
 
 ```{r data generation and parallel process}
