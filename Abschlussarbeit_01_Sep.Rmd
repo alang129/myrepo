@@ -3,7 +3,7 @@ title: "A Functional Approach to (Parallelised) Monte Carlo Simulation"
 subtitle: "Advanced R for Econometricians"
 type: "Final Project"
 author: "Alexander Langnau, Öcal Kaptan, Sunyoung Ji"
-discipline: "M.Sc. Econometircs"
+discipline: "M.Sc. Econometrics"
 date: "today"
 studid: "232907, 230914, 229979"
 supervisor: "Prof. Dr. Christoph Hanck"
@@ -49,18 +49,20 @@ library(furrr)
 
 
 The Monte Carlo method is a simulation method for calculating the probabilistic value of a desired function using random numbers. A repeated pseudo-random number generator estimates sample statistics and 
-returns a probability distribution of sample which represents that of parameter[@Barbu_2022]. Monte Carlo Method is combined with programming in modern research and contributes to various studies in statistics, economics, and many other science fields. 
-The paper make a progress on developing a collection of different wrapper functions. The main function provides a convenient interface for Monte Carlo simulations and allows users to create a parameter grid and to iterate homogenous function calls over the parameter grid. It also offers an informative summary statistics including visualization with ggplot-methods and an option to use a parallelization process by using `furrr` package.
-The paper proceeds as follows. Chapter 2 describes preprocesses to establish the Monte Carlo simulation function. The preprocesses includes functions to create grid and dataset with random variables in user-defined distributions, along with functions that provide summary statistics. Chanter 3 details the main Monte Carlo simulation function which consists of functions in the chapter 2. Chapter 4 presents examples with the main function. Finally, chapter 5 concludes.
-Each chapter contains a simple example to show that a function is applicable to as many cases as possible. If there is a restriction, It will be covered and discussed as well.
+returns a probability distribution of sample which represents that of parameter[@Barbu_2022]. Monte Carlo methods are combined with programming in modern research and contribute to various studies in statistics, economics, and many other science fields. 
+This paper makes a progress on developing a collection of different wrapper functions in order to partially automatize the process of running a Monte Carlo simulation. The main function provides a convenient interface for Monte Carlo simulations and allows users to create a parameter grid and to iterate homogenous function calls over the parameter grid. It also offers informative summary statistics including visualization with ggplot-methods and an option to use a parallelization process by utilizing the `furrr` package.
+The paper proceeds as follows: Chapter 2 describes preprocesses to establish the Monte Carlo simulation function. The preprocesses includes functions to create a parameter grid and the respective data points drawn from random variables from an user-defined distribution, along with functions that provide summary statistics. Chapter 3 details??? the main Monte Carlo simulation function which consists of the helper functions introduced in the chapter 2. Chapter 4 presents specific examples for the whole simulation process. Finally, chapter 5 summaries the work presented in this paper.
+
+Each chapter contains a simple example to show the usage of each presented function. The underlying distributions and parameters are vary to demonstrate, that the functions work for different specifications. Possible restrictions will be covered and discussed as well.
 
 # Preprocess: Creating Helper functions
 
-The reprocess comprises 5 helper functions: `create_grid`, `data_generation`, `summary_function`, `create_array_function`, and `output_function`. The performances of the functions appear intuitively in the names. These functions represent the process of building up the main function.
+The reprocess comprises 5 helper functions: `create_grid()`, `data_generation()`, `summary_function()`, `create_array_function()`, and `output_function()`. The functions are named in a way, that the underlying purpose is directly clear. These functions are the building blocks of the `main_function()`, which takes the user input and runs the Monte Carlo simulation by itself.
 
 ## create_grid()
 
-`create_grid` is one of the functions to improve performance of the main Monte Carlo simulation function. That creates a hyper-parameter grid with all permutations of the given parameters. Although a is mainly not known in advance, it is important to find an appropriate range of a to improve performance of  functions.[@Rana_2022]. Users can make their combination of hyper-parameters, then apply it into MC simulation in the main function.
+`create_grid()` is one of the functions to improve performance of the main Monte Carlo simulation function. That creates a hyper-parameter grid with all permutations of the given parameters. Although a is mainly not known in advance, it is important to find an appropriate range of a to improve performance of  functions.[@Rana_2022]. Users can make their combination of hyper-parameters, then apply it into MC simulation in the main function.
+  
   
 ```{r create grid}
 create_grid <- function(parameters, nrep){
