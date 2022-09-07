@@ -393,35 +393,38 @@ repetition(\texttt{nrep}). \textbf{\texttt{create\_grid()} Example:}
 \subsection{data\_generation()}\label{data_generation}}
 
 \texttt{data\_generation()} takes \texttt{grid} and \texttt{simulation}
-as inputs. Users can define a probability distribution of data by
-entering the name of R packages into the function, such as normal
-distribution(\texttt{rnorm}) and uniform distribution(\texttt{runif}).
+as inputs. Users can define a probability distribution for the data
+generation process by entering the name of an respective R function,
+f.e. the normal distribution(\texttt{rnorm}) or uniform
+distribution(\texttt{runif}).
 
 The n data points created for each set of parameters get stored as
-separate elements in a list, since format is a very flexible way of
+separate elements in a list, since this format is a very flexible way of
 storing data.
 
 \texttt{data\_generation()} chooses a mapping function itself based on
-the number of parameters. The table below shows Mapping function,
-Mapping function for parallelization and the number of parameters that
-is used in \texttt{data\_generation()}:
+the number of parameters. Regarding the number of parameters and if
+parallelization is chosen or not, different mapping functions of the
+\texttt{purrrr} package (without parallelization) or
+\texttt{furrr}-package (with parallelisation) are used. The table below
+gives an overview over the different constellations:
 
 \begin{longtable}[]{@{}ccc@{}}
 \toprule()
 Map & Map for Parallelization & Number of parameters \\
 \midrule()
 \endhead
-map() & future\_map & \(n = 1\) \\
-map2() & future\_map2 & \(n = 2\) \\
-pmap & future\_pmap & \(n \geq 3\) \\
+purrr:map() & furrr:future\_map & \(n = 1\) \\
+purrr:map2() & furrr:future\_map2 & \(n = 2\) \\
+purrr:pmap & furrr:future\_pmap & \(n \geq 3\) \\
 \bottomrule()
 \end{longtable}
 
 \texttt{options\ =\ furrr\_options(seed\ =\ TRUE)} is for reproducible
-random number generation(RNG) process. This argument takes control of
-the RNG process for parallelization and generates the same numbers
-according to the given seed. More details can be found by running the
-command \texttt{?furrr\_options} in RStudio.
+random number generation(RNG) processes. This argument takes control of
+the RNG process for parallelization and always generates the same
+numbers according to the given seed. More details can be found by
+running the command \texttt{?furrr\_options} in RStudio.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -463,11 +466,11 @@ command \texttt{?furrr\_options} in RStudio.
 \end{Highlighting}
 \end{Shaded}
 
-Monte Carlo simulations can become quickly very demanding in terms of
-computing time. In that case, Parallel processing is useful. In the
-parallel processes, each process is executed simultaneously but
-separately. Interconnections are proceeded through communication
-chanel\autocite{Czech_2017}
+Monte Carlo simulations can become very demanding in terms of computing
+time. In that case, parallel processing can be useful. In the parallel
+processes, each process is executed simultaneously, but separately.
+Interconnections are proceeded through communication chanel
+\autocite{Czech_2017}
 
 \texttt{data\_generation()} automatically used the right function from
 the \texttt{furrrr}-package, if the user specified more than 1 core.
@@ -539,9 +542,9 @@ functions will be dealt with in the Chapter 3.
 \end{verbatim}
 
 \texttt{sim1} contains the generated data by \texttt{data\_generation}
-with grid2 and poisson distribution as inputs. The below function shows
-the application of \texttt{data\_generation} to uniform and poisson
-distribution:
+with \texttt{grid2} and the poisson distribution as inputs. The below
+function shows the application of \texttt{data\_generation} to uniform
+and poisson distribution:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -552,17 +555,14 @@ distribution:
 
 
 \NormalTok{grid\_unif }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list\_runif, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{)}
-\FunctionTok{tail}\NormalTok{(}\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{runif, }\AttributeTok{grid=}\NormalTok{grid\_unif),}\DecValTok{1}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(}\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{runif, }\AttributeTok{grid=}\NormalTok{grid\_unif),}\DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## $n9
-##  [1] 0.48204261 0.25296493 0.21625479 0.67437639 0.04766363 0.70085309
-##  [7] 0.35188864 0.40894400 0.82095132 0.91885735 0.28252833 0.96110479
-## [13] 0.72839443 0.68637508 0.05284394 0.39522013 0.47784538 0.56025326
-## [19] 0.69826159 0.91568354 0.61835123 0.42842151 0.54208037 0.05847849
-## [25] 0.26085686 0.39715195 0.19774474 0.83192756 0.15288722 0.80341854
+## $n1
+##  [1] 0.66511519 0.09484066 0.38396964 0.27438364 0.81464004 0.44851634
+##  [7] 0.81006435 0.81238951 0.79434232 0.43983169
 \end{verbatim}
 
 \begin{Shaded}
@@ -1081,7 +1081,7 @@ Test1:Summary Performance
 ## 
 ##  Parallelization Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelization :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "10", "100", "10") c("mu", "0", "10", "1") c("sd", "0", "5", "1") 
 ## 
@@ -1091,7 +1091,7 @@ Test1:Summary Performance
 ##  Mean    : 5.001471 
 ##  Median  : 5 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.228317 secs 
+##  Execution Time of Monte Carlo Simulation 0.2354102 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1104,7 +1104,7 @@ arrays sometimes are problematic. \texttt{ggplot2} can be used without
 any problem by taking average of the simulation.
 
 \begin{itemize}
-
+\tightlist
 \item
   Visualizing average
 \end{itemize}
@@ -1115,8 +1115,8 @@ any problem by taking average of the simulation.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/ggplot2-1.pdf} *
-Visualizing average by using \texttt{facet\_grid()}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/ggplot2-1.pdf}
+* Visualizing average by using \texttt{facet\_grid()}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1124,8 +1124,9 @@ Visualizing average by using \texttt{facet\_grid()}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/facet-1.pdf} As given
-graphs above, the simulation result works well with ggplot2 methods.
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/facet-1.pdf}
+As given graphs above, the simulation result works well with ggplot2
+methods.
 
 \hypertarget{examples}{%
 \section{Examples}\label{examples}}
@@ -1182,7 +1183,7 @@ one core is used.
 ## 
 ##  Parallelization Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelization :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1192,7 +1193,7 @@ one core is used.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.08758402 secs 
+##  Execution Time of Monte Carlo Simulation 0.1340079 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1593,7 +1594,7 @@ time. Execution time of the simulation is 16.84 seconds (with 4 cores).
 ## 
 ##  Parallelization Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelization :  4  out of 8 
+##  Number of Cores Used in  Parallelization :  4  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1603,7 +1604,7 @@ time. Execution time of the simulation is 16.84 seconds (with 4 cores).
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 30.7631 secs 
+##  Execution Time of Monte Carlo Simulation 33.59968 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2000,7 +2001,7 @@ Now without parallelization (with 1 core)
 ## 
 ##  Parallelization Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelization :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -2010,7 +2011,7 @@ Now without parallelization (with 1 core)
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 29.45549 secs 
+##  Execution Time of Monte Carlo Simulation 32.74619 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2415,7 +2416,7 @@ for each simulation and saved as \texttt{out\$average\$mse}.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/unnamed-chunk-4-1.pdf}
 
 Also density graph of \texttt{MSE} for \texttt{GLS} and `OLS \(beta2\)
 coefficients.
@@ -2428,7 +2429,7 @@ coefficients.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/unnamed-chunk-5-1.pdf}
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
