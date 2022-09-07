@@ -3,7 +3,7 @@ title: "A Functional Approach to (Parallelised) Monte Carlo Simulation"
 subtitle: "Advanced R for Econometricians"
 type: "Final Project"
 author: "Alexander Langnau, Öcal Kaptan, Sunyoung Ji"
-discipline: "M.Sc. Econometrics"
+discipline: "M.Sc. Econometircs"
 date: "today"
 studid: "232907, 230914, 229979"
 supervisor: "Prof. Dr. Christoph Hanck"
@@ -49,11 +49,10 @@ library(furrr)
 
 
 The Monte Carlo method is a simulation method for calculating the probabilistic value of a desired function using random numbers. A repeated pseudo-random number generator estimates sample statistics and 
-returns a probability distribution of sample which represents that of parameter[@Barbu_2022]. Monte Carlo methods are combined with programming in modern research and contribute to various studies in statistics, economics, and many other science fields. 
-This paper makes a progress on developing a collection of different wrapper functions in order to partially automatize the process of running a Monte Carlo simulation. The main function provides a convenient interface for Monte Carlo simulations and allows users to create a parameter grid and to iterate homogenous function calls over the parameter grid. It also offers informative summary statistics including visualization with ggplot-methods and an option to use a parallelization process by utilizing the `furrr` package.
-The paper proceeds as follows: Chapter 2 describes preprocesses to establish the Monte Carlo simulation function. The preprocesses includes functions to create a parameter grid and the respective data points drawn from random variables from an user-defined distribution, along with functions that provide summary statistics. Chapter 3 details??? the main Monte Carlo simulation function which consists of the helper functions introduced in the chapter 2. Chapter 4 presents specific examples for the whole simulation process. Finally, chapter 5 summaries the work presented in this paper.
-
-Each chapter contains a simple example to show the usage of each presented function. The underlying distributions and parameters are vary to demonstrate, that the functions work for different specifications. Possible restrictions will be covered and discussed as well.
+returns a probability distribution of sample which represents that of parameter[@Barbu_2022]. Monte Carlo Method is combined with programming in modern research and contributes to various studies in statistics, economics, and many other science fields. 
+The paper make a progress on developing a collection of different wrapper functions. The main function provides a convenient interface for Monte Carlo simulations and allows users to create a parameter grid and to iterate homogenous function calls over the parameter grid. It also offers an informative summary statistics including visualization with ggplot-methods and an option to use a parallelization process by using `furrr` package.
+The paper proceeds as follows. Chapter 2 describes preprocesses to establish the Monte Carlo simulation function. The preprocesses includes functions to create grid and dataset with random variables in user-defined distributions, along with functions that provide summary statistics. Chanter 3 details the main Monte Carlo simulation function which consists of functions in the chapter 2. Chapter 4 presents examples with the main function. Finally, chapter 5 concludes.
+Each chapter contains a simple example to show that a function is applicable to as many cases as possible. If there is a restriction, It will be covered and discussed as well.
 
 # Preprocess: Creating Helper functions
 
@@ -121,19 +120,19 @@ head(create_grid(param_list0, nrep=3), n=10)
 
 ## data_generation()
 
-`data_generation()` takes `grid` and `simulation` as inputs. Users can define a probability distribution for the data generation process by entering the name of an respective R function, f.e. the normal distribution(`rnorm`) or uniform distribution(`runif`).
+`data_generation()` takes `grid` and `simulation` as inputs. Users can define a probability distribution of data by entering the name of R packages into the function, such as normal distribution(`rnorm`) and uniform distribution(`runif`).
 
-The n data points created for each set of parameters get stored as separate elements in a list, since this format is a very flexible way of storing data. 
+The n data points created for each set of parameters get stored as separate elements in a list, since format is a very flexible way of storing data. 
 
-`data_generation()` chooses a mapping function itself based on the number of parameters. Regarding the number of parameters and if parallelization is chosen or not, different mapping functions of the `purrrr` package (without parallelization) or `furrr`-package (with parallelisation) are used. The table below gives an overview over the different constellations:
+`data_generation()` chooses a mapping function itself based on the number of parameters. The table below shows Mapping function, Mapping function for parallelization and the number of parameters that is used in `data_generation()`:
 
 | Map | Map for Parallelization | Number of parameters |
 | :------: | :------: | :------: |
-| purrr:map() | furrr:future_map | $n = 1$ |
-| purrr:map2() | furrr:future_map2 | $n = 2$ | 
-| purrr:pmap | furrr:future_pmap | $n \geq 3$ | 
+| map() | future_map | $n = 1$ |
+| map2() | future_map2 | $n = 2$ | 
+| pmap | future_pmap | $n \geq 3$ | 
 
-`options = furrr_options(seed = TRUE)` is for reproducible random number generation(RNG) processes. This argument takes control of the RNG process for parallelization and always generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
+`options = furrr_options(seed = TRUE)` is for reproducible random number generation(RNG) process. This argument takes control of the RNG process for parallelization and generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
 
 
 ```{r data generation and parallel process}
@@ -174,7 +173,7 @@ data_generation <- function(simulation, grid){
 }
 ```
 
-Monte Carlo simulations can become very demanding in terms of computing time. In that case, parallel processing can be useful. In the parallel processes, each process is executed simultaneously, but separately. Interconnections are proceeded through communication chanel [@Czech_2017]
+Monte Carlo simulations can become quickly very demanding in terms of computing time. In that case, Parallel processing is useful. In the parallel processes, each process is executed simultaneously but separately. Interconnections are proceeded through communication chanel[@Czech_2017]
 
 
 `data_generation()` automatically used the right function from the `furrrr`-package, if the user specified more than 1 core. 
@@ -205,7 +204,8 @@ sim1
  
 ```
 
-`sim1` contains the generated data by `data_generation` with `grid2` and the poisson distribution as inputs. The below function shows the application of `data_generation` to uniform and poisson distribution:
+`sim1` contains the generated data by `data_generation` with grid2 and poisson distribution as inputs.
+The below function shows the application of `data_generation` to uniform and poisson distribution:
 
 ```{r, dg application}
 # Application to Uniform distribution
@@ -215,7 +215,7 @@ param_list_runif <- list(c("n", 10, 30, 10)
 
 
 grid_unif <- create_grid(param_list_runif, nrep=3)
-head(data_generation(simulation=runif, grid=grid_unif),1)
+tail(data_generation(simulation=runif, grid=grid_unif),1)
 
 # Application to Poisson distribution
 
@@ -542,7 +542,7 @@ return(summary_1)
 
 Tests below presents the performance of main_function with normal distribution.
 
-Test1:Summary Performance
+## Test1:Summary Performance
 
 ```{r, Testing main function}
 param_list3x <- list(c("n", 10, 100, 10)
@@ -560,13 +560,15 @@ test_me <- main_function(parameters=param_list3x
 
 All components of summary, results, average result and summary of simulation are clear.
 
-`out$average` is for visualization purpose, since working with arrays sometimes are problematic. `ggplot2` can be used without any problem by taking average of the simulation.
+
+## Test2: Visualization performance
 
 * Visualizing average
 ```{r,ggplot2}
 ggplot(test_me$average,aes(x=avg,y=n))+geom_line()
 
 ```
+
 * Visualizing average by using `facet_grid()`
 ```{r,facet}
 ggplot(test_me$average,aes(x=avg))+facet_grid(n~.)+geom_density()
@@ -576,7 +578,8 @@ As given graphs above, the simulation result works well with ggplot2 methods.
 
 # Examples
 
-As an example to Monte Carlo Simulation , `OLS` and `GLS` $beta2$ coeffients are simulated by using parallelisation and also without parallelisation to show execution time of the parallel process.
+As an example to
+Monte Carlo Simulation, OLS and GLS coefficients(/beta2) are simulated with/without parallelization to show execution time of the parallel process.
 ```{r,ols-gls}
 ols_f <- function(n,mu,sd){
   e <- rnorm(n,mu,sd)
@@ -599,33 +602,44 @@ gls_f <- function(n,mu,sd){
   param_list <- list(c("n",100,1000,100),c("mu",0,1,0.25),c("sd",1,2,.5))
 }
 ```
-As seen as above, simple `OLS` and `GLS` functions are defined to find $beta2$ coefficients. Here, the execution time of the  `GLS` function would be much more longer than `OLS` function.The reason for that in `GLS` function `The Cholesky Decomposition` is used.Lets run the simulation for `OLS` function. 
+As shown above, simple OLS and GLS functions are defined to find /beta2 coefficients. The execution time of the GLS function would be much more longer than OLS function, since “The Cholesky Decomposition” is applied to GLS function.
 
 
-Total execution time of `OLS` simulation is 8.46 seconds. Only one core is used.  
+* OLS simulation without parallel processing:  
 ```{r , ols}
  param_list <- list(c("n",100,1000,100),c("mu",0,1,0.25),c("sd",1,2,.5))
 ols <- main_function(parameters = param_list,nrep=5,simulation = ols_f,sum_fun="mean",seed=123,cores=1)
 ols
 ```
-Same function ,`OLS` is now used in parallel with 4 cores. Execution time of the simulation is 3.85 seconds.
-```{r, parallel ols}
+Total execution time of OLS simulation is 8.46 seconds when only one core is used
 
+
+* OLS simulation with parallel processing:
+
+```{r, parallel ols}
+ols <- main_function(parameters = param_list,nrep=5,simulation = ols_f,sum_fun="mean",seed=123,cores=4)
+ols
 ```
-Now lets run  `GLS` function in parallel and check the execution time. Execution time of the simulation is 16.84 seconds (with 4 cores). 
+Total execution time of OLS simulation is 12 seconds when only 4 core is used
+
+
+* GLS with parallel processing:
 ```{r,gls in parallel}
 gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=4)
 gls
 ```
-Now without parallelization (with 1 core)
+
+
+• GLS without parallel processing:
 
 ```{r,gls}
 gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=1)
 gls
 ```
-As seen as  on the summary part, total execution time of the simulation took 36.35 seconds which also proves that parallel process works well.As a reminder, those simulations ran on MacBook Air 10 with  total 8 (4 performance and 4 efficiency) cores. Execution times of the simulation might differ on other computers.
+As seen as  on the summary part, total execution time of the simulation took 36.35 seconds which also proves that parallel process works well.As a reminder, those simulations ran on MacBook Air 10 with  total 8 cores. Execution times of the simulation might differ on other computers.
 
-Now, lets use the simulation results and visualize them by using ggplot2 methods.Here, additional `MSE`(Mean Square Error) are calculated for each simulation and saved as `out$average$mse`.
+* Visualizing MSE(Mean Square Error) in OLS and GLS simulations: MSE is calculated by
+`out$average$mse` for each simulation.
 
 ```{r}
 gls$average <-  gls$average %>% mutate(mse =(2-avg)^2 )
@@ -638,7 +652,7 @@ ols$average %>% ggplot(aes(x=avg,y=mu,col="OLS"))+
 
 ```
 
-Also density graph of `MSE` for `GLS` and `OLS $beta2$ coefficients.
+* Density of MSE of $ß2$ in OLS and GLS simulations.
 ```{r}
 ggplot(ols$average,aes(x=mse,col="OLS"))+facet_grid(n~.)+geom_density()+
   geom_density(data=gls$average,aes(x=avg,col="GLS"))+
