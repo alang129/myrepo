@@ -227,7 +227,9 @@ Simulation}\\
   Semester:
   \end{minipage}
   \begin{minipage}[t]{0.7\textwidth}
-  \hspace{1cm}\IfLanguageName{english}{\nth{1} Semester}{1. Fachsemester}
+  \hspace{1cm}\IfLanguageName{english}{\nth{2} Semester}{2. Fachsemester}
+  \hspace{1cm}\IfLanguageName{english}{\nth{4} Semester}{4. Fachsemester}
+  \hspace{1cm}\IfLanguageName{english}{\nth{4} Semester}{4. Fachsemester}
   \end{minipage}
 
   \noindent\begin{minipage}[t]{0.5\textwidth}
@@ -269,7 +271,7 @@ The Monte Carlo method is a simulation method for calculating the
 probabilistic value of the desired function using random numbers. A
 repeated pseudo-random number generator estimates sample statistics and
 returns a probability distribution of the sample, representing the
-parameter\autocite{Barbu_2022}. Monte Carlo methods are combined with
+parameter\autocite{Barbu_2020}. Monte Carlo methods are combined with
 programming in modern research and contribute to various studies in
 statistics, economics, and many other scientific fields. This paper
 progresses on developing a collection of different wrapper functions to
@@ -310,7 +312,7 @@ hyper-parameter grid over all permutations specified by the user. It is
 one of the functions to improve the performance of the main Monte Carlo
 simulation function. Although a is mainly not known in advance, it is
 important to find an appropriate range of a parameter to improve
-performance of the functions.\autocite{Rana_2022}.
+performance of the functions\autocite{Rana_2022}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -475,7 +477,7 @@ Monte Carlo simulations can become very demanding in terms of computing
 time. In that case, parallel processing may be used to reduce the time
 of the simulation. In parallel processes, each process is executed
 simultaneously but separately. Interconnections are proceeded through
-communication channels. \autocite{Czech_2017}
+communication channel\autocite{Czech_2017}.
 
 \texttt{data\_generation()} automatically used the proper function from
 the \texttt{furrrr}-package if the user specified more than one core.
@@ -917,8 +919,8 @@ classes, such as \texttt{data.frame}. (5) \texttt{cat} is useful for
 producing output in user-defined functions. It converts its arguments to
 character vectors, concatenates them to a single character vector,
 appends the given \(`sep` = string(s)\) to each element, and then
-outputs them\autocite{DataCamp}. (6) The neat output is returned at the
-end.
+outputs them\autocite{rdocumentation}. (6) The neat output is returned
+at the end.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1091,7 +1093,7 @@ distribution.
 ##  Mean    : 5.001471 
 ##  Median  : 5 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.1991611 secs 
+##  Execution Time of Monte Carlo Simulation 0.354063 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1104,7 +1106,7 @@ are clear.
 performance}\label{test2-visualization-performance}}
 
 \begin{itemize}
-
+  
 \item
   Visualizing average
 \end{itemize}
@@ -1115,10 +1117,10 @@ performance}\label{test2-visualization-performance}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/ggplot2-1.pdf}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/ggplot2-1.pdf}
 
 \begin{itemize}
-
+  
 \item
   Visualizing average by using \texttt{facet\_grid()}
 \end{itemize}
@@ -1129,9 +1131,9 @@ performance}\label{test2-visualization-performance}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/facet-1.pdf} As given
-graphs above, the simulation result works well with \texttt{ggplot2}
-methods.
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/facet-1.pdf}
+As given graphs above, the simulation result works well with
+\texttt{ggplot2} methods.
 
 \hypertarget{examples}{%
 \section{Examples}\label{examples}}
@@ -1171,7 +1173,7 @@ much longer than OLS function since ``The Cholesky Decomposition'' is
 applied to GLS function.
 
 \begin{itemize}
-
+  
 \item
   OLS simulation without parallel processing:
 \end{itemize}
@@ -1199,7 +1201,7 @@ applied to GLS function.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.08991098 secs 
+##  Execution Time of Monte Carlo Simulation 0.2100129 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1586,7 +1588,7 @@ The total execution time of OLS simulation is 8.46 seconds when only one
 core is used.
 
 \begin{itemize}
-
+  
 \item
   OLS simulation with parallel processing:
 \end{itemize}
@@ -1613,7 +1615,7 @@ core is used.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.955137 secs 
+##  Execution Time of Monte Carlo Simulation 1.780556 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2000,7 +2002,7 @@ The total execution time of OLS simulation is 12 seconds when only four
 core is used.
 
 \begin{itemize}
-
+  
 \item
   GLS with parallel processing:
 \end{itemize}
@@ -2027,7 +2029,7 @@ core is used.
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 29.93686 secs 
+##  Execution Time of Monte Carlo Simulation 56.02841 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2434,7 +2436,7 @@ core is used.
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 29.31905 secs 
+##  Execution Time of Monte Carlo Simulation 54.28675 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2823,7 +2825,7 @@ well. Therefore, execution times of the simulation might differ on other
 computers.
 
 \begin{itemize}
-
+  
 \item
   Visualizing MSE(Mean Square Error) in OLS and GLS simulations: MSE is
   calculated by \texttt{out\$average\$mse} for each simulation.
@@ -2841,10 +2843,10 @@ computers.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/unnamed-chunk-4-1.pdf}
 
 \begin{itemize}
-
+  
 \item
   Density of MSE of \(ß2\) in OLS and GLS simulations.
 \end{itemize}
@@ -2857,7 +2859,7 @@ computers.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/unnamed-chunk-5-1.pdf}
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
@@ -2881,9 +2883,6 @@ of the \texttt{vignette} package already provides a well-working
 alternative to our project. Therefore, besides some minor differences,
 there is no need to do that.
 
-\hypertarget{references}{%
-\section{References}\label{references}}
-
 \hypertarget{contributions}{%
 \section{Contributions}\label{contributions}}
 
@@ -2906,6 +2905,23 @@ Writing the report & 0 & 0 & 0 \\
 Proof-reading & 0 & 0 & 0 \\
 \bottomrule()
 \end{longtable}
+
+\pagebreak
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+Adrian G. Barbu, Song Chun Zhu, ``Monte Carlo Methods'', Springer
+Singapore, 2020, pp.1-4,
+\url{doi:https://doi.org/10.1007/978-981-13-2971-5}\\
+M. Rana, N. Kumar, H. Sharma and K. Pandey, ``Effect of Hyper-Parameter
+Tuning on the Performance of Augmented Random Search,'' 2022 1st
+International Conference on Informatics (ICI), 2022, pp.~47-52, doi:
+10.1109/ICI53355.2022.9786888. Czech, Z. ``In Introduction to Parallel
+Computing'', Cambridge University Press, 2017, pp.~1-34,
+\url{doi:10.1017/9781316795835.002} rdocumentation, DataCamp, ``cat:
+Concatenate and Print'',
+url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 
 \pagebreak
 \renewcommand*{\mkbibnamefamily}[1]{\textbf{#1}}

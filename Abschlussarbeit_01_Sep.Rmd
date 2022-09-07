@@ -48,7 +48,7 @@ library(furrr)
 # Introduction
 
 
-The Monte Carlo method is a simulation method for calculating the probabilistic value of the desired function using random numbers. A repeated pseudo-random number generator estimates sample statistics and returns a probability distribution of the sample, representing the parameter[@Barbu_2022]. Monte Carlo methods are combined with programming in modern research and contribute to various studies in statistics, economics, and many other scientific fields. 
+The Monte Carlo method is a simulation method for calculating the probabilistic value of the desired function using random numbers. A repeated pseudo-random number generator estimates sample statistics and returns a probability distribution of the sample, representing the parameter[@Barbu_2020]. Monte Carlo methods are combined with programming in modern research and contribute to various studies in statistics, economics, and many other scientific fields. 
 This paper progresses on developing a collection of different wrapper functions to partially automatize the process of running a Monte Carlo simulation. The main function provides a convenient interface for Monte Carlo simulations and allows users to create a parameter grid and iterate homogenous function calls over the parameter grid. It also offers informative summary statistics, including visualization with ggplot2-methods and an option to use a parallelization process using the `furrr` package.
 The paper proceeds as follows: Chapter 2 describes pre-processes to establish the Monte Carlo simulation function. The pre-processes include functions to create a parameter grid and the respective data points drawn from random variables from a user-defined distribution, along with functions that provide summary statistics. Chapter 3 details the main Monte Carlo simulation function, which consists of the helper functions introduced in chapter 2. Chapter 4 presents specific examples for the simulation process. Finally, chapter 5 summarizes the work presented in this paper.
 
@@ -59,7 +59,7 @@ The preprocess comprises 5 helper functions: `create_grid()`, `data_generation()
 
 ## create_grid()
 
-The first helper function introduced is the `create_grid()`-function, which automatically creates a hyper-parameter grid over all permutations specified by the user. It is one of the functions to improve the performance of the main Monte Carlo simulation function. Although a is mainly not known in advance, it is important to find an appropriate range of a parameter to improve performance of the functions.[@Rana_2022].
+The first helper function introduced is the `create_grid()`-function, which automatically creates a hyper-parameter grid over all permutations specified by the user. It is one of the functions to improve the performance of the main Monte Carlo simulation function. Although a is mainly not known in advance, it is important to find an appropriate range of a parameter to improve performance of the functions[@Rana_2022].
   
   
 ```{r create grid}
@@ -174,7 +174,7 @@ data_generation <- function(simulation, grid){
 }
 ```
 
-Monte Carlo simulations can become very demanding in terms of computing time. In that case, parallel processing may be used to reduce the time of the simulation. In parallel processes, each process is executed simultaneously but separately. Interconnections are proceeded through communication channels. [@Czech_2017]
+Monte Carlo simulations can become very demanding in terms of computing time. In that case, parallel processing may be used to reduce the time of the simulation. In parallel processes, each process is executed simultaneously but separately. Interconnections are proceeded through communication channel[@Czech_2017].
 
 
 `data_generation()` automatically used the proper function from the `furrrr`-package if the user specified more than one core. Otherwise, the function will stick to the respective mapping function from the `purrr`-package.
@@ -422,7 +422,7 @@ average_function <- function(grid_for_avg, summary, nrep){
 `nrep`,`cpt`  are used as input parameters in the `output_function`.
 `cpt` means execution time for simulation. More detail will be addressed in the next chapter.
 
-Regarding the structure `output_function`, (1) `out` is an empty list for storing simulation results, averaged results, and summary. (2) `Eco` is the class name of `out`. The class should be assigned to visualize simulation results with `ggplot2` methods. (3) Results from `array_1` and `average_over_reps` are assigned as `out$results` and `out$average` respectively. (4) These results have the classes with their own names: `out$results` and `out$average`, thereby preventing future error when visualizing simulation results with `ggplot2` methods. `ggplot2` methods require specific classes, such as `data.frame`. (5) `cat` is useful for producing output in user-defined functions. It converts its arguments to character vectors, concatenates them to a single character vector, appends the given $`sep` =  string(s)$ to each element, and then outputs them[@DataCamp]. (6) The neat output is returned at the end.
+Regarding the structure `output_function`, (1) `out` is an empty list for storing simulation results, averaged results, and summary. (2) `Eco` is the class name of `out`. The class should be assigned to visualize simulation results with `ggplot2` methods. (3) Results from `array_1` and `average_over_reps` are assigned as `out$results` and `out$average` respectively. (4) These results have the classes with their own names: `out$results` and `out$average`, thereby preventing future error when visualizing simulation results with `ggplot2` methods. `ggplot2` methods require specific classes, such as `data.frame`. (5) `cat` is useful for producing output in user-defined functions. It converts its arguments to character vectors, concatenates them to a single character vector, appends the given $`sep` =  string(s)$ to each element, and then outputs them[@rdocumentation]. (6) The neat output is returned at the end.
 
 
 ```{r echo=TRUE}
@@ -664,9 +664,6 @@ By nature, there may be cases where our implementation does not satisfy the user
 Theoretically, this work could be implemented as an R package to share with the R community. However, since the `MonteCarlo()` function of the `vignette` package already provides a well-working alternative to our
 project. Therefore, besides some minor differences, there is no need to do that.
 
-
-# References
-
 # Contributions
 
 |   | Alexander Langnau | Öcal Kaptan | Sunyoung Ji |
@@ -696,3 +693,16 @@ project. Therefore, besides some minor differences, there is no need to do that.
 
 \pagebreak
 
+# References
+
+Adrian G. Barbu, Song Chun Zhu, "Monte Carlo Methods", Springer Singapore, 2020, pp.1-4, doi:https://doi.org/10.1007/978-981-13-2971-5
+\
+
+M. Rana, N. Kumar, H. Sharma and K. Pandey, "Effect of Hyper-Parameter Tuning on the Performance of Augmented Random Search," 2022 1st International Conference on Informatics (ICI), 2022, pp. 47-52, doi: 10.1109/ICI53355.2022.9786888.
+
+Czech, Z. "In Introduction to Parallel Computing", Cambridge University Press, 2017, pp. 1-34, doi:10.1017/9781316795835.002
+
+rdocumentation.org, DataCamp, "cat: Concatenate and Print", url:https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat
+
+
+\pagebreak
