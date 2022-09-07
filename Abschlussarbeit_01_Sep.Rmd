@@ -53,11 +53,11 @@ returns a probability distribution of sample which represents that of parameter[
 This paper makes a progress on developing a collection of different wrapper functions in order to partially automatize the process of running a Monte Carlo simulation. The main function provides a convenient interface for Monte Carlo simulations and allows users to create a parameter grid and to iterate homogenous function calls over the parameter grid. It also offers informative summary statistics including visualization with ggplot-methods and an option to use a parallelization process by utilizing the `furrr` package.
 The paper proceeds as follows: Chapter 2 describes preprocesses to establish the Monte Carlo simulation function. The preprocesses includes functions to create a parameter grid and the respective data points drawn from random variables from an user-defined distribution, along with functions that provide summary statistics. Chapter 3 details??? the main Monte Carlo simulation function which consists of the helper functions introduced in the chapter 2. Chapter 4 presents specific examples for the whole simulation process. Finally, chapter 5 summaries the work presented in this paper.
 
-Each chapter contains a simple example to show the usage of each presented function. The underlying distributions and parameters are vary to demonstrate, that the functions work for different specifications. Possible restrictions will be covered and discussed as well.
+Each chapter contains a simple example to show the usage of each presented function. The underlying distributions and parameters vary to demonstrate, that the functions works for different specifications. Possible restrictions will be covered and discussed as well.
 
 # Preprocess: Creating Helper functions
 
-The reprocess comprises 5 helper functions: `create_grid()`, `data_generation()`, `summary_function()`, `create_array_function()`, and `output_function()`. The functions are named in a way, that the underlying purpose is directly clear. These functions are the building blocks of the `main_function()`, which takes the user input and runs the Monte Carlo simulation by itself.
+The preprocess comprises 5 helper functions: `create_grid()`, `data_generation()`, `summary_function()`, `create_array_function()`, and `output_function()`. The functions are named in a way, that the underlying purpose is directly clear. These functions are the building blocks of the `main_function()`, which takes the user input and runs the Monte Carlo simulation by itself.
 
 ## create_grid()
 
@@ -101,7 +101,7 @@ parameter_list <- list(c("variable name 1", from, to, by)
                       ,c("variable name 4", from, to, by))
 ```
 
-`parameter_list` works with a minimum of 1 and a maximum of 4 variables. The structure of arguments is similar to `seq()` in R: Each vector contained in the list needs 4 arguments specified, that is the function name, the start of the sequence, the end of the sequence and the steps, by which the interval gets divided. It would be easy to adapt this helper function for more parameters, but it is assumed, that a grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the information of the input parameter list and creates a grid with  `tidyr::expand_grid()`. The argument `nrep` specifies how many repetitions per parameter constellation are created, where a seperate row in the parameter grid get created for each repetition.
+`parameter_list` works with a minimum of 1 and a maximum of 4 variables. The structure of arguments is similar to `seq()` in R: Each vector contained in the list needs 4 arguments specified, that is the function name, the start of the sequence, the end of the sequence and the steps, by which the interval gets divided. It would be easy to adapt this helper function for more parameters, but it is assumed, that a grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the information of the input parameter list and creates a grid with  `tidyr::expand_grid()`. The argument `nrep` specifies how many repetitions per parameter constellation are created, where a separate row in the parameter grid get created for each repetition.
 
 **`create_grid()` Example:**
 ```{r example create_grid}
