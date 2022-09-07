@@ -131,11 +131,11 @@ The n data points created for each set of parameters are stored as separate elem
 
 | Map | Map for Parallelization | Number of parameters |
 | :------: | :------: | :------: |
-| map() | future_map | $n = 1$ |
-| map2() | future_map2 | $n = 2$ | 
-| pmap | future_pmap | $n \geq 3$ | 
+| `purrr:map()` | `furrrr:future_map()` | $n = 1$ |
+| `purrr:map2()` | `furrrr:future_map2()` | $n = 2$ | 
+| `purrr:pmap()` | `furrrr:future_pmap()` | $n \geq 3$ | 
 
-`options = furrr_options(seed = TRUE)` is for reproducible random number generation(RNG) process. This argument takes control of the RNG process for parallelization and generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
+`options = furrr_options(seed = TRUE)` is for reproducible random number generation(RNG) processes. This argument takes control of the RNG process for parallelization and always generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
 
 
 ```{r data generation and parallel process}
