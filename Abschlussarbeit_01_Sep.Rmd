@@ -173,7 +173,7 @@ data_generation <- function(simulation, grid){
 }
 ```
 
-Monte Carlo simulations can become quickly very demanding in terms of computing time. In that case, Parallel processing is useful. In the parallel processes, each process is executed simultaneously but separately. Interconnections are proceeded through communication chanel[@Czech_2017]
+Monte Carlo simulations can become very demanding in terms of computing time. In that case, parallel processing can be useful. In the parallel processes, each process is executed simultaneously, but separately. Interconnections are proceeded through communication chanel [@Czech_2017]
 
 
 `data_generation()` automatically used the right function from the `furrrr`-package, if the user specified more than 1 core. 
@@ -204,8 +204,7 @@ sim1
  
 ```
 
-`sim1` contains the generated data by `data_generation` with grid2 and poisson distribution as inputs.
-The below function shows the application of `data_generation` to uniform and poisson distribution:
+`sim1` contains the generated data by `data_generation` with `grid2` and the poisson distribution as inputs. The below function shows the application of `data_generation` to uniform and poisson distribution:
 
 ```{r, dg application}
 # Application to Uniform distribution
@@ -215,7 +214,7 @@ param_list_runif <- list(c("n", 10, 30, 10)
 
 
 grid_unif <- create_grid(param_list_runif, nrep=3)
-tail(data_generation(simulation=runif, grid=grid_unif),1)
+head(data_generation(simulation=runif, grid=grid_unif),1)
 
 # Application to Poisson distribution
 
