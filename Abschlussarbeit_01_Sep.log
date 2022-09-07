@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.30)  7 SEP 2022 14:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.30)  7 SEP 2022 17:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1114,59 +1114,61 @@ Package hyperref Warning: old lof file detected, not used; run LaTeX again.
 LaTeX Warning: Citation 'Barbu_2022' on page 1 undefined on input line 272.
 
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-81.
+82.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Overfull \hbox (1.73827pt too wide) in paragraph at lines 296--301
-\T1/lmr/m/n/10.95 (-20) The re-pro-cess com-prises 5 helper func-tions: \T1/lmt
-t/m/n/10.95 create_grid\T1/lmr/m/n/10.95 (-20) , \T1/lmtt/m/n/10.95 data_genera
-tion\T1/lmr/m/n/10.95 (-20) , \T1/lmtt/m/n/10.95 summary_function\T1/lmr/m/n/10
-.95 (-20) ,
+Underfull \hbox (badness 3919) in paragraph at lines 296--303
+\T1/lmr/m/n/10.95 (+20) The pre-pro-cess com-prises 5 helper func-tions: \T1/lm
+tt/m/n/10.95 create_grid()\T1/lmr/m/n/10.95 (+20) , \T1/lmtt/m/n/10.95 data_gen
+eration()\T1/lmr/m/n/10.95 (+20) ,
  []
 
 
-LaTeX Warning: Citation 'Rana_2022' on page 1 undefined on input line 309.
+Underfull \hbox (badness 1412) in paragraph at lines 296--303
+\T1/lmtt/m/n/10.95 summary_function()\T1/lmr/m/n/10.95 (+20) , \T1/lmtt/m/n/10.
+95 create_array_function()\T1/lmr/m/n/10.95 (+20) , and \T1/lmtt/m/n/10.95 outp
+ut_function()\T1/lmr/m/n/10.95 (+20) . The func-
+ []
+
+
+LaTeX Warning: Citation 'Rana_2022' on page 1 undefined on input line 313.
 
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 315.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 317.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.341 \end{Shaded}
+l.343 \end{Shaded}
                    [1] [2]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 1 on input line 418.
+(longtable)                in table 1 on input line 426.
 
 [3]
 
-LaTeX Warning: Citation 'Czech_2017' on page 4 undefined on input line 470.
+LaTeX Warning: Citation 'Czech_2017' on page 4 undefined on input line 478.
 
+[4]
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-490.
-(/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmtt.fd
+538.
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [4]
-Overfull \hbox (148.37291pt too wide) in paragraph at lines 497--497
-[]\T1/lmtt/m/n/10.95 ## [1] "grid1 <- create_grid(param_list1, nrep=3)\ntail(da
-ta_generation(simulation=rnorm, grid=grid1),1)"[] 
- []
-
-[5] [6]
+) [5] [6]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 6
-42.
- (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmr.fd
-File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [7]
-[8] [9] [10] [11]
+41.
 
-LaTeX Warning: Citation 'DataCamp' on page 12 undefined on input line 921.
+(/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) [7] [8] [9]
+[10] [11]
+
+LaTeX Warning: Citation 'DataCamp' on page 12 undefined on input line 920.
 
 [12] [13] [14] [15]
-Overfull \hbox (96.63431pt too wide) in paragraph at lines 1098--1098
+Overfull \hbox (96.63431pt too wide) in paragraph at lines 1097--1097
 []\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "10", "100", "10") c("mu", 
 "0", "10", "1") c("sd", "0", "5", "1")[] 
  []
@@ -1176,7 +1178,7 @@ Overfull \hbox (96.63431pt too wide) in paragraph at lines 1098--1098
 File: Seminararbeit_files/figure-latex/ggplot2-1.pdf Graphic file (type pdf)
 <use Seminararbeit_files/figure-latex/ggplot2-1.pdf>
 Package pdftex.def Info: Seminararbeit_files/figure-latex/ggplot2-1.pdf  used o
-n input line 1119.
+n input line 1118.
 (pdftex.def)             Requested size: 455.26445pt x 313.4935pt.
 [16]
 <Seminararbeit_files/figure-latex/facet-1.pdf, id=135, 459.7175pt x 318.18875pt
@@ -1184,7 +1186,7 @@ n input line 1119.
 File: Seminararbeit_files/figure-latex/facet-1.pdf Graphic file (type pdf)
 <use Seminararbeit_files/figure-latex/facet-1.pdf>
 Package pdftex.def Info: Seminararbeit_files/figure-latex/facet-1.pdf  used on 
-input line 1133.
+input line 1132.
 (pdftex.def)             Requested size: 455.26903pt x 315.10977pt.
  [17 <./Seminararbeit_files/figure-latex/ggplot2-1.pdf> <./Seminararbeit_files/
 figure-latex/facet-1.pdf>] [18]
@@ -1221,6 +1223,9 @@ Package pdftex.def Info: Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf
   used on input line 2844.
 (pdftex.def)             Requested size: 451.71394pt x 315.19595pt.
  [56]
+
+LaTeX Warning: Command \ss invalid in math mode on input line 2849.
+
 <Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf, id=321, 453.695pt x 31
 3.17pt>
 File: Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type
@@ -1229,15 +1234,15 @@ File: Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type
 Package pdftex.def Info: Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf
   used on input line 2860.
 (pdftex.def)             Requested size: 453.6939pt x 313.16922pt.
- [57 <./Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf>] [58 <./Seminar
-arbeit_files/figure-latex/unnamed-chunk-5-1.pdf>]
+[57 <./Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf>] [58 <./Seminara
+rbeit_files/figure-latex/unnamed-chunk-5-1.pdf>]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 2 on input line 2909.
+(longtable)                in table 2 on input line 2908.
 
 [59]
 
-LaTeX Warning: Empty bibliography on input line 2916.
+LaTeX Warning: Empty bibliography on input line 2915.
 
 
 Package longtable Warning: Table widths have changed. Rerun LaTeX.
@@ -1267,11 +1272,11 @@ Package logreq Info: Writing requests to 'Seminararbeit.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 22907 strings out of 478268
- 403944 string characters out of 5846347
+ 22896 strings out of 478268
+ 403810 string characters out of 5846347
  1236452 words of memory out of 5000000
- 40567 multiletter control sequences out of 15000+600000
- 516597 words of font info for 113 fonts, out of 8000000 for 9000
+ 40566 multiletter control sequences out of 15000+600000
+ 516171 words of font info for 108 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  60i,6n,70p,1010b,5033s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local
@@ -1289,7 +1294,7 @@ lm/lmri10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy10.
 pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/
 local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texl
 ive/2022/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Seminararbeit.pdf (64 pages, 453674 bytes).
+Output written on Seminararbeit.pdf (64 pages, 453130 bytes).
 PDF statistics:
  449 PDF objects out of 1000 (max. 8388607)
  336 compressed objects within 4 object streams
