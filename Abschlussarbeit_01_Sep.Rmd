@@ -127,7 +127,7 @@ The second helper function called `data_generation()` takes the arguments `grid`
 
 The n data points created for each set of parameters are stored as separate elements in a list, since this format is a very flexible way of storing data. 
 
-`data_generation()` chooses a mapping function itself based on the number of parameters. The table below shows Mapping function, Mapping function for parallelization and the number of parameters that is used in `data_generation()`:
+`data_generation()` chooses a mapping function itself based on the number of parameters and depending on if parallelization should be used. The table below shows the `:
 
 | Map | Map for Parallelization | Number of parameters |
 | :------: | :------: | :------: |
@@ -176,10 +176,10 @@ data_generation <- function(simulation, grid){
 }
 ```
 
-Monte Carlo simulations can become quickly very demanding in terms of computing time. In that case, Parallel processing is useful. In the parallel processes, each process is executed simultaneously but separately. Interconnections are proceeded through communication chanel[@Czech_2017]
+Monte Carlo simulations can become very demanding in terms of computing time. In that case, parallel processing may be usefil, to reduce the time of the simulation. In the parallel processes, each process is executed simultaneously but separately. Interconnections are proceeded through communication channels. [@Czech_2017]
 
 
-`data_generation()` automatically used the right function from the `furrrr`-package, if the user specified more than 1 core. 
+`data_generation()` automatically used the right function from the `furrrr`-package, if the user specified more than 1 core, otherwise the function will stick to the respective mapping function from the `purrr`-package.
 
 **`data_generation()` Example:**
 The example below demonstrates a non-parallel processing function with a Poisson distribution. The time difference between parallel and non-parallel functions will be dealt with in the Chapter 3.
