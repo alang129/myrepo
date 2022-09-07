@@ -123,7 +123,7 @@ head(create_grid(param_list0, nrep=3), n=10)
 
 ## data_generation()
 
-The second helper function called `data_generation()` takes the arguments `grid` and `simulation` as inputs. `simulation` is the argument for the user defined function for the data generation process, while `grid` is the parameter grid previously created. The user can choose between a variety of probability distributions by entering the name of the function, for example `rnorm` for the normal distribution or `runig` for the uniform distribution
+The second helper function called `data_generation()` takes the arguments `grid` and `simulation` as inputs. `simulation` is the argument for the user defined function for the data generation process, while `grid` is the parameter grid previously created. The user can choose between a variety of probability distributions by entering the name of the function, for example `rnorm` for the normal distribution or `runif` for the uniform distribution
 
 The n data points created for each set of parameters are stored as separate elements in a list, since this format is a very flexible way of storing data. 
 
@@ -186,15 +186,12 @@ The example below demonstrates a non-parallel processing function with a Poisson
 
 ```{r test data_generation()}
 cores <- 1
-#param_list1 <- list(c("n", 10, 20, 10))
+
 
 param_list2 <- list(c("n", 10, 20, 10)
                   ,c("lambda", 0.5, 1, 0.5))
-#create_grid(param_list1, nrep=10)
-#create_grid(param_list1, nrep=1)
 
-'grid1 <- create_grid(param_list1, nrep=3)
-tail(data_generation(simulation=rnorm, grid=grid1),1)'
+
 
 grid2 <- create_grid(param_list2, nrep=1)
 sim1 <- data_generation(simulation=rpois, grid=grid2)
@@ -207,8 +204,8 @@ sim1
  
 ```
 
-`sim1` contains the generated data by `data_generation` with grid2 and poisson distribution as inputs.
-The below function shows the application of `data_generation` to uniform and poisson distribution:
+`sim1` contains the generated data by `data_generation()` with `grid2` and poisson distribution as input.
+The below function shows the application of `data_generation()` to uniform and poisson distribution:
 
 ```{r, dg application}
 # Application to Uniform distribution
