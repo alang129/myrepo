@@ -123,9 +123,9 @@ head(create_grid(param_list0, nrep=3), n=10)
 
 ## data_generation()
 
-`data_generation()` takes `grid` and `simulation` as inputs. Users can define a probability distribution of data by entering the name of R packages into the function, such as normal distribution(`rnorm`) and uniform distribution(`runif`).
+The second helper function called `data_generation()` takes the arguments `grid` and `simulation` as inputs. `simulation` is the argument for the user defined function for the data generation process, while `grid` is the parameter grid previously created. The user can choose between a variety of probability distributions by entering the name of the function, for example `rnorm` for the normal distribution or `runig` for the uniform distribution
 
-The n data points created for each set of parameters get stored as separate elements in a list, since format is a very flexible way of storing data. 
+The n data points created for each set of parameters are stored as separate elements in a list, since this format is a very flexible way of storing data. 
 
 `data_generation()` chooses a mapping function itself based on the number of parameters. The table below shows Mapping function, Mapping function for parallelization and the number of parameters that is used in `data_generation()`:
 
