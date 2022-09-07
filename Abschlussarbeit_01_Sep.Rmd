@@ -61,7 +61,7 @@ The reprocess comprises 5 helper functions: `create_grid()`, `data_generation()`
 
 ## create_grid()
 
-`create_grid()` is one of the functions to improve performance of the main Monte Carlo simulation function. That creates a hyper-parameter grid with all permutations of the given parameters. Although a is mainly not known in advance, it is important to find an appropriate range of a to improve performance of  functions.[@Rana_2022]. Users can make their combination of hyper-parameters, then apply it into MC simulation in the main function.
+The first helper function introduced is the `create_grid()`-function, which automatically creates a hyper-parameter grid over all permutations specified by the user. It is one of the functions to improve performance of the main Monte Carlo simulation function. Although a is mainly not known in advance, it is important to find an appropriate range of a parameter to improve performance of  functions.[@Rana_2022].
   
   
 ```{r create grid}
@@ -92,7 +92,7 @@ create_grid <- function(parameters, nrep){
 }
 ```
 
-Users have to input parameters as a list as following: 
+Users have to input the parameters in a specific format: 
 
 ```
 parameter_list <- list(c("variable name 1", from, to, by) 
@@ -101,7 +101,8 @@ parameter_list <- list(c("variable name 1", from, to, by)
                       ,c("variable name 4", from, to, by))
 ```
 
-`parameter_list` works with a minimum of 1 and a maximum of 4 variables. The structure of arguments is similar to `seq()` in R: A line of arguments is composed with variable name, the start and the end of sequence, the steps. It would be fairly easy to adapt this helper function for more parameters, but it is assumed that a grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the information of the input parameter list and creates a grid with  `tidyr::expand_grid()`. The structure of `create_grid` makes sure that the columns are located after the corresponding variable and creates a different row for each number of repetition(`nrep`).
+`parameter_list` works with a minimum of 1 and a maximum of 4 variables. The structure of arguments is similar to `seq()` in R: Each vector contained in the list needs 4 arguments specified, that is the function name, the start of the sequence, the end of the sequence and the steps, by which the interval gets divided. It would be easy to adapt this helper function for more parameters, but it is assumed, that a grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the information of the input parameter list and creates a grid with  `tidyr::expand_grid()`. The argument `nrep` specifies how many repetitions per parameter constellation are created, where a seperate row in the parameter grid get created for each repetition.
+
 **`create_grid()` Example:**
 ```{r example create_grid}
 
