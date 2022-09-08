@@ -751,6 +751,8 @@ main_function(parameters = param_list,
                      seed=123,
                      cores=1)
 ```
+\pagebreak
+
 **Output of the OLS simulation with parallelisation**
 ```{r echo=FALSE}
 main_function(parameters = param_list,
@@ -774,7 +776,7 @@ main_function(parameters = param_list,
                      seed=123,
                      cores=1)
 ```
-
+\pagebreak
 
 **Output of the GLS simulation with parallelisation**
 
@@ -786,3 +788,4 @@ main_function(parameters = param_list,
                      seed=123,
                      cores=4)
 ```
+\pagebreak
