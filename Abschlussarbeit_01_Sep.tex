@@ -274,22 +274,23 @@ programming in modern research and contribute to various studies in
 statistics, economics and many other scientific fields. This paper
 progresses on developing a collection of different wrapper functions to
 partially automatize the process of running a Monte Carlo simulation.
-The Main function provides a convenient interface for Monte Carlo
-simulations and allows user to create a parameter grid and iterate
-homogeneous function calls over the parameter grid. It also offers
-informative summary statistics, including visualization with
-ggplot2-methods and an option to use a parallelisation plan using the
-\texttt{furrr} package. The paper proceeds as follows: Chapter 2
-describes pre-processes to establish the Monte Carlo simulation
-function. The pre-process contain functions to create a parameter grid
-and the respective data points drawn from a user-defined distribution,
-along with functions that provide summary statistics. Chapter 3 details
-the main Monte Carlo simulation function, which consists of the helper
+The main function, that combines all the other helper functions,
+provides a convenient interface for Monte Carlo simulations and allows
+the user to create a parameter grid and iterate homogeneous function
+calls over the parameter grid. It also offers informative summary
+statistics, including visualization with \texttt{ggplot2}-methods and an
+option to use a parallelisation plan utilizing the \texttt{furrr}
+package. The paper proceeds as follows: Chapter 2 describes
+pre-processes to establish the Monte Carlo simulation function. The
+pre-process contains functions to create a parameter grid and the
+respective data points drawn from a user-defined distribution, along
+with functions that provide summary statistics. Chapter 3 details the
+main Monte Carlo simulation function, which consists of the helper
 functions introduced in chapter 2. Chapter 4 presents specific examples
 for the simulation process. Finally, chapter 5 summarizes the work
-presented in this paper. Concerning the size of the main function
-result, the outputs of the simulation results in chapter 4 reported in
-Appendix.
+presented in this paper. Since the output of the simulation in chapter 4
+is quite lengthy, it was moved to the Appendix in order not to overload
+the structure of the actual paper.
 
 \hypertarget{pre-process-creating-helper-functions}{%
 \section{Pre-process: Creating Helper
@@ -303,8 +304,9 @@ clear. These functions are the building blocks of the
 \texttt{main\_function()}, which takes the user input and runs the Monte
 Carlo simulation by itself.
 
-\hypertarget{create_grid}{%
-\subsection{create\_grid()}\label{create_grid}}
+\hypertarget{helper-function-1-create_grid}{%
+\subsection{\texorpdfstring{Helper function 1:
+\texttt{create\_grid()}}{Helper function 1: create\_grid()}}\label{helper-function-1-create_grid}}
 
 The first helper function introduced is the
 \texttt{create\_grid()}-function, which automatically creates a
@@ -350,15 +352,15 @@ parameter_list <- list(c("variable name 1", from, to, by)
                       ,c("variable name 4", from, to, by))
 \end{verbatim}
 
-\texttt{parameter\_list} works with a minimum of 1 and a maximum of 4
-variables. The structure of arguments is similar to \texttt{seq()} in R:
-Each vector contained in the list needs four arguments specified, that
-is, the function name, the start of the sequence, the end of the
-sequence and the steps, by which the interval gets divided. It would be
-easy to adapt this helper function for more parameters, but it is
-assumed that a grid with up to 4 parameters offers enough complexity for
-the simulation. The function basically takes the information of the
-input parameter list and creates a grid with
+\texttt{create\_grid()} works with a minimum of 1 and a maximum of 4
+variables. The structure of arguments in \texttt{parameter\_list} is
+similar to \texttt{seq()} in R: Each vector contained in the list needs
+four arguments specified, that is, the function name, the start of the
+sequence, the end of the sequence and the steps, by which the interval
+gets divided. It would be easy to adapt this helper function for more
+parameters, but it is assumed that a grid with up to 4 parameters offers
+enough complexity for the simulation. The function basically takes the
+information of the input parameter list and creates a grid with
 \texttt{tidyr::expand\_grid()}. The argument \texttt{nrep} specifies how
 many repetitions per parameter constellation are created, where a
 separate row in the parameter grid gets created for each repetition.
@@ -393,8 +395,9 @@ separate row in the parameter grid gets created for each repetition.
 ## 10    10     0   0.1      1     1
 \end{verbatim}
 
-\hypertarget{data_generation}{%
-\subsection{data\_generation()}\label{data_generation}}
+\hypertarget{helper-function-2-data_generation}{%
+\subsection{\texorpdfstring{Helper function 2:
+\texttt{data\_generation()}}{Helper function 2: data\_generation()}}\label{helper-function-2-data_generation}}
 
 The second helper function called \texttt{data\_generation()} takes the
 arguments \texttt{grid} and \texttt{simulation} as inputs.
@@ -402,15 +405,15 @@ arguments \texttt{grid} and \texttt{simulation} as inputs.
 the data generation process, while \texttt{grid} is the parameter grid
 previously created. The user can choose between a variety of probability
 distributions by entering the name of the function, for example,
-\texttt{rnorm()} for the normal distribution or \texttt{runif()} for the
+\texttt{rnorm} for the normal distribution or \texttt{runif} for the
 uniform distribution.
 
 The n data points created for each set of parameters are stored as
-separate elements in a list since this format is a very flexible way of
+separate elements in a list, since this format is a very flexible way of
 storing data.
 
 \texttt{data\_generation()} chooses relative mapping function base on
-specification shown as on the table below.
+specification shown as on the table below:
 
 \begin{longtable}[]{@{}ccc@{}}
 \toprule()
@@ -425,7 +428,7 @@ Mapping & Mapping with parallelisation & Number of parameters \\
 
 \texttt{options\ =\ furrr\_options(seed\ =\ TRUE)} is for reproducible
 random number generation (RNG) processes. This argument takes control of
-the RNG process for parallelization and always generates the same
+the RNG process for parallelisation and always generates the same
 numbers according to the given seed. More details can be found by
 running the command \texttt{?furrr\_options} in RStudio.
 
@@ -479,12 +482,12 @@ simultaneously but independently. Interconnections are proceeded through
 communication channel \autocite{Czech_2017}.
 
 \texttt{data\_generation()} automatically used the proper function from
-the \texttt{furrrr}-package. If the user specified more than one core.
+the \texttt{furrrr}-package, if the user specified more than one core.
 Otherwise, the function will stick to the respective mapping function
 from the \texttt{purrr}-package.
 
 \textbf{Example to \texttt{data\_generation()}:} The example below
-demonstrates the data generation process with Poisson distribution
+demonstrates the data generation process using a Poisson distribution
 without parallelisation. The advantage in computation time with
 parallelisation will be discussed in Chapter 3.
 
@@ -539,27 +542,44 @@ parallelisation will be discussed in Chapter 3.
 \end{verbatim}
 
 \texttt{sim1} contains the generated data by \texttt{data\_generation()}
-with \texttt{grid2} and Poisson distribution as input. The function
-below shows the application of \texttt{data\_generation()} to uniform
-and Poisson distribution:
+with \texttt{grid2} and Poisson distribution as input. Below, the second
+example is demonstrated to showcase the capabilities using a uniform
+distribution. The user could even define his own function for generating
+the data and use it for the simulation process. The information stored
+in the parameter list is used by position, not by variable name. Thats
+why its important specify any variables in the correct order, that shall
+be used for the simulation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Application to uniform distribution}
 \NormalTok{param\_list\_runif }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"n"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{30}\NormalTok{, }\DecValTok{10}\NormalTok{)}
 \NormalTok{                         ,}\FunctionTok{c}\NormalTok{(}\StringTok{"min"}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)}
-\NormalTok{                         ,}\FunctionTok{c}\NormalTok{(}\StringTok{"max"}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\NormalTok{                         ,}\FunctionTok{c}\NormalTok{(}\StringTok{"max"}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{))}
 
 
 \NormalTok{grid\_unif }\OtherTok{\textless{}{-}} \FunctionTok{create\_grid}\NormalTok{(param\_list\_runif, }\AttributeTok{nrep=}\DecValTok{3}\NormalTok{)}
-\FunctionTok{head}\NormalTok{(}\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{runif, }\AttributeTok{grid=}\NormalTok{grid\_unif),}\DecValTok{1}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(}\FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{runif, }\AttributeTok{grid=}\NormalTok{grid\_unif),}\DecValTok{4}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## $n1
-##  [1] 0.66511519 0.09484066 0.38396964 0.27438364 0.81464004 0.44851634
-##  [7] 0.81006435 0.81238951 0.79434232 0.43983169
+##  [1] 1.3302304 0.1896813 0.7679393 0.5487673 1.6292801 0.8970327 1.6201287
+##  [8] 1.6247790 1.5886846 0.8796634
+## 
+## $n2
+##  [1] 1.508950317 1.258442263 1.420364803 0.001249547 0.950633148 0.440237770
+##  [7] 0.759633075 1.225542007 0.703595818 0.222270849
+## 
+## $n3
+##  [1] 0.4872389 1.3361112 0.8352936 1.5763917 0.2057293 0.8697855 1.9699140
+##  [8] 1.7861022 1.7729381 0.3501053
+## 
+## $n4
+##  [1] 0.2613914 1.3062039 0.6870329 1.3135163 0.6407465 0.3753822 1.5645886
+##  [8] 0.1871900 0.9335581 1.0230109 1.1999779 0.6656471 0.9772261 1.9089477
+## [15] 0.9658048 1.7807004 1.8288764 1.2174700 0.8213796 0.2941894
 \end{verbatim}
 
 As explained before, the data is stored in a list, where data points for
@@ -568,19 +588,20 @@ variable (saved under \texttt{\$n1}) is based on 10 draws from a uniform
 distribution with \(\mathcal{U}_{[0,2]}\). Each variable in the list
 relates to a row in the parameter grid.
 
-\hypertarget{summary_function}{%
-\subsection{summary\_function()}\label{summary_function}}
+\hypertarget{helper-function-3-summary_function}{%
+\subsection{\texorpdfstring{Helper function 3:
+\texttt{summary\_function()}}{Helper function 3: summary\_function()}}\label{helper-function-3-summary_function}}
 
 So far, the paper explains how to create \emph{raw} data with the
-functions \texttt{create\_grid()} and \texttt{data\_generation()} using
-chosen probability distribution. This chapter introduces
+functions \texttt{create\_grid()} and \texttt{data\_generation()} based
+on a chosen probability distribution. This chapter introduces
 \texttt{summary\_function()} which applies a user-defined function to
-create summary statistic on the raw data generated before. The function
-uses a sapply-loop to apply the user-defined
-summary\_function()(\texttt{sum\_fun})(such as mean()) on each element
-of the list containing the raw data. Results are stored in a
-\((nrow(grid ) X 1)\)-dimensional matrix, which is combined with the
-parameter grid in the next step.
+calculate a summary statistic on the raw data generated before. The
+function uses a \texttt{sapply}-loop to apply the user-defined summary
+function (\texttt{sum\_fun}) on each element of the list containing the
+raw data. Any summary may be applied, that returns a singular output
+value. Results are stored in a \texttt{(nrow(grid)\ X\ 1)}-dimensional
+matrix, which is combined with the parameter grid in the next step.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -601,19 +622,19 @@ parameter grid in the next step.
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{\texttt{summary\_function()} Example:}
+\textbf{Example to \texttt{summary\_function()}:}
 
 For this example, data is generated using the normal distribution, with
 the respective parameters n, \(\mu\) and \(\sigma\) specified in the
 parameter list. The list containing the raw data created by
 \texttt{data\_generation()} is stored in the variable
 \texttt{test\_data}, which is the data input for
-\texttt{summary\_function()}. The arithmetic mean, with base R
-\texttt{mean()} function, is supplied as the second input to calculate
-the mean of all the data points created under a unique set of
+\texttt{summary\_function()}. The arithmetic mean, using base R´s
+\texttt{mean()}-function, is supplied as the second input to calculate
+the average of all the data points created under a unique set of
 parameters. The output relates exactly to each row of the used parameter
-grid. Later, these summary statistics R merged with the parameter grid
-in a data frame.
+grid. Later, these summary statistics are merged with the parameter grid
+into a data frame.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -625,6 +646,17 @@ in a data frame.
 \NormalTok{test\_data }\OtherTok{\textless{}{-}} \FunctionTok{data\_generation}\NormalTok{(}\AttributeTok{simulation=}\NormalTok{rnorm, }\AttributeTok{grid=}\NormalTok{grid\_test)}
 \NormalTok{summary\_data }\OtherTok{\textless{}{-}} \FunctionTok{summary\_function}\NormalTok{(}\AttributeTok{sum\_fun=}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{),}
                                  \AttributeTok{data\_input=}\NormalTok{test\_data)}
+
+\FunctionTok{nrow}\NormalTok{(summary\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 180
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \FunctionTok{head}\NormalTok{(summary\_data)}
 \end{Highlighting}
 \end{Shaded}
@@ -639,29 +671,27 @@ in a data frame.
 ## [6,] 1.0260035
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{nrow}\NormalTok{(summary\_data)}
-\end{Highlighting}
-\end{Shaded}
+\hypertarget{helper-function-4-create_array_function}{%
+\subsection{\texorpdfstring{Helper function 4:
+\texttt{create\_array\_function()}}{Helper function 4: create\_array\_function()}}\label{helper-function-4-create_array_function}}
 
-\begin{verbatim}
-## [1] 180
-\end{verbatim}
-
-\hypertarget{create_array_function}{%
-\subsection{create\_array\_function()}\label{create_array_function}}
-
-?????????????Even though the example above includes a relatively small
-parameter grids, the simulation returns 180 summarize data points. In
-\texttt{main\_function()}, the results from the previous step get merged
-with the parameter grid into one data frame. This way of storing the
-data allows user to apply further data wrangling processes. A
+Even though the example above applies a relatively small parameter grid,
+the simulation still returns 180 summarize data points. Like explained
+before, in \texttt{main\_function()} the results from the previous step
+get merged with the parameter grid into one data frame. This way of
+storing the data allows the user to apply further data wrangling
+processes, but is not the most overseeable way to display the data. A
 multidimensional array is more suitable for printing the output in a
 tidy and clear way. \texttt{create\_array\_function()} takes all
-relevant data from the previous steps (parameter grid and the results of
-the Monte Carlo simulation) and transforms it into an array with the
-correct dimensions.???????????????
+relevant data from the previous steps and transforms it into an array
+with the correct dimensions. The function works with up to three
+variables supplied in the parameter list. Using the number of
+repetitions as an additional dimension,
+\texttt{create\_array\_function()} can create up to 4-dimensional
+arrays. Due to the same reasoning regarding the size of the parameter
+grid, no further capabilities were implemented beyond this point, since
+five or more dimensional arrays would be extremely hard to overlook,
+even tough it would be easy to expand the use for more variables.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -681,7 +711,7 @@ correct dimensions.???????????????
   
 \NormalTok{  matrix.numeration }\OtherTok{\textless{}{-}}  \FunctionTok{paste}\NormalTok{(}\StringTok{"rep"}\NormalTok{,}\StringTok{"="}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{nrep, }\AttributeTok{sep =} \StringTok{""}\NormalTok{)}
   
-  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(parameters)}\SpecialCharTok{==}\DecValTok{1}\NormalTok{)\{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(parameters)}\SpecialCharTok{==}\DecValTok{1}\NormalTok{)\{ }\CommentTok{\#for 1 variable}
 \NormalTok{    comb\_ordered }\OtherTok{\textless{}{-}}\NormalTok{  comb }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{2}\NormalTok{])}
 \NormalTok{    seq1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{1}\NormalTok{]))}
     
@@ -691,7 +721,7 @@ correct dimensions.???????????????
 \NormalTok{    dim\_names\_list }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(row.names, matrix.numeration)}
 \NormalTok{  \}}
   
-  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(parameters)}\SpecialCharTok{==}\DecValTok{2}\NormalTok{)\{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(parameters)}\SpecialCharTok{==}\DecValTok{2}\NormalTok{)\{ }\CommentTok{\#for 2 variables}
 \NormalTok{    comb\_ordered }\OtherTok{\textless{}{-}}\NormalTok{  comb }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{2}\NormalTok{])  }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{3}\NormalTok{])}
 \NormalTok{    seq1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{1}\NormalTok{]))}
 \NormalTok{    seq2 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{2}\NormalTok{]))}
@@ -703,7 +733,7 @@ correct dimensions.???????????????
 \NormalTok{    dim\_names\_list }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(row.names, column.names, matrix.numeration)}
 \NormalTok{  \}}
   
-  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(parameters)}\SpecialCharTok{==}\DecValTok{3}\NormalTok{)\{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(parameters)}\SpecialCharTok{==}\DecValTok{3}\NormalTok{)\{ }\CommentTok{\#for 3 variable}
 \NormalTok{    comb\_ordered }\OtherTok{\textless{}{-}}\NormalTok{  comb }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{2}\NormalTok{])  }\SpecialCharTok{\%\textgreater{}\%} 
       \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{3}\NormalTok{]) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(comb[,}\DecValTok{4}\NormalTok{]) }
 \NormalTok{    seq1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(storage[}\DecValTok{1}\NormalTok{]))}
@@ -731,11 +761,13 @@ correct dimensions.???????????????
 
 In order to test \texttt{create\_array\_function()}, we need to set up
 an altered version of \texttt{main\_function()}. The
-\texttt{main\_function()} is discussed in the next chapter. Also, a
-slightly modified version of the example using the \texttt{rnorm()} is
-used, where the parameter grid spans over a larger sequence
+\texttt{main\_function()} will be discussed in the next chapter. Also, a
+slightly modified version of the example using \texttt{rnorm} is used,
+where the parameter grid spans over a larger sequence, to demonstrate,
+that \texttt{create\_array\_function()} also works for a complex
+parameter grid.
 
-\textbf{Example to \texttt{create\_array\_function} :}
+\textbf{Example to \texttt{create\_array\_function()} :}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -749,8 +781,7 @@ used, where the parameter grid spans over a larger sequence
 \NormalTok{  raw\_data }\OtherTok{\textless{}{-}} \FunctionTok{data\_generation}\NormalTok{(simulation, grid) }\CommentTok{\#Step 2: simlate data}
 \NormalTok{  summary }\OtherTok{\textless{}{-}} \FunctionTok{summary\_function}\NormalTok{(sum\_fun, }\AttributeTok{data\_input=}\NormalTok{raw\_data) }\CommentTok{\#Step 3: Summary statistics}
 \NormalTok{  comb }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(grid, summary) }\CommentTok{\#Step 4: Combine resuluts with parameters}
-\NormalTok{  array\_1 }\OtherTok{\textless{}{-}} \FunctionTok{create\_array\_function}\NormalTok{(comb, parameters, nrep) }\CommentTok{\#Step 5: Create array}
-  
+ 
   \FunctionTok{return}\NormalTok{(comb)}
 \NormalTok{\}}
 
@@ -807,26 +838,29 @@ used, where the parameter grid spans over a larger sequence
 Under these specifications, the data was transformed into a
 4-dimensional array. Sample size n and the mean \(\mu\) are the
 variables at the side of each row and column. Also, it was specified
-that two repetitions are done for each set of parameters, while two
-values (\(\sigma = \{1, 2\}\)) were given for the standard deviation.
-The output contains the correct amount of tables (4). This output style
-allows the user easily to oversee a wide variety of different parameter
-constellations. ???????????????Through
-\texttt{create\_array\_function()}, the user can obtain all combinations
-corresponding to each grid, the number of repetitions and the summary
-function that user require, such as \texttt{mean} in this
-case.????????????????????????????
+that two repetitions are done for each set of parameters, while a range
+of two values (\(\sigma = \{1, 2\}\)) was given for the standard
+deviation. The output contains the correct amount of tables, namely two
+repetitions for \(\sigma = 1\) and two repetitions for \(\sigma = 2\).
+This output style allows the user to easily oversee a wide variety of
+different parameter constellations.
 
-\hypertarget{average_function}{%
-\subsection{average\_function()}\label{average_function}}
+\hypertarget{helper-function-5-average_function}{%
+\subsection{\texorpdfstring{Helper function 5:
+\texttt{average\_function()}}{Helper function 5: average\_function()}}\label{helper-function-5-average_function}}
 
 The example above used only two repetitions for each parameter
 constellation to keep the output simple. However, in practice the user
 would probably repeat the simulations over a higher number of
 repetitions, which would also drastically increase the size of the
-array. \texttt{average\_function()} calculates the average over all
-repetitions and stores in an array with a dimension, that is reduced by
-one since the dimension for repetitions is not relevant anymore.
+array. It may be of interest to see the average over all repetitions, in
+order to get a more compact output. \texttt{average\_function()}
+calculates the average over all repetitions and stores the results in an
+array with a dimension, that is reduced by one, since the dimension for
+repetitions is not relevant anymore. At this point no further example is
+demonstrated for this function, because the output would look similar to
+the array before. But the final simulation will include the averaged
+simulation results, that are created the help of this function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -851,19 +885,20 @@ one since the dimension for repetitions is not relevant anymore.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{output_function}{%
-\subsection{output\_function()}\label{output_function}}
+\hypertarget{helper-function-6-output_function}{%
+\subsection{\texorpdfstring{Helper function 6:
+\texttt{output\_function()}}{Helper function 6: output\_function()}}\label{helper-function-6-output_function}}
 
-\texttt{output\_function()} is the last part of pre-process. This
+\texttt{output\_function()} is the last part of the pre-process. This
 function takes results and parameters of the Monte Carlo simulation as
-inputs and converts them into an tidy output format. Thus, user can
-obtain the tidy form of a simulation summary.
+inputs and converts them into an tidy output format. Thus, the user can
+obtain a tidy form of a simulation summary.
 
 \texttt{array\_1}, \texttt{average\_over\_reps}, \texttt{parameters},
-\texttt{cores}, \texttt{simulation}, \texttt{nrep}, \texttt{cpt} are
-used as input parameters in the \texttt{output\_function()}.
-\texttt{cpt} variable for the execution time of the simulation. More
-detail will be addressed in the next chapter.
+\texttt{cores}, \texttt{simulation}, \texttt{nrep} and \texttt{cpt} are
+used as input parameters in the \texttt{output\_function()}. The
+variable \texttt{cpt} is used to store the execution time of the
+simulation. The next chapter will discuss this in more detail.
 
 Regarding the structure of \texttt{output\_function()}, (1) \texttt{out}
 is an empty list for storing simulation results, averaged results and
@@ -871,16 +906,16 @@ summary. (2) \texttt{Eco} is the class name of \texttt{out}. The class
 should be assigned to visualize simulation results with \texttt{ggplot2}
 methods. (3) Results from \texttt{array\_1} and
 \texttt{average\_over\_reps} are assigned as \texttt{out\$results} and
-\texttt{out\$average} respectively. (4) These results have the classes
-with their own names: \texttt{out\$results} and \texttt{out\$average},
+\texttt{out\$average} respectively. (4) These results have classes with
+their own names: \texttt{out\$results} and \texttt{out\$average},
 thereby preventing future error when visualizing simulation results with
-\texttt{ggplot2} methods. \texttt{ggplot2} methods require specific
+\texttt{ggplot2}-methods. \texttt{ggplot2}-methods require specific
 classes, such as \texttt{data.frame}. (5) \texttt{cat} is useful for
 producing output in user-defined functions. It converts its arguments to
 character vectors, concatenates them to a single character vector,
-appends the given \texttt{sep}\$ =\$ string(s) to each element and then
-outputs them \autocite{rdocumentation}. (6) The neat output is returned
-at the end.
+appends the given \texttt{sep} \(=\) \texttt{string(s)} to each element
+and then outputs them \autocite{rdocumentation}. (6) The neat output is
+returned at the end.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -922,40 +957,44 @@ at the end.
 \end{Highlighting}
 \end{Shaded}
 
-\texttt{output\_function()} represents the output of the main Monte
-Carlo simulation function in the next chapter.
+\texttt{output\_function()} combines all information relevant for the
+simulation and stores it into a tidy output format, which gets returned
+by the \texttt{main\_function()}, that combines all steps needed for
+running the simulation.
 
-\hypertarget{main_function-monte-carlo-simulation-function}{%
-\section{main\_function() : Monte Carlo simulation
-function}\label{main_function-monte-carlo-simulation-function}}
+\pagebreak
+
+\hypertarget{monte-carlo-simulation-function-main_function}{%
+\section{\texorpdfstring{Monte Carlo simulation function:
+\texttt{main\_function()}}{Monte Carlo simulation function: main\_function()}}\label{monte-carlo-simulation-function-main_function}}
 
 The \texttt{main\_function()} is built-up by the helper functions
 introduced in chapter 2 and includes additional arguments to combine
 different steps of the helper functions. (1) \texttt{parameters} is a
 parameter list, \texttt{nrep} is the number of repetitions,
-\texttt{simulation()} is a data generation process, \texttt{sum\_fun} is
-summary function that user define , \texttt{seed\ set} is for
+\texttt{simulation} is a data generation process, \texttt{sum\_fun} is
+summary function that the user defines, \texttt{seed\ set} is for
 reproducibility of the simulation and \texttt{cores} is the number of
-cores that exist in CPU. (2) \texttt{if\ and\ else} commands check how
-many cores are used in the \texttt{main\_function()} and whether
-\texttt{cores} are more than the maximum number of cores. By using
-\texttt{detectCores()} from the \texttt{parallel} package, the maximum
-number of cores in CPU is saved in the variable \texttt{max.cores}. (3)
-Setting the seed is an important step to get the same result for
-randomization. \texttt{main\_function()} either takes the seed that user
-decide or creates the random seed when there is no seed provided.
-\texttt{sample.int()} generates a random number and uses it as a seed
-for reproducibility of the simulation. (4) \texttt{Sys.time()} function
-confirms the execution time of the simulation. \texttt{startTime} and
-\texttt{endTime} save the simulation's starting time and ending time,
-respectively. The difference between them is the execution time
-\texttt{cpt}, which is also included in the summary statistics. (5)
-\texttt{plan()} is used to parallelise the simulation. \texttt{plan()}
-has two arguments, ``sequential'' or ``multisession''. ``Sequential''
-runs non-parallel processing with one core. On the other hand, user can
-define the number of cores with the ``Multisession'' argument. Lastly,
-(6) \texttt{main\_function()} produces tidy summary statistics with
-\texttt{output\_function()} in chapter 2.
+cores, that exist in the CPU. (2) \texttt{if\ and\ else} commands check
+how many cores are used in the \texttt{main\_function()} and whether the
+user defined variable \texttt{cores} exceeds the maximum number of cores
+contained in the CPU. By using \texttt{detectCores()} from the
+\texttt{parallel} package, the maximum number of cores in the CPU is
+saved under the variable \texttt{max.cores}. (3) Setting the seed is an
+important step to obtain reproducibility. \texttt{main\_function()}
+either takes the seed that the user inputs or creates a seed randomly
+using \texttt{sample.int()}, when no seed is provided. (4) The function
+\texttt{Sys.time()} measures the execution time of the simulation.
+\texttt{startTime} and \texttt{endTime} save the simulation's starting
+time and ending time, respectively. The difference between them is the
+execution time stored in \texttt{cpt}, which is also included in the
+summary statistics. (5) \texttt{plan()} is used to parallelise the
+simulation. \texttt{plan()} has two arguments, ``sequential'' or
+``multisession''. ``Sequential'' runs non-parallel processing with one
+core. On the other hand, user can define the number of cores with the
+``multisession'' argument. Lastly, (6) \texttt{main\_function()}
+produces tidy summary statistics with \texttt{output\_function()} in
+chapter 2.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -964,8 +1003,8 @@ define the number of cores with the ``Multisession'' argument. Lastly,
 \NormalTok{                           , nrep }
 \NormalTok{                           , simulation }
 \NormalTok{                           , sum\_fun }
-\NormalTok{                           ,}\AttributeTok{seed =} \ConstantTok{NULL}
-\NormalTok{                           ,}\AttributeTok{cores=}\ConstantTok{NULL}\NormalTok{)\{}
+\NormalTok{                           , }\AttributeTok{seed =} \ConstantTok{NULL}
+\NormalTok{                           , }\AttributeTok{cores=}\ConstantTok{NULL}\NormalTok{)\{}
  
     
   \CommentTok{\#(2)}
@@ -1021,7 +1060,7 @@ define the number of cores with the ``Multisession'' argument. Lastly,
 \end{Shaded}
 
 The tests below present the performance of \texttt{main\_function()}
-with normal distribution.
+with the normal distribution.
 
 \hypertarget{test-1-summary-performance}{%
 \subsection{Test 1 : Summary
@@ -1058,7 +1097,7 @@ performance}\label{test-1-summary-performance}}
 ##  Mean    : 5.001471 
 ##  Median  : 5 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.2028799 secs 
+##  Execution Time of Monte Carlo Simulation 0.2251358 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1098,8 +1137,10 @@ performance}\label{test-2-visualization-performance}}
 \end{Shaded}
 
 \includegraphics{Seminararbeit_files/figure-latex/facet-1.pdf} As given
-graphs above, the simulation result works well with \texttt{ggplot2}
-methods.
+graphs above, the simulation result works well with
+\texttt{ggplot2}-methods.
+
+\pagebreak
 
 \hypertarget{examples}{%
 \section{Examples}\label{examples}}
@@ -1109,7 +1150,7 @@ methods.
 simulations}\label{comparing-the-execution-times-of-ols-and-gls-simulations}}
 
 As an example of Monte Carlo simulation, OLS and GLS coefficients
-\(\beta\) are simulated with and without parallelisation to compare the
+\(\beta\) are estimated with and without parallelisation to compare the
 execution time.
 
 \begin{Shaded}
@@ -1139,8 +1180,8 @@ execution time.
 
 As shown above, simple OLS and GLS functions are defined to find
 \(\beta\) coefficients. However, the execution time of the GLS would be
-much longer than OLS since The Cholesky Decomposition \texttt{chol()} is
-applied to the GLS function.
+much longer than OLS since the Cholesky Decomposition (\texttt{chol()})
+is applied to the GLS function.
 
 \textbf{OLS simulation without parallel processing:}
 
@@ -1172,7 +1213,7 @@ applied to the GLS function.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.09394312 secs 
+##  Execution Time of Monte Carlo Simulation 8.46029388 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1209,13 +1250,13 @@ core is used.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 1.138782 secs 
+##  Execution Time of Monte Carlo Simulation 6.048335 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
 
-The total execution time of OLS simulation is 12 seconds when only four
-core is used.
+The total execution time of OLS simulation is 6 seconds when four cores
+are used.
 
 \textbf{GLS with parallel processing:}
 
@@ -1246,7 +1287,7 @@ core is used.
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 29.96168 secs 
+##  Execution Time of Monte Carlo Simulation 29.79384 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1280,20 +1321,20 @@ core is used.
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 28.80312 secs 
+##  Execution Time of Monte Carlo Simulation 39.71279 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
 
 As seen in the summary part, the total execution time of the simulation
 took 36.35 seconds which also proves that the parallel process works
-well. Therefore, execution times of the simulation might differ on other
-computers.
+well. Therefore, the execution times of the simulation might differ on
+other computers.
 
 \hypertarget{visualisation}{%
 \subsection{Visualisation}\label{visualisation}}
 
-\textbf{Visualizing MSE(Mean Square Error) in OLS and GLS simulations:}
+\textbf{Visualizing MSE(Mean Square Error) of OLS and GLS simulations:}
 
 MSE is calculated by \texttt{out\$average\$mse} for each simulation.
 
@@ -1333,18 +1374,20 @@ MSE is calculated by \texttt{out\$average\$mse} for each simulation.
 \section{Conclusion}\label{conclusion}}
 
 The above section illustrates the power of the implemented model and
-provides the fairly easy-to-use tool that still allows for various
+provides a fairly easy-to-use tool that still allows for various
 specifications in terms of used parameters, data generation processes
 and summary functions. Researchers, who use Monte Carlo studies
-regularly may save much time using a tool like this in the long run.
+regularly, may save alot of time using a tool like this in the long run.
+It also lowers the threshold to run a Monte Carlo simulation for users,
+who dont have the ability or time to code a complete Monte Carlo
+simulation, like it was done for this paper.
 
-By nature, there may be cases, where the implementation does not satisfy
-the user's needs to the fullest, but for a wide variety of examples it
-is showed, it worked well and served the over all purpose. Furthermore,
-the functional programming approach allows for easy and flexible
-adjustments in case the use of the functions should be expanded, such as
-if a grid of more than 3 (or 4?) parameters is
-needed.???????????????????????????????????????????????????
+It was shown, that the code works for many different situations, but
+there are some limitations, f.e. regarding the number of variables used
+in the parameter grid or the fact, that only a singular output can be
+returned by the summary statistic. The functional programming approach
+applied in this work would easily allow for adjustments, in case the
+purpose of the program needs to be altered or expanded.
 
 \pagebreak
 
@@ -1356,18 +1399,19 @@ needed.???????????????????????????????????????????????????
 & Alexander Langnau & Öcal Kaptan & Sunyoung Ji \\
 \midrule()
 \endhead
-Planning & 0 & 0 & 0 \\
-Create\_grid & 0 & 0 & 0 \\
-Data\_generation & 0 & 0 & 0 \\
-Summary\_function & 0 & 0 & 0 \\
-Create\_array\_function & 0 & 0 & 0 \\
-Average\_function & 0 & 0 & 0 \\
-Output\_function & 0 & 0 & 0 \\
-ggplot2 part & 0 & 0 & 0 \\
-Parallelisation & 0 & 0 & 0 \\
-Formatting & 0 & 0 & 0 \\
-Writing the report & 0 & 0 & 0 \\
-Proof-reading & 0 & 0 & 0 \\
+Planning & X & X & X \\
+\texttt{create\_grid()} & X & X & 0 \\
+\texttt{data\_generation()} & X & X & 0 \\
+\texttt{summary\_function()} & X & 0 & 0 \\
+\texttt{create\_array\_function()} & X & 0 & 0 \\
+\texttt{average\_function()} & X & 0 & 0 \\
+\texttt{output\_function()} & 0 & X & 0 \\
+\texttt{main\_function()} & X & X & 0 \\
+ggplot2 part & 0 & X & 0 \\
+formatting & X & X & X \\
+writing the report & X & X & X \\
+literature research & X & X & X \\
+proof-reading & X & X & X \\
 \bottomrule()
 \end{longtable}
 
@@ -1378,7 +1422,7 @@ Proof-reading & 0 & 0 & 0 \\
 
 Adrian G. Barbu, Song Chun Zhu, ``Monte Carlo Methods'', Springer
 Singapore, 2020, pp.1-4,
-\url{doi:https://doi.org/10.1007/978-981-13-2971-5}\\
+\url{doi:https://doi.org/10.1007/978-981-13-2971-5}
 
 Czech, Z. ``In Introduction to Parallel Computing'', Cambridge
 University Press, 2017, pp.~1-34, \url{doi:10.1017/9781316795835.002}
@@ -1412,7 +1456,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.08364701 secs 
+##  Execution Time of Monte Carlo Simulation 0.07933807 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1809,7 +1853,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.716254 secs 
+##  Execution Time of Monte Carlo Simulation 0.712235 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2186,8 +2230,6 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ## [1] "Eco"
 \end{verbatim}
 
-\pagebreak
-
 \hypertarget{appendix-b}{%
 \subsection{Appendix B}\label{appendix-b}}
 
@@ -2209,7 +2251,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 29.04634 secs 
+##  Execution Time of Monte Carlo Simulation 31.50186 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2606,7 +2648,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 29.48948 secs 
+##  Execution Time of Monte Carlo Simulation 29.47388 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2982,6 +3024,8 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ## attr(,"class")
 ## [1] "Eco"
 \end{verbatim}
+
+\pagebreak
 \renewcommand*{\mkbibnamefamily}[1]{\textbf{#1}}
 \renewcommand*{\mkbibnamegiven}[1]{\textbf{#1}}
 \renewcommand*{\mkbibnameprefix}[1]{\textbf{#1}}
