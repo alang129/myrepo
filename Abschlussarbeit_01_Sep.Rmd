@@ -50,7 +50,8 @@ library(furrr)
 
 The Monte Carlo method is a simulation method for calculating the probabilistic value of the desired function using random numbers. A repeated pseudo-random number generator estimates sample statistics and returns a probability distribution of the sample, representing the parameter [@Barbu_2020]. Monte Carlo methods are combined with programming in modern research and contribute to various studies in statistics, economics and many other scientific fields. 
 This paper progresses on developing a collection of different wrapper functions to partially automatize the process of running a Monte Carlo simulation. The Main function provides a convenient interface for Monte Carlo simulations and allows user to create a parameter grid and iterate homogeneous function calls over the parameter grid. It also offers informative summary statistics, including visualization with ggplot2-methods and an option to use a parallelisation plan using the `furrr` package.
-The paper proceeds as follows: Chapter 2 describes pre-processes to establish the Monte Carlo simulation function. The pre-process contain functions to create a parameter grid and the respective data points drawn from a user-defined distribution, along with functions that provide summary statistics. Chapter 3 details the main Monte Carlo simulation function, which consists of the helper functions introduced in chapter 2. Chapter 4 presents specific examples for the simulation process. Finally, chapter 5 summarizes the work presented in this paper. 
+The paper proceeds as follows: Chapter 2 describes pre-processes to establish the Monte Carlo simulation function. The pre-process contain functions to create a parameter grid and the respective data points drawn from a user-defined distribution, along with functions that provide summary statistics. Chapter 3 details the main Monte Carlo simulation function, which consists of the helper functions introduced in chapter 2. Chapter 4 presents specific examples for the simulation process. Finally, chapter 5 summarizes the work presented in this paper. Concerning the size of the main function result, the outputs of the simulation results in chapter 4 reported in Appendix.
+
 
 
 # Pre-process: Creating Helper functions
@@ -739,14 +740,49 @@ rdocumentation.org, DataCamp, "cat: Concatenate and Print", url:https://www.rdoc
 
 # Appendix
 
-## Output of  the OLS simulation
+## Appendix A
+
+**Output of the OLS simulation**
 ```{r echo=FALSE}
-ols
+main_function(parameters = param_list,
+                     nrep=5,
+                     simulation = ols_f,
+                     sum_fun="mean",
+                     seed=123,
+                     cores=1)
+```
+**Output of the OLS simulation with parallelisation**
+```{r echo=FALSE}
+main_function(parameters = param_list,
+                     nrep=5,
+                     simulation = ols_f,
+                     sum_fun="mean",
+                     seed=123,
+                     cores=4)
 ```
 
 
-## Output of the GLS simulation
+## Appendix B
+
+**Output of the GLS simulation without parallelisation**
 
 ```{r echo=FALSE}
-gls
+main_function(parameters = param_list,
+                     nrep=5,
+                     simulation = gls_f,
+                     sum_fun="mean",
+                     seed=123,
+                     cores=1)
+```
+
+
+**Output of the GLS simulation with parallelisation**
+
+```{r echo=FALSE}
+main_function(parameters = param_list,
+                     nrep=5,
+                     simulation = gls_f,
+                     sum_fun="mean",
+                     seed=123,
+                     cores=4)
 ```
