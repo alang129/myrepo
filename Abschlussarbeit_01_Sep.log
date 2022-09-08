@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.30)  8 SEP 2022 01:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.30)  8 SEP 2022 23:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1037,7 +1037,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/usr/local/texlive/2022/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-<Includes/duelogo_en.png, id=64, 230.8625pt x 89.33376pt>
+<Includes/duelogo_en.png, id=84, 230.8625pt x 89.33376pt>
 File: Includes/duelogo_en.png Graphic file (type png)
 <use Includes/duelogo_en.png>
 Package pdftex.def Info: Includes/duelogo_en.png  used on input line 176.
@@ -1086,18 +1086,27 @@ Overfull \hbox (104.8617pt too wide) in paragraph at lines 240--246
 
 
 {/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./Inclu
-des/duelogo_en.png>] (./Seminararbeit.toc)
+des/duelogo_en.png>] (./Seminararbeit.toc
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 4
+.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 10.
+)
 \tf@toc=\write6
 \openout6 = `Seminararbeit.toc'.
 
  [1
 
-] (./Seminararbeit.lot)
+]
+(./Seminararbeit.lot)
 \tf@lot=\write7
 \openout7 = `Seminararbeit.lot'.
 
- [2]
-(./Seminararbeit.lof)
+ [2] (./Seminararbeit.lof)
 \tf@lof=\write8
 \openout8 = `Seminararbeit.lof'.
 
@@ -1105,443 +1114,150 @@ des/duelogo_en.png>] (./Seminararbeit.toc)
 
 LaTeX Warning: Citation 'Barbu_2020' on page 1 undefined on input line 272.
 
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-82.
-(/usr/local/texlive/2022/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-Underfull \hbox (badness 3128) in paragraph at lines 296--303
+
+Underfull \hbox (badness 3128) in paragraph at lines 299--306
 \T1/lmr/m/n/10.95 (+20) The pre-process com-prises 5 helper func-tions: \T1/lmt
 t/m/n/10.95 create_grid()\T1/lmr/m/n/10.95 (+20) , \T1/lmtt/m/n/10.95 data_gene
 ration()\T1/lmr/m/n/10.95 (+20) ,
  []
 
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 313.
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 309.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.339 \end{Shaded}
-                   [1] [2]
-./Seminararbeit.tex:416: Undefined control sequence.
-<argument> @{} >{\centering \arraybackslash 
-                                            }p{(\columnwidth - 4\tabcolsep )...
-l.416 ...width - 4\tabcolsep) * \real{0.3333}}@{}}
-                                                  
-? s
-OK, entering \scrollmode...
-./Seminararbeit.tex:416: Undefined control sequence.
-<argument> ...columnwidth - 4\tabcolsep ) * \real 
-                                                  {0.3333}} >{\centering \ar...
-l.416 ...width - 4\tabcolsep) * \real{0.3333}}@{}}
-                                                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+l.343 \end{Shaded}
+                   [1] [2] [3]
 
-./Seminararbeit.tex:416: Undefined control sequence.
-<argument> ...3333}} >{\centering \arraybackslash 
-                                                  }p{(\columnwidth - 4\tabco...
-l.416 ...width - 4\tabcolsep) * \real{0.3333}}@{}}
-                                                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+LaTeX Warning: Citation 'Czech_2017' on page 4 undefined on input line 482.
 
-./Seminararbeit.tex:416: Undefined control sequence.
-<argument> ...columnwidth - 4\tabcolsep ) * \real 
-                                                  {0.3333}} >{\centering \ar...
-l.416 ...width - 4\tabcolsep) * \real{0.3333}}@{}}
-                                                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-./Seminararbeit.tex:416: Undefined control sequence.
-<argument> ...3333}} >{\centering \arraybackslash 
-                                                  }p{(\columnwidth - 4\tabco...
-l.416 ...width - 4\tabcolsep) * \real{0.3333}}@{}}
-                                                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-./Seminararbeit.tex:416: Undefined control sequence.
-<argument> ...columnwidth - 4\tabcolsep ) * \real 
-                                                  {0.3333}}@{}
-l.416 ...width - 4\tabcolsep) * \real{0.3333}}@{}}
-                                                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-./Seminararbeit.tex:416: LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.416 ...width - 4\tabcolsep) * \real{0.3333}}@{}}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-./Seminararbeit.tex:416: LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.416 ...width - 4\tabcolsep) * \real{0.3333}}@{}}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-./Seminararbeit.tex:416: LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.416 ...width - 4\tabcolsep) * \real{0.3333}}@{}}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-./Seminararbeit.tex:422: Missing number, treated as zero.
-<to be read again> 
-                   (
-l.422 \end{minipage} & \begin
-                             {minipage}[b]{\linewidth}\centering
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-./Seminararbeit.tex:422: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   (
-l.422 \end{minipage} & \begin
-                             {minipage}[b]{\linewidth}\centering
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-
-Overfull \hbox (37.66692pt too wide) in paragraph at lines 423--424
- []\T1/lmr/m/n/10.95 (-20) Number 
- []
-
-
-Overfull \hbox (8.64435pt too wide) in paragraph at lines 423--424
- \T1/lmr/m/n/10.95 (-20) of 
- []
-
-
-Overfull \hbox (13.07544pt too wide) in paragraph at lines 423--424
- \T1/lmr/m/n/10.95 (-20) pa- 
- []
-
-
-Overfull \hbox (20.25894pt too wide) in paragraph at lines 423--424
- \T1/lmr/m/n/10.95 (-20) ram- 
- []
-
-
-Overfull \hbox (6.51775pt too wide) in paragraph at lines 423--424
- \T1/lmr/m/n/10.95 (-20) e- 
- []
-
-
-Overfull \hbox (17.37848pt too wide) in paragraph at lines 423--424
- \T1/lmr/m/n/10.95 (-20) ters 
- []
-
-
-Overfull \hbox (5.78427pt too wide) in paragraph at lines 422--425
-[]\T1/lmr/m/n/10.95 (-20) ()
- []
-
-
-Overfull \hbox (2.08049pt too wide) in paragraph at lines 422--425
-\T1/lmr/m/n/10.95 (-20) *
- []
-
-
-Overfull \hbox (29.80827pt too wide) in paragraph at lines 422--425
-\T1/lmr/m/n/10.95 (-20) 0.3333|[]| 
- []
-
-
-Overfull \hbox (485.24414pt too wide) in alignment at lines 416--426
- [] [] [] [] [] [] [] [] [] 
- []
-
-./Seminararbeit.tex:427: Missing number, treated as zero.
-<to be read again> 
-                   (
-l.427 ...p()} & \texttt{furrrr:future\_map()} & \(
-                                                  n = 1\) \\
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-./Seminararbeit.tex:427: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   (
-l.427 ...p()} & \texttt{furrrr:future\_map()} & \(
-                                                  n = 1\) \\
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-
-Overfull \hbox (5.78427pt too wide) in paragraph at lines 427--428
-[]\T1/lmr/m/n/10.95 (-20) ()
- []
-
-
-Overfull \hbox (2.08049pt too wide) in paragraph at lines 427--428
-\T1/lmr/m/n/10.95 (-20) *
- []
-
-
-Overfull \hbox (47.76901pt too wide) in paragraph at lines 427--428
-\T1/lmr/m/n/10.95 (-20) 0.3333|$\OML/lmm/m/it/10.95 n \OT1/lmr/m/n/10.95 (-20) 
-=
- []
-
-
-Overfull \hbox (4.818pt too wide) in paragraph at lines 427--428
-\OT1/lmr/m/n/10.95 (-20) 1$| 
- []
-
-./Seminararbeit.tex:428: Missing number, treated as zero.
-<to be read again> 
-                   (
-l.428 ...()} & \texttt{furrrr:future\_map2()} & \(
-                                                  n = 2\) \\
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-./Seminararbeit.tex:428: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   (
-l.428 ...()} & \texttt{furrrr:future\_map2()} & \(
-                                                  n = 2\) \\
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-
-Overfull \hbox (5.78427pt too wide) in paragraph at lines 428--429
-[]\T1/lmr/m/n/10.95 (-20) ()
- []
-
-
-Overfull \hbox (2.08049pt too wide) in paragraph at lines 428--429
-\T1/lmr/m/n/10.95 (-20) *
- []
-
-
-Overfull \hbox (47.76901pt too wide) in paragraph at lines 428--429
-\T1/lmr/m/n/10.95 (-20) 0.3333|$\OML/lmm/m/it/10.95 n \OT1/lmr/m/n/10.95 (-20) 
-=
- []
-
-
-Overfull \hbox (5.09175pt too wide) in paragraph at lines 428--429
-\OT1/lmr/m/n/10.95 (-20) 2$| 
- []
-
-./Seminararbeit.tex:429: Missing number, treated as zero.
-<to be read again> 
-                   (
-l.429 ...()} & \texttt{furrrr:future\_pmap()} & \(
-                                                  n \geq 3\) \\
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-./Seminararbeit.tex:429: Illegal unit of measure (pt inserted).
-<to be read again> 
-                   (
-l.429 ...()} & \texttt{furrrr:future\_pmap()} & \(
-                                                  n \geq 3\) \\
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-
-Overfull \hbox (5.78427pt too wide) in paragraph at lines 429--430
-[]\T1/lmr/m/n/10.95 (-20) ()
- []
-
-
-Overfull \hbox (2.08049pt too wide) in paragraph at lines 429--430
-\T1/lmr/m/n/10.95 (-20) *
- []
-
-
-Overfull \hbox (47.93915pt too wide) in paragraph at lines 429--430
-\T1/lmr/m/n/10.95 (-20) 0.3333|$\OML/lmm/m/it/10.95 n \OMS/lmsy/m/n/10.95 ^^U
- []
-
-
-Overfull \hbox (5.09175pt too wide) in paragraph at lines 429--430
-\OT1/lmr/m/n/10.95 (-20) 3$| 
- []
-
-
-Overfull \hbox (485.24414pt too wide) in alignment at lines 426--431
- [] [] [] [] [] [] [] [] [] 
- []
-
-[3] [4]
-
-LaTeX Warning: Citation 'Czech_2017' on page 5 undefined on input line 483.
-
-[5]
+[4]
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-543.
+542.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [6] [7]
-[8] [9] [10] [11]
+) [5] [6]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 6
+32.
 
-LaTeX Warning: Citation 'rdocumentation' on page 12 undefined on input line 882
+(/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) [7] [8]
+Underfull \vbox (badness 10000) detected at line 760
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 760
+ []
+
+[9] [10] [11]
+
+LaTeX Warning: Citation 'rdocumentation' on page 12 undefined on input line 917
 .
 
-[12] [13] [14] [15]
-Overfull \hbox (96.63431pt too wide) in paragraph at lines 1062--1062
+[12] [13]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 969.
+ [14] [15]
+Overfull \hbox (96.63431pt too wide) in paragraph at lines 1103--1103
 []\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "10", "100", "10") c("mu", 
 "0", "10", "1") c("sd", "0", "5", "1")[] 
  []
 
-./Seminararbeit.tex:1072: Undefined control sequence.
-l.1072 \tightlist
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-074.
-(/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmr.fd
-File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-<Seminararbeit_files/figure-latex/ggplot2-1.pdf, id=195, 457.71pt x 315.1775pt>
+<Seminararbeit_files/figure-latex/ggplot2-1.pdf, id=221, 457.71pt x 315.1775pt>
 
 File: Seminararbeit_files/figure-latex/ggplot2-1.pdf Graphic file (type pdf)
 <use Seminararbeit_files/figure-latex/ggplot2-1.pdf>
 Package pdftex.def Info: Seminararbeit_files/figure-latex/ggplot2-1.pdf  used o
-n input line 1083.
+n input line 1124.
 (pdftex.def)             Requested size: 455.26445pt x 313.4935pt.
-
-./Seminararbeit.tex:1086: Undefined control sequence.
-l.1086 \tightlist
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
 [16]
-<Seminararbeit_files/figure-latex/facet-1.pdf, id=202, 459.7175pt x 318.18875pt
+<Seminararbeit_files/figure-latex/facet-1.pdf, id=227, 459.7175pt x 318.18875pt
 >
 File: Seminararbeit_files/figure-latex/facet-1.pdf Graphic file (type pdf)
 <use Seminararbeit_files/figure-latex/facet-1.pdf>
 Package pdftex.def Info: Seminararbeit_files/figure-latex/facet-1.pdf  used on 
-input line 1097.
+input line 1139.
 (pdftex.def)             Requested size: 455.26903pt x 315.10977pt.
- [17 <./Seminararbeit_files/figure-latex/ggplot2-1.pdf> <./Seminararbeit_files/
-figure-latex/facet-1.pdf>] [18]
-Overfull \hbox (136.87544pt too wide) in paragraph at lines 1171--1171
+ [17 <./Seminararbeit_files/figure-latex/ggplot2-1.pdf>] [18 <./Seminararbeit_f
+iles/figure-latex/facet-1.pdf>] [19]
+Overfull \hbox (136.87544pt too wide) in paragraph at lines 1219--1219
 []\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
 ", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
  []
 
 
-Overfull \hbox (136.87544pt too wide) in paragraph at lines 1203--1203
-[]\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
-", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
- []
-
-[19]
-Overfull \hbox (136.87544pt too wide) in paragraph at lines 1235--1235
-[]\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
-", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
- []
-
-
-Overfull \hbox (136.87544pt too wide) in paragraph at lines 1264--1264
+Overfull \hbox (136.87544pt too wide) in paragraph at lines 1256--1256
 []\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
 ", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
  []
 
 [20]
-<Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf, id=234, 451.6875pt x 3
+Overfull \hbox (136.87544pt too wide) in paragraph at lines 1293--1293
+[]\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
+", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
+ []
+
+[21]
+Overfull \hbox (136.87544pt too wide) in paragraph at lines 1327--1327
+[]\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
+", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
+ []
+
+<Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf, id=265, 451.6875pt x 3
 15.1775pt>
 File: Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type
  pdf)
 <use Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf>
 Package pdftex.def Info: Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf
-  used on input line 1286.
+  used on input line 1354.
 (pdftex.def)             Requested size: 451.71394pt x 315.19595pt.
-<Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf, id=235, 453.695pt x 31
+[22] [23 <./Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf>]
+<Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf, id=282, 453.695pt x 31
 3.17pt>
 File: Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type
  pdf)
 <use Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf>
 Package pdftex.def Info: Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf
-  used on input line 1298.
+  used on input line 1369.
 (pdftex.def)             Requested size: 453.6939pt x 313.16922pt.
- [21 <./Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf>] [22 <./Seminar
-arbeit_files/figure-latex/unnamed-chunk-5-1.pdf>] [23]
-Underfull \hbox (badness 10000) in paragraph at lines 1345--1348
+ [24 <./Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf>] [25] [26] [27]
 
+Overfull \hbox (136.87544pt too wide) in paragraph at lines 1462--1462
+[]\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
+", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
  []
 
-[24]
+[28] [29] [30] [31] [32] [33] [34] [35] [36] [37]
+Overfull \hbox (136.87544pt too wide) in paragraph at lines 1859--1859
+[]\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
+", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
+ []
 
-LaTeX Warning: Empty bibliography on input line 1360.
+[38] [39] [40] [41] [42] [43] [44] [45] [46]
+Overfull \hbox (136.87544pt too wide) in paragraph at lines 2257--2257
+[]\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
+", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
+ []
 
-[25] (./Seminararbeit.aux)
+[47] [48] [49] [50] [51] [52] [53] [54] [55] [56]
+Overfull \hbox (136.87544pt too wide) in paragraph at lines 2654--2654
+[]\T1/lmtt/m/n/10.95 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu
+", "0", "1", "0.25") c("sd", "1", "2", "0.5")[] 
+ []
+
+[57] [58] [59] [60] [61] [62] [63] [64] [65] [66]
+
+LaTeX Warning: Empty bibliography on input line 3033.
+
+[67] (./Seminararbeit.aux)
 
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `Seminararbeit.out' has not changed.
-(rerunfilecheck)             Checksum: 85FF69EDB8945BD3583DA47721557285;2417.
+(rerunfilecheck)             Checksum: BD7D4C200B852988CB9ACBFF63A16496;3824.
 
 Package biblatex Warning: Please (re)run Biber on the file:
 (biblatex)                Seminararbeit
@@ -1552,13 +1268,13 @@ Package logreq Info: Writing requests to 'Seminararbeit.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 22899 strings out of 478268
- 404054 string characters out of 5846347
- 1230548 words of memory out of 5000000
- 40584 multiletter control sequences out of 15000+600000
- 516752 words of font info for 115 fonts, out of 8000000 for 9000
+ 22970 strings out of 478268
+ 405061 string characters out of 5846347
+ 1238170 words of memory out of 5000000
+ 40599 multiletter control sequences out of 15000+600000
+ 517554 words of font info for 119 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,8n,70p,1010b,5033s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 60i,6n,70p,1010b,5033s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local
 /texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/
 texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2022/texmf-dist
@@ -1575,10 +1291,10 @@ fb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/l
 ocal/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texli
 ve/2022/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2022/te
 xmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Seminararbeit.pdf (29 pages, 431788 bytes).
+Output written on Seminararbeit.pdf (71 pages, 473095 bytes).
 PDF statistics:
- 366 PDF objects out of 1000 (max. 8388607)
- 286 compressed objects within 3 object streams
- 64 named destinations out of 1000 (max. 500000)
- 26776 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 586 PDF objects out of 1000 (max. 8388607)
+ 462 compressed objects within 5 object streams
+ 116 named destinations out of 1000 (max. 500000)
+ 26816 words of extra memory for PDF output out of 29859 (max. 10000000)
 
