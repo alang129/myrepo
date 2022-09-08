@@ -105,6 +105,7 @@ parameter_list <- list(c("variable name 1", from, to, by)
 
 `create_grid()` works with a minimum of 1 and a maximum of 4 variables. The structure of arguments in `parameter_list` is similar to `seq()` in R: Each vector contained in the list needs four arguments specified, that is, the function name, the start of the sequence, the end of the sequence and the steps, by which the interval gets divided. It would be easy to adapt this helper function for more parameters, but it is assumed that a grid with up to 4 parameters offers enough complexity for the simulation. The function basically takes the information of the input parameter list and creates a grid with  `tidyr::expand_grid()`. The argument `nrep` specifies how many repetitions per parameter constellation are created, where a separate row in the parameter grid gets created for each repetition.
 
+
 **Example to `create_grid()`:**
 ```{r example create_grid}
 
@@ -129,7 +130,7 @@ The second helper function called `data_generation()` takes the arguments `grid`
 
 The n data points created for each set of parameters are stored as separate elements in a list, since this format is a very flexible way of storing data. 
 
-`data_generation()` chooses relative  mapping function base on specification shown as on the table below.
+`data_generation()` chooses relative  mapping function base on specification shown as on the table below:
 
 
 | Mapping | Mapping with parallelisation | Number of parameters |
@@ -138,7 +139,7 @@ The n data points created for each set of parameters are stored as separate elem
 | `purrr:map2()` | `furrrr:future_map2()` | $n = 2$ | 
 | `purrr:pmap()` | `furrrr:future_pmap()` | $n \geq 3$ | 
 
-`options = furrr_options(seed = TRUE)` is for reproducible random number generation (RNG) processes. This argument takes control of the RNG process for parallelization and always generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
+`options = furrr_options(seed = TRUE)` is for reproducible random number generation (RNG) processes. This argument takes control of the RNG process for parallelisation and always generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
 
 
 ```{r data generation and parallel process}
@@ -211,7 +212,7 @@ sim1
 ```
 
 `sim1` contains the generated data by `data_generation()` with `grid2` and Poisson distribution as input.
-Below, a second example is demonstrate to showcase the capabilities using a uniform distribution. The user could even define his own function for generating the data and use it for the simulation process. The information stored in the parameter list is used by position, not by variable name. Thats why its important specify any variables in the correct order, that shall be used for the simulation. 
+Below, the second example is demonstrated to showcase the capabilities using a uniform distribution. The user could even define his own function for generating the data and use it for the simulation process. The information stored in the parameter list is used by position, not by variable name. Thats why its important specify any variables in the correct order, that shall be used for the simulation. 
 
 ```{r, dg application}
 # Application to uniform distribution
@@ -231,7 +232,7 @@ As explained before, the data is stored in a list, where data points for each se
 ## Helper function 3: `summary_function()`
 
 So far, the paper explains how to create *raw* data with the functions `create_grid()` and  `data_generation()` based on a chosen probability distribution. This chapter introduces `summary_function()` which applies a user-defined function to calculate a summary statistic on the raw data generated before.
-The function uses a `sapply`-loop to apply the user-defined summary function (`sum_fun`) on each element of the list containing the raw data. Any summary may be applied, that returns a singular output value. Results are stored in a $(nrow(grid ) X 1)$-dimensional matrix, which is combined with the parameter grid in the next step.
+The function uses a `sapply`-loop to apply the user-defined summary function (`sum_fun`) on each element of the list containing the raw data. Any summary may be applied, that returns a singular output value. Results are stored in a `(nrow(grid) X 1)`-dimensional matrix, which is combined with the parameter grid in the next step.
 
 
 ```{r summary_function}
@@ -252,7 +253,7 @@ summary_function <- function(sum_fun, data_input){
 }
 ```
 
-**`summary_function()` Example:**
+**Example to `summary_function()`:**
 
 For this example, data is generated using the normal distribution, with the respective parameters n, $\mu$ and $\sigma$ specified in the parameter list. The list containing the raw data created by `data_generation()` is stored in the variable `test_data`, which is the data input for `summary_function()`. The arithmetic mean, using base R´s `mean()`-function, is supplied as the second input to calculate the average of all the data points created under a unique set of parameters. The output relates exactly to each row of the used parameter grid. Later, these summary statistics are merged with the parameter grid into a data frame.
 
@@ -276,7 +277,7 @@ head(summary_data)
 
 ## Helper function 4: `create_array_function()`
 
-Even though the example above applies a relatively small parameter grid, the simulation still returns 180 summarize data points. Like explained before, in `main_function()` the results from the previous step get merged with the parameter grid into one data frame. This way of storing the data allows the user to apply further data wrangling processes, but is not the most overseeable way to display the data. A multidimensional array is more suitable for printing the output in a tidy and clear way. `create_array_function()` takes all relevant data from the previous steps and transforms it into an array with the correct dimensions. The function works with up to three variables supplied in the parameter list. Using the number of repetitions as an additional dimension, `create_array_function()` can create up to 4-dimensional arrays. Due to the same reasoning regarding the size of the parameter grid, no further capabilities were implemented beyond this point, since five or more dimensional array would be extremely hard to overlook, even tough it would be somewhat easy to expand the use for more variables.
+Even though the example above applies a relatively small parameter grid, the simulation still returns 180 summarize data points. Like explained before, in `main_function()` the results from the previous step get merged with the parameter grid into one data frame. This way of storing the data allows the user to apply further data wrangling processes, but is not the most overseeable way to display the data. A multidimensional array is more suitable for printing the output in a tidy and clear way. `create_array_function()` takes all relevant data from the previous steps and transforms it into an array with the correct dimensions. The function works with up to three variables supplied in the parameter list. Using the number of repetitions as an additional dimension, `create_array_function()` can create up to 4-dimensional arrays. Due to the same reasoning regarding the size of the parameter grid, no further capabilities were implemented beyond this point, since five or more dimensional arrays would be extremely hard to overlook, even tough it would be easy to expand the use for more variables.
 
 
 ```{r, array}
@@ -344,12 +345,14 @@ create_array_function <- function(comb, parameters, nrep){
 
 ```
 
-In order to test `create_array_function()`, we need to set up an altered version of `main_function()`. The `main_function()` will be discussed in the next chapter. Also, a slightly modified version of the example using `rnorm` is used, where the parameter grid spans over a larger sequence, to demonstrate, that `create_array_function()` also works for a somewhat complex parameter grid.
+In order to test `create_array_function()`, we need to set up an altered version of `main_function()`. The `main_function()` will be discussed in the next chapter. Also, a slightly modified version of the example using `rnorm` is used, where the parameter grid spans over a larger sequence, to demonstrate, that `create_array_function()` also works for a complex parameter grid.
 
 
   
+ 
 
-**Example to `create_array_function` :**
+ 
+**Example to `create_array_function()` :**
 ```{r, array ex}
 
 # PREP TEST `create_array_function`
@@ -362,8 +365,7 @@ main_function_array_test <-  function(parameters #list of parameters
   raw_data <- data_generation(simulation, grid) #Step 2: simlate data
   summary <- summary_function(sum_fun, data_input=raw_data) #Step 3: Summary statistics
   comb <- cbind(grid, summary) #Step 4: Combine resuluts with parameters
-  array_1 <- create_array_function(comb, parameters, nrep) #Step 5: Create array
-  
+ 
   return(comb)
 }
 
@@ -386,13 +388,13 @@ array_test <- create_array_function(comb=comb1,
 array_test
 ```
 
-Under these specifications, the data was transformed into a 4-dimensional array. Sample size n and the mean $\mu$ are the variables at the side of each row and column. Also, it was specified that two repetitions are done for each set of parameters, while a range of two values ($\sigma = \{1, 2\}$) was given for the standard deviation. The output contains the correct amount of tables, namely two repetitions for $\sigma = 1$ and two repetitions for $\sigma = 2$. This output style allows the user  easily to oversee a wide variety of different parameter constellations.
+Under these specifications, the data was transformed into a 4-dimensional array. Sample size n and the mean $\mu$ are the variables at the side of each row and column. Also, it was specified that two repetitions are done for each set of parameters, while a range of two values ($\sigma = \{1, 2\}$) was given for the standard deviation. The output contains the correct amount of tables, namely two repetitions for $\sigma = 1$ and two repetitions for $\sigma = 2$. This output style allows the user to easily oversee a wide variety of different parameter constellations.
 
 
 
 ## Helper function 5: `average_function()`
 
-The example above used only two repetitions for each parameter constellation to keep the output simple. However, in practice the user would probably repeat the simulations over a higher number of repetitions, which would also drastically increase the size of the array. It may would be of interest to see the average over all repetitions, in order to get a more compact output. `average_function()` calculates the average over all repetitions and stores the results in an array with a dimension, that is reduced by one since, the dimension for repetitions is not relevant anymore. At this point no further example gets demonstrated for this function, since the output would look similar to the array before. But the final simulation will include the averaged simulation results, that are created utilizing this function.
+The example above used only two repetitions for each parameter constellation to keep the output simple. However, in practice the user would probably repeat the simulations over a higher number of repetitions, which would also drastically increase the size of the array. It may be of interest to see the average over all repetitions, in order to get a more compact output. `average_function()` calculates the average over all repetitions and stores the results in an array with a dimension, that is reduced by one, since the dimension for repetitions is not relevant anymore. At this point no further example is demonstrated for this function, because the output would look similar to the array before. But the final simulation will include the averaged simulation results, that are created the help of this function.
 
 
 ```{r}
@@ -423,7 +425,7 @@ average_function <- function(grid_for_avg, summary, nrep){
 
 ## Helper function 6: `output_function()`
 
-`output_function()`  is the last part of pre-process. This function takes results and parameters of the Monte Carlo simulation as inputs and converts them into an tidy output format. Thus, the user can obtain a tidy form of a simulation summary.
+`output_function()`  is the last part of the pre-process. This function takes results and parameters of the Monte Carlo simulation as inputs and converts them into an tidy output format. Thus, the user can obtain a tidy form of a simulation summary.
 
 `array_1`, `average_over_reps`, `parameters`, `cores`, `simulation`,
 `nrep` and `cpt`  are used as input parameters in the `output_function()`.
@@ -475,10 +477,10 @@ output_function <- function(array_1,average_over_reps,parameters,cores,simulatio
 `output_function()` combines all information relevant for the simulation and stores it into a tidy output format, which gets returned by the `main_function()`, that combines all steps needed for running the simulation. 
 
 
-
+\pagebreak
 #  Monte Carlo simulation function: `main_function()`
 
-The `main_function()` is built-up by the helper functions introduced in chapter 2 and includes additional arguments to combine different steps of the helper functions. (1) `parameters` is a parameter list, `nrep` is the number of repetitions, `simulation()` is a data generation process, `sum_fun` is summary function that the user defines, `seed set` is for reproducibility of the simulation and `cores` is the number of cores, that exist in the CPU. (2) `if and else` commands check how many cores are used in the `main_function()` and whether the user defined variable `cores` exceeds the maximum number of cores contained in the CPU. By using `detectCores()` from the `parallel` package, the maximum number of cores in the CPU is saved under the variable `max.cores`. (3) Setting the seed is an important step to obtain reproducibility. `main_function()` either takes the seed that the user inputs or creates a seed randomly using `sample.int()`,  when no seed is provided. (4) The function `Sys.time()` measures the execution time of the simulation. `startTime` and `endTime` save the simulation's starting time and ending time, respectively. The difference between them is the execution time stored in `cpt`, which is also included in the summary statistics. (5) `plan()` is used to parallelise  the simulation. `plan()` has two arguments, “sequential” or "multisession”. "Sequential" runs non-parallel processing with one core. On the other hand, user can define the number of cores with the "multisession" argument. Lastly, (6) `main_function()` produces tidy summary statistics with `output_function()` in chapter 2.
+The `main_function()` is built-up by the helper functions introduced in chapter 2 and includes additional arguments to combine different steps of the helper functions. (1) `parameters` is a parameter list, `nrep` is the number of repetitions, `simulation` is a data generation process, `sum_fun` is summary function that the user defines, `seed set` is for reproducibility of the simulation and `cores` is the number of cores, that exist in the CPU. (2) `if and else` commands check how many cores are used in the `main_function()` and whether the user defined variable `cores` exceeds the maximum number of cores contained in the CPU. By using `detectCores()` from the `parallel` package, the maximum number of cores in the CPU is saved under the variable `max.cores`. (3) Setting the seed is an important step to obtain reproducibility. `main_function()` either takes the seed that the user inputs or creates a seed randomly using `sample.int()`,  when no seed is provided. (4) The function `Sys.time()` measures the execution time of the simulation. `startTime` and `endTime` save the simulation's starting time and ending time, respectively. The difference between them is the execution time stored in `cpt`, which is also included in the summary statistics. (5) `plan()` is used to parallelise  the simulation. `plan()` has two arguments, “sequential” or "multisession”. "Sequential" runs non-parallel processing with one core. On the other hand, user can define the number of cores with the "multisession" argument. Lastly, (6) `main_function()` produces tidy summary statistics with `output_function()` in chapter 2.
 
 
 ```{r}
@@ -487,8 +489,8 @@ main_function <-  function(parameters
                            , nrep 
                            , simulation 
                            , sum_fun 
-                           ,seed = NULL
-                           ,cores=NULL){
+                           , seed = NULL
+                           , cores=NULL){
  
     
   #(2)
@@ -610,7 +612,9 @@ gls_f <- function(n,mu,sd){
 }
 ```
 As shown above, simple OLS and GLS functions are defined to find $\beta$ coefficients. However, the execution time of the GLS  would be much longer than OLS since the Cholesky Decomposition (`chol()`) is applied to  the GLS function.
-
+  
+  
+  
 
 **OLS simulation without parallel processing:**
 
@@ -627,6 +631,8 @@ ols <- main_function(parameters = param_list,
 The total execution time of OLS simulation is 8.46 seconds when only one core is used.
 
 
+
+
 **OLS simulation with parallel processing:**
 
 ```{r, parallel ols}
@@ -638,6 +644,8 @@ ols <- main_function(parameters = param_list,
                      cores=4)
 ```
 The total execution time of OLS simulation is 12 seconds when four cores are used.
+
+
 
 
 **GLS with parallel processing:** 
@@ -652,6 +660,9 @@ gls <- main_function(parameters = param_list,
 ```
 
 
+
+
+
 **GLS without parallel processing:**
 
 ```{r,gls}
@@ -663,12 +674,17 @@ gls <- main_function(parameters = param_list,
                      cores=1)
 
 ```
-As seen in the summary part, the total execution time of the simulation took 36.35 seconds which also proves that the parallel process works well. Therefore, execution times of the simulation might differ on other computers.
+As seen in the summary part, the total execution time of the simulation took 36.35 seconds which also proves that the parallel process works well. Therefore, the execution times of the simulation might differ on other computers.
+
+
 
 
 ## Visualisation 
 
-**Visualizing MSE(Mean Square Error) in OLS and GLS simulations:**
+
+
+**Visualizing MSE(Mean Square Error) of OLS and GLS simulations:**
+
 
 MSE is calculated by `out$average$mse` for each simulation.
 
@@ -684,6 +700,7 @@ ols$average %>% ggplot(aes(x=avg,y=mu,col="OLS"))+
 
 ```
 \pagebreak
+
 
 **Density graph of MSE of $\beta$ in OLS and GLS simulations**
 ```{r}
@@ -701,7 +718,7 @@ ggplot(ols$average,aes(x=mse,col="OLS"))+facet_grid(n~.)+
 
 The above section illustrates the power of the implemented model and provides a fairly easy-to-use tool that still allows for various specifications in terms of used parameters, data generation processes and summary functions. Researchers, who use Monte Carlo studies regularly, may save alot of time using a tool like this in the long run. It also lowers the threshold to run a Monte Carlo simulation for users, who dont have the ability or time to code a complete Monte Carlo simulation, like it was done for this paper.
 
-It was shown, that the code works for many different situations, but there are by nature some limitations, f.e. regarding the number of variables used in the parameter grid or the fact, that only a singular output can be returned by the summary statistic. The functional programming approach applied in this work would easily allow for adjustments, in case the purpose of the program needs to be altered or expanded.
+It was shown, that the code works for many different situations, but there are some limitations, f.e. regarding the number of variables used in the parameter grid or the fact, that only a singular output can be returned by the summary statistic. The functional programming approach applied in this work would easily allow for adjustments, in case the purpose of the program needs to be altered or expanded.
 
 
 \pagebreak
@@ -710,18 +727,19 @@ It was shown, that the code works for many different situations, but there are b
 
 |   | Alexander Langnau | Öcal Kaptan | Sunyoung Ji |
 | :------: | :------: | :------: | :------: |
-| Planning | 0 | X | 0 |
-| `create_grid()` | 0 | X | 0 |
-| `data_generation()`  | 0 | X | 0 | 
-| `summary_function()`  | 0 | X | 0 | 
-| `create_array_function()`  | 0 | X | 0 | 
-| `average_function()`  | 0 | X | 0 | 
-| `output_function()`  | 0 | 0 | 0 | 
-| ggplot2 part   | 0 | 0 | 0 | 
-| formatting  | 0 | 0 | 0 | 
-| writing the report  | 0 | X | 0 | 
-| literature research  | 0 | 0 | 0 | 
-| proof-reading  | 0 | X | 0 | 
+| Planning | X | X | X |
+| `create_grid()` | X | X | 0 |
+| `data_generation()`  | X | X | 0 | 
+| `summary_function()`  | X | 0 | 0 | 
+| `create_array_function()`  | X | 0 | 0 | 
+| `average_function()`  | X | 0 | 0 | 
+| `output_function()`  | 0 | X | 0 | 
+| `main_function()`  | X | X | 0 |
+| ggplot2 part   | 0 | X | 0 | 
+| formatting  | X | X | X | 
+| writing the report  | X | X | X | 
+| literature research  | X | X | X | 
+| proof-reading  | X | X | X | 
 
 
 
