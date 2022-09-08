@@ -121,14 +121,14 @@ head(create_grid(param_list0, nrep=3), n=10)
 
 ## data_generation()
 
-The second helper function called `data_generation()` takes the arguments `grid` and `simulation` as inputs. `simulation` is the argument for the user-defined function for the data generation process, while `grid` is the parameter grid previously created. The user can choose between a variety of probability distributions by entering the name of the function, for example, `rnorm` for the normal distribution or `runif` for the uniform distribution.
+The second helper function called `data_generation()` takes the arguments `grid` and `simulation` as inputs. `simulation` is the argument for the user-defined function for the data generation process, while `grid` is the parameter grid previously created. The user can choose between a variety of probability distributions by entering the name of the function, for example, `rnorm()` for the normal distribution or `runif()` for the uniform distribution.
 
 The n data points created for each set of parameters are stored as separate elements in a list since this format is a very flexible way of storing data. 
 
 `data_generation()` chooses relative  mapping function base on specification shown as on the table below.
 
 
-| Mapping without parallelisation | Mapping with parallelisation | Number of parameters |
+| Mapping | Mapping with parallelisation | Number of parameters |
 | :------: | :------: | :------: |
 | `purrr:map()` | `furrrr:future_map()` | $n = 1$ |
 | `purrr:map2()` | `furrrr:future_map2()` | $n = 2$ | 
@@ -143,7 +143,8 @@ data_generation <- function(simulation, grid){
   if(ncol(grid)==2){
     var1 <- c(unlist(grid[,1]))
     if(cores>1){
-      data <- future_map(var1, simulation,.options = furrr_options(seed = TRUE))
+      data <- future_map(var1, simulation,
+                         .options = furrr_options(seed = TRUE))
     }else{
       data <- map(var1, simulation)
     }
@@ -153,7 +154,8 @@ data_generation <- function(simulation, grid){
     var1 <- c(unlist(grid[,1]))
     var2 <- c(unlist(grid[,2]))
     if(cores>1){
-      data <- future_map2(var1, var2, simulation,.options = furrr_options(seed = TRUE))
+      data <- future_map2(var1, var2, simulation,
+                          .options = furrr_options(seed = TRUE))
     } else{
       data <- map2(var1, var2, simulation)
     }
@@ -165,7 +167,8 @@ data_generation <- function(simulation, grid){
     var3 <- c(unlist(grid[,3]))
     list1 <- list(var1,var2,var3)
     if(cores>1){
-      data <- future_pmap(list1, .f=simulation,.options = furrr_options(seed = TRUE))
+      data <- future_pmap(list1, .f=simulation,
+                          .options = furrr_options(seed = TRUE))
     }else{
       data <- pmap(list1, .f=simulation)
     }
@@ -245,7 +248,8 @@ summary_function <- function(sum_fun, data_input){
 }
 ```
 
-**`summary_function` Example:**
+**`summary_function()` Example:**
+
 For this example, data is generated using the normal distribution, with the respective parameters n, $\mu$ and $\sigma$ specified in the parameter list. The list containing the raw data created by `data_generation()` is stored in the variable `test_data`, which is the data input for `summary_function()`. The arithmetic mean, with base R `mean()` function, is supplied as the second input to calculate the mean of all the data points created under a unique set of parameters. The output relates exactly to each row of the used parameter grid. Later, these summary statistics  R merged with the parameter grid in a data frame.
 
 
@@ -257,7 +261,8 @@ param_list3 <- list(c("n", 10, 20, 10)
 
 grid_test <- create_grid(param_list3, nrep=3)
 test_data <- data_generation(simulation=rnorm, grid=grid_test)
-summary_data <- summary_function(sum_fun=list("mean"), data_input=test_data)
+summary_data <- summary_function(sum_fun=list("mean"),
+                                 data_input=test_data)
 head(summary_data)
 nrow(summary_data)
 ```
@@ -368,7 +373,8 @@ comb1 <- main_function_array_test(parameters=param_list3x
                                   , simulation = rnorm
                                   , sum_fun="mean")
 
-array_test <- create_array_function(comb=comb1, parameters=param_list3x, nrep=2)
+array_test <- create_array_function(comb=comb1,
+                                    parameters=param_list3x, nrep=2)
 
 array_test
 ```
@@ -520,7 +526,9 @@ main_function <-  function(parameters
   cpt <- endTime - startTime
   
   #(6)
-  summary_1 <- output_function(array_1,average_over_reps,parameters,cores,
+  summary_1 <- output_function(array_1,
+                               average_over_reps,
+                               parameters,cores,
                                simulation,nrep,cpt)
   
 return(summary_1)
@@ -560,13 +568,15 @@ ggplot(test_me$average,aes(x=avg,y=n))+geom_line()
 
 * Visualizing average by using `facet_grid()`
 ```{r,facet}
-ggplot(test_me$average,aes(x=avg))+facet_grid(n~.)+geom_density()
+ggplot(test_me$average,aes(x=avg))+facet_grid(n~.)+
+  geom_density()
 
 ```
 As given graphs above, the simulation result works well with `ggplot2` methods.
 
 # Examples
 
+## Comparing the execution times of OLS and GLS simulations
 As an example of Monte Carlo simulation, OLS and GLS coefficients $\beta$ are simulated with and without parallelisation to compare the execution time.
 ```{r,ols-gls}
 ols_f <- function(n,mu,sd){
@@ -593,7 +603,8 @@ gls_f <- function(n,mu,sd){
 As shown above, simple OLS and GLS functions are defined to find $\beta$ coefficients. However, the execution time of the GLS  would be much longer than OLS since The Cholesky Decomposition `chol()` is applied to  the GLS function.
 
 
-**OLS simulation without parallel processing: **
+**OLS simulation without parallel processing:**
+
 ```{r , ols}
  param_list <- list(c("n",100,1000,100),c("mu",0,1,0.25),c("sd",1,2,.5))
 ols <- main_function(parameters = param_list,
@@ -610,14 +621,24 @@ The total execution time of OLS simulation is 8.46 seconds when only one core is
 **OLS simulation with parallel processing:**
 
 ```{r, parallel ols}
-ols <- main_function(parameters = param_list,nrep=5,simulation = ols_f,sum_fun="mean",seed=123,cores=4)
+ols <- main_function(parameters = param_list,
+                     nrep=5,
+                     simulation = ols_f,
+                     sum_fun="mean",
+                     seed=123,
+                     cores=4)
 ```
 The total execution time of OLS simulation is 12 seconds when only four core is used.
 
 
-**GLS with parallel processing:**
+**GLS with parallel processing:** 
 ```{r,gls in parallel}
-gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=4)
+gls <- main_function(parameters = param_list,
+                     nrep=5,
+                     simulation = gls_f,
+                     sum_fun="mean",
+                     seed=123,
+                     cores=4)
 
 ```
 
@@ -625,14 +646,22 @@ gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="
 **GLS without parallel processing:**
 
 ```{r,gls}
-gls <- main_function(parameters = param_list,nrep=5,simulation = gls_f,sum_fun="mean",seed=123,cores=1)
+gls <- main_function(parameters = param_list,
+                     nrep=5,
+                     simulation = gls_f,
+                     sum_fun="mean",
+                     seed=123,
+                     cores=1)
 
 ```
 As seen in the summary part, the total execution time of the simulation took 36.35 seconds which also proves that the parallel process works well. Therefore, execution times of the simulation might differ on other computers.
 
+
+## Visualisation 
+
 **Visualizing MSE(Mean Square Error) in OLS and GLS simulations:**
-MSE is calculated by
-`out$average$mse` for each simulation.
+
+MSE is calculated by `out$average$mse` for each simulation.
 
 ```{r}
 gls$average <-  gls$average %>% mutate(mse =(2-avg)^2 )
@@ -641,19 +670,23 @@ ols$average <-  ols$average %>% mutate(mse =(2-avg)^2 )
 ols$average %>% ggplot(aes(x=avg,y=mu,col="OLS"))+
   facet_grid(n~mean(mse))+geom_line()+
  geom_line(data=gls$average,aes(x=avg,y=mu,col="GLS"))+
-  scale_color_manual(name = "Estimation", values = c("OLS" = "blue", "GLS" = "red"))
+  scale_color_manual(name = "Estimation",
+                     values = c("OLS" = "blue", "GLS" = "red"))
 
 ```
+\pagebreak
 
- Density of MSE of $\beta$ in OLS and GLS simulations. 
+**Density graph of MSE of $\beta$ in OLS and GLS simulations**
 ```{r}
-ggplot(ols$average,aes(x=mse,col="OLS"))+facet_grid(n~.)+geom_density()+
+ggplot(ols$average,aes(x=mse,col="OLS"))+facet_grid(n~.)+
+  geom_density()+
   geom_density(data=gls$average,aes(x=avg,col="GLS"))+
-  scale_color_manual(name = "Estimation", values = c("OLS" = "blue", "GLS" = "red"))
+  scale_color_manual(name = "Estimation", 
+                     values = c("OLS" = "blue", "GLS" = "red"))
 ```
 
 
-
+\pagebreak
 
 # Conclusion
 
@@ -661,7 +694,7 @@ The above section illustrates the power of the implemented model and provides th
 
 By nature, there may be cases, where the implementation does not satisfy the user's needs to the fullest, but for a wide variety of examples it is showed, it worked well and served the over all purpose. Furthermore, the functional programming approach allows for easy and flexible adjustments in case the use of the functions should be expanded, such as if a grid of more than 3 (or 4?) parameters is needed.???????????????????????????????????????????????????
 
-
+\pagebreak
 
 # Contributions
 
@@ -675,7 +708,7 @@ By nature, there may be cases, where the implementation does not satisfy the use
 | Average_function  | 0 | 0 | 0 | 
 | Output_function  | 0 | 0 | 0 | 
 | ggplot2 part   | 0 | 0 | 0 | 
-| Data_generation  | 0 | 0 | 0 | 
+| Parallelisation  | 0 | 0 | 0 | 
 | Formatting  | 0 | 0 | 0 | 
 | Writing the report  | 0 | 0 | 0 | 
 | Proof-reading  | 0 | 0 | 0 | 
@@ -703,3 +736,17 @@ rdocumentation.org, DataCamp, "cat: Concatenate and Print", url:https://www.rdoc
 
 
 \pagebreak
+
+# Appendix
+
+## Output of  the OLS simulation
+```{r echo=FALSE}
+ols
+```
+
+
+## Output of the GLS simulation
+
+```{r echo=FALSE}
+gls
+```
