@@ -708,18 +708,18 @@ It was shown, that the code works for many different situations, but there are b
 
 |   | Alexander Langnau | Öcal Kaptan | Sunyoung Ji |
 | :------: | :------: | :------: | :------: |
-| Planning | 0 | 0 | 0 |
-| Create_grid | 0 | 0 | 0 |
-| Data_generation  | 0 | 0 | 0 | 
-| Summary_function  | 0 | 0 | 0 | 
-| Create_array_function  | 0 | 0 | 0 | 
-| Average_function  | 0 | 0 | 0 | 
-| Output_function  | 0 | 0 | 0 | 
+| Planning | 0 | X | 0 |
+| `create_grid()` | 0 | X | 0 |
+| `data_generation()`  | 0 | X | 0 | 
+| `summary_function()`  | 0 | X | 0 | 
+| `create_array_function()`  | 0 | X | 0 | 
+| `average_function()`  | 0 | X | 0 | 
+| `output_function()`  | 0 | 0 | 0 | 
 | ggplot2 part   | 0 | 0 | 0 | 
-| Parallelisation  | 0 | 0 | 0 | 
-| Formatting  | 0 | 0 | 0 | 
-| Writing the report  | 0 | 0 | 0 | 
-| Proof-reading  | 0 | 0 | 0 | 
+| formatting  | 0 | 0 | 0 | 
+| writing the report  | 0 | X | 0 | 
+| literature research  | 0 | 0 | 0 | 
+| proof-reading  | 0 | X | 0 | 
 
 
 
