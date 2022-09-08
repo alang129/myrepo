@@ -50,7 +50,7 @@ library(furrr)
 
 The Monte Carlo method is a simulation method for calculating the probabilistic value of the desired function using random numbers. A repeated pseudo-random number generator estimates sample statistics and returns a probability distribution of the sample, representing the parameter [@Barbu_2020]. Monte Carlo methods are combined with programming in modern research and contribute to various studies in statistics, economics and many other scientific fields. 
 This paper progresses on developing a collection of different wrapper functions to partially automatize the process of running a Monte Carlo simulation. The main function, that combines all the other helper functions, provides a convenient interface for Monte Carlo simulations and allows the user to create a parameter grid and iterate homogeneous function calls over the parameter grid. It also offers informative summary statistics, including visualization with `ggplot2`-methods and an option to use a parallelisation plan utilizing the `furrr` package.
-The paper proceeds as follows: Chapter 2 describes pre-processes to establish the Monte Carlo simulation function. The pre-process contains functions to create a parameter grid and the respective data points drawn from a user-defined distribution, along with functions that provide summary statistics. Chapter 3 details the main Monte Carlo simulation function, which consists of the helper functions introduced in chapter 2. Chapter 4 presents specific examples for the simulation process. Finally, chapter 5 summarizes the work presented in this paper. Since the output of the simulation in chapter 4 is quite lengthy, it was moved in the Appendix, in order to not overload the structure of the actual paper.
+The paper proceeds as follows: Chapter 2 describes pre-processes to establish the Monte Carlo simulation function. The pre-process contains functions to create a parameter grid and the respective data points drawn from a user-defined distribution, along with functions that provide summary statistics. Chapter 3 details the main Monte Carlo simulation function, which consists of the helper functions introduced in chapter 2. Chapter 4 presents specific examples for the simulation process. Finally, chapter 5 summarizes the work presented in this paper. Since the output of the simulation in chapter 4 is quite lengthy, it was moved to the Appendix in order not to overload the structure of the actual paper.
 
 
 
@@ -276,7 +276,7 @@ head(summary_data)
 
 ## Helper function 4: `create_array_function()`
 
-Even though the example above applies a relatively small parameter grid, the simulation still returns 180 summarize data points. Like explained before, in `main_function()` the results from the previous step get merged with the parameter grid into one data frame. This way of storing the data allows the user to apply further data wrangling processes, but is not the most overseeable way to display the data. A multidimensional array is more suitable for printing the output in a tidy and clear way. `create_array_function()` takes all relevant data from the previous steps and transforms it into an array with the correct dimensions. The function works with up to 3 variables supplied in the parameter list. Using the number of repetitions as an additional dimension, `create_array_function()` can create up to 4-dimensional arrays. Due to the same reasoning regarding the size of the parameter grid, no further capabilities were implemented beyond this point, since a 5 or more dimensional array would be extremely hard to overlook, even tough it would be somewhat easy to expand the use for more variables.
+Even though the example above applies a relatively small parameter grid, the simulation still returns 180 summarize data points. Like explained before, in `main_function()` the results from the previous step get merged with the parameter grid into one data frame. This way of storing the data allows the user to apply further data wrangling processes, but is not the most overseeable way to display the data. A multidimensional array is more suitable for printing the output in a tidy and clear way. `create_array_function()` takes all relevant data from the previous steps and transforms it into an array with the correct dimensions. The function works with up to three variables supplied in the parameter list. Using the number of repetitions as an additional dimension, `create_array_function()` can create up to 4-dimensional arrays. Due to the same reasoning regarding the size of the parameter grid, no further capabilities were implemented beyond this point, since five or more dimensional array would be extremely hard to overlook, even tough it would be somewhat easy to expand the use for more variables.
 
 
 ```{r, array}
@@ -429,7 +429,7 @@ average_function <- function(grid_for_avg, summary, nrep){
 `nrep` and `cpt`  are used as input parameters in the `output_function()`.
 The variable `cpt` is used to store the execution time of the simulation. The next chapter will discuss this in more detail.
 
-Regarding the structure of `output_function()`, (1) `out` is an empty list for storing simulation results, averaged results and summary. (2) `Eco` is the class name of `out`. The class should be assigned to visualize simulation results with `ggplot2` methods. (3) Results from `array_1` and `average_over_reps` are assigned as `out$results` and `out$average` respectively. (4) These results have classes with their own names: `out$results` and `out$average`, thereby preventing future error when visualizing simulation results with `ggplot2`-methods. `ggplot2`-methods require specific classes, such as `data.frame`. (5) `cat` is useful for producing output in user-defined functions. It converts its arguments to character vectors, concatenates them to a single character vector, appends the given `sep`$ =$ string(s) to each element and then outputs them [@rdocumentation]. (6) The neat output is returned at the end.
+Regarding the structure of `output_function()`, (1) `out` is an empty list for storing simulation results, averaged results and summary. (2) `Eco` is the class name of `out`. The class should be assigned to visualize simulation results with `ggplot2` methods. (3) Results from `array_1` and `average_over_reps` are assigned as `out$results` and `out$average` respectively. (4) These results have classes with their own names: `out$results` and `out$average`, thereby preventing future error when visualizing simulation results with `ggplot2`-methods. `ggplot2`-methods require specific classes, such as `data.frame`. (5) `cat` is useful for producing output in user-defined functions. It converts its arguments to character vectors, concatenates them to a single character vector, appends the given `sep` $=$ `string(s)` to each element and then outputs them [@rdocumentation]. (6) The neat output is returned at the end.
 
 
 ```{r echo=TRUE}
@@ -580,6 +580,8 @@ ggplot(test_me$average,aes(x=avg))+facet_grid(n~.)+
 
 ```
 As given graphs above, the simulation result works well with `ggplot2`-methods.
+
+\pagebreak
 
 # Examples
 
