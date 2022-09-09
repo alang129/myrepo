@@ -1,0 +1,5 @@
+1. change semester
+2. delet gradu
+3. delet list of table
+4. change excution time
+5. input parameters in gls ols

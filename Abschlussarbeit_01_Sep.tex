@@ -269,7 +269,7 @@ The Monte Carlo method is a simulation method for calculating the
 probabilistic value of the desired function using random numbers. A
 repeated pseudo-random number generator estimates sample statistics and
 returns a probability distribution of the sample, representing the
-parameter \autocite{Barbu_2020}. Monte Carlo methods are combined with
+parameter(Barbu, 2020). Monte Carlo methods are combined with
 programming in modern research and contribute to various studies in
 statistics, economics and many other scientific fields. This paper
 progresses on developing a collection of different wrapper functions to
@@ -479,7 +479,7 @@ Monte Carlo simulations can become very demanding in terms of computing
 time. In that case, parallel processing may be used to reduce the time
 of the simulation. In parallel processes, each process is executed
 simultaneously but independently. Interconnections are proceeded through
-communication channel \autocite{Czech_2017}.
+communication channel(Czech\_2017).
 
 \texttt{data\_generation()} automatically used the proper function from
 the \texttt{furrrr}-package, if the user specified more than one core.
@@ -914,8 +914,8 @@ classes, such as \texttt{data.frame}. (5) \texttt{cat} is useful for
 producing output in user-defined functions. It converts its arguments to
 character vectors, concatenates them to a single character vector,
 appends the given \texttt{sep} \(=\) \texttt{string(s)} to each element
-and then outputs them \autocite{rdocumentation}. (6) The neat output is
-returned at the end.
+and then outputs them (rdocumentation). (6) The neat output is returned
+at the end.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -939,8 +939,8 @@ returned at the end.
 \NormalTok{  \}}
 \NormalTok{  text }\OtherTok{\textless{}{-}}  \FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
            \StringTok{"Repetition(nrep)      : "}\NormalTok{,nrep,}\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{,}
-           \StringTok{"Parallelization Type  : "}\NormalTok{,parallel,}\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{,}
-           \StringTok{"Number of Cores Used in  Parallelization : "}\NormalTok{,cores,}
+           \StringTok{"Parallelisation Type  : "}\NormalTok{,parallel,}\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{,}
+           \StringTok{"Number of Cores Used in  Parallelisation : "}\NormalTok{,cores,}
            \StringTok{" out of"}\NormalTok{,}\FunctionTok{detectCores}\NormalTok{(),}\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{,}
            \StringTok{"Input Parameters : "}\NormalTok{,}\FunctionTok{paste}\NormalTok{(parameters),}\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{,}
            \StringTok{"Simulation Length :"}\NormalTok{,}\FunctionTok{length}\NormalTok{(array\_1),}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
@@ -1085,9 +1085,9 @@ performance}\label{test-1-summary-performance}}
 ## 
 ##  Repetition(nrep)      :  5 
 ## 
-##  Parallelization Type  :  Sequential 
+##  Parallelisation Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelisation :  1  out of 8 
 ## 
 ##  Input Parameters :  c("n", "10", "100", "10") c("mu", "0", "10", "1") c("sd", "0", "5", "1") 
 ## 
@@ -1097,7 +1097,7 @@ performance}\label{test-1-summary-performance}}
 ##  Mean    : 5.001471 
 ##  Median  : 5 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.2251358 secs 
+##  Execution Time of Monte Carlo Simulation 0.4371829 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1110,7 +1110,7 @@ are clear.
 performance}\label{test-2-visualization-performance}}
 
 \begin{itemize}
-
+  
 \item
   Visualizing average
 \end{itemize}
@@ -1121,10 +1121,10 @@ performance}\label{test-2-visualization-performance}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/ggplot2-1.pdf}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/ggplot2-1.pdf}
 
 \begin{itemize}
-
+  
 \item
   Visualizing average by using \texttt{facet\_grid()}
 \end{itemize}
@@ -1136,8 +1136,8 @@ performance}\label{test-2-visualization-performance}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/facet-1.pdf} As given
-graphs above, the simulation result works well with
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/facet-1.pdf}
+As given graphs above, the simulation result works well with
 \texttt{ggplot2}-methods.
 
 \pagebreak
@@ -1201,9 +1201,9 @@ is applied to the GLS function.
 ## 
 ##  Repetition(nrep)      :  5 
 ## 
-##  Parallelization Type  :  Sequential 
+##  Parallelisation Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelisation :  1  out of 8 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1213,12 +1213,12 @@ is applied to the GLS function.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 8.46029388 secs 
+##  Execution Time of Monte Carlo Simulation 0.197753 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
 
-The total execution time of OLS simulation is 8.46 seconds when only one
+The total execution time of OLS simulation is 0.25 seconds when only one
 core is used.
 
 \textbf{OLS simulation with parallel processing:}
@@ -1238,9 +1238,9 @@ core is used.
 ## 
 ##  Repetition(nrep)      :  5 
 ## 
-##  Parallelization Type  :  Multisession 
+##  Parallelisation Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelization :  4  out of 8 
+##  Number of Cores Used in  Parallelisation :  4  out of 8 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1250,13 +1250,13 @@ core is used.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 6.048335 secs 
+##  Execution Time of Monte Carlo Simulation 1.832217 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
 
-The total execution time of OLS simulation is 6 seconds when four cores
-are used.
+The total execution time of OLS simulation is 1.66 seconds when four
+cores are used.
 
 \textbf{GLS with parallel processing:}
 
@@ -1275,9 +1275,9 @@ are used.
 ## 
 ##  Repetition(nrep)      :  5 
 ## 
-##  Parallelization Type  :  Multisession 
+##  Parallelisation Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelization :  4  out of 8 
+##  Number of Cores Used in  Parallelisation :  4  out of 8 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1287,10 +1287,13 @@ are used.
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 29.79384 secs 
+##  Execution Time of Monte Carlo Simulation 1.157024 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
+
+The total execution time of GLS simulation is 1.13 seconds when four
+cores are used.
 
 \textbf{GLS without parallel processing:}
 
@@ -1309,9 +1312,9 @@ are used.
 ## 
 ##  Repetition(nrep)      :  5 
 ## 
-##  Parallelization Type  :  Sequential 
+##  Parallelisation Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelisation :  1  out of 8 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1321,13 +1324,13 @@ are used.
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 39.71279 secs 
+##  Execution Time of Monte Carlo Simulation 1.1679 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
 
 As seen in the summary part, the total execution time of the simulation
-took 36.35 seconds which also proves that the parallel process works
+takes 1.56 seconds which also proves that the parallel process works
 well. Therefore, the execution times of the simulation might differ on
 other computers.
 
@@ -1351,7 +1354,7 @@ MSE is calculated by \texttt{out\$average\$mse} for each simulation.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/unnamed-chunk-4-1.pdf}
 \pagebreak
 
 \textbf{Density graph of MSE of \(\beta\) in OLS and GLS simulations}
@@ -1366,7 +1369,7 @@ MSE is calculated by \texttt{out\$average\$mse} for each simulation.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Seminararbeit_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/unnamed-chunk-5-1.pdf}
 
 \pagebreak
 
@@ -1377,17 +1380,18 @@ The above section illustrates the power of the implemented model and
 provides a fairly easy-to-use tool that still allows for various
 specifications in terms of used parameters, data generation processes
 and summary functions. Researchers, who use Monte Carlo studies
-regularly, may save alot of time using a tool like this in the long run.
-It also lowers the threshold to run a Monte Carlo simulation for users,
-who dont have the ability or time to code a complete Monte Carlo
-simulation, like it was done for this paper.
+regularly, may save a lot of time using a tool like this in the long
+run. It also lowers the threshold to run a Monte Carlo simulation for
+users, who do not have the ability or time to code a complete Monte
+Carlo simulation, like it was done for this paper.
 
 It was shown, that the code works for many different situations, but
-there are some limitations, f.e. regarding the number of variables used
-in the parameter grid or the fact, that only a singular output can be
-returned by the summary statistic. The functional programming approach
-applied in this work would easily allow for adjustments, in case the
-purpose of the program needs to be altered or expanded.
+there are some limitations, for instance, regarding the number of
+variables used in the parameter grid or the fact, that only a singular
+output can be returned by the summary statistic. The functional
+programming approach applied in this work would easily allow for
+adjustments, in case the purpose of the program needs to be altered or
+expanded.
 
 \pagebreak
 
@@ -1407,11 +1411,11 @@ Planning & X & X & X \\
 \texttt{average\_function()} & X & 0 & 0 \\
 \texttt{output\_function()} & 0 & X & 0 \\
 \texttt{main\_function()} & X & X & 0 \\
-ggplot2 part & 0 & X & 0 \\
-formatting & X & X & X \\
-writing the report & X & X & X \\
-literature research & X & X & X \\
-proof-reading & X & X & X \\
+\texttt{ggplot2} part & 0 & X & 0 \\
+Formatting & 0 & 0 & X \\
+Writing the report & X & X & X \\
+Literature research & 0 & 0 & X \\
+Proof-reading & X & X & X \\
 \bottomrule()
 \end{longtable}
 
@@ -1444,9 +1448,9 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ## 
 ##  Repetition(nrep)      :  5 
 ## 
-##  Parallelization Type  :  Sequential 
+##  Parallelisation Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelisation :  1  out of 8 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1456,7 +1460,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.07933807 secs 
+##  Execution Time of Monte Carlo Simulation 0.347321 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1841,9 +1845,9 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ## 
 ##  Repetition(nrep)      :  5 
 ## 
-##  Parallelization Type  :  Multisession 
+##  Parallelisation Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelization :  4  out of 8 
+##  Number of Cores Used in  Parallelisation :  4  out of 8 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1853,7 +1857,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.712235 secs 
+##  Execution Time of Monte Carlo Simulation 1.502594 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2239,9 +2243,9 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ## 
 ##  Repetition(nrep)      :  5 
 ## 
-##  Parallelization Type  :  Sequential 
+##  Parallelisation Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelization :  1  out of 8 
+##  Number of Cores Used in  Parallelisation :  1  out of 8 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -2251,7 +2255,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 31.50186 secs 
+##  Execution Time of Monte Carlo Simulation 54.58711 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2636,9 +2640,9 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ## 
 ##  Repetition(nrep)      :  5 
 ## 
-##  Parallelization Type  :  Multisession 
+##  Parallelisation Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelization :  4  out of 8 
+##  Number of Cores Used in  Parallelisation :  4  out of 8 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -2648,7 +2652,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 29.47388 secs 
+##  Execution Time of Monte Carlo Simulation 58.06819 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}

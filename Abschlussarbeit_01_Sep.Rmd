@@ -38,17 +38,20 @@ set.seed(123)
 ```
 
 ```{r library, include=FALSE}
+remove(list = ls())
+
 require(utils)
 library(tidyverse)
 library(purrr)
 library(parallel)
 library(furrr)
+library(future)
 ```
 
 # Introduction
 
 
-The Monte Carlo method is a simulation method for calculating the probabilistic value of the desired function using random numbers. A repeated pseudo-random number generator estimates sample statistics and returns a probability distribution of the sample, representing the parameter [@Barbu_2020]. Monte Carlo methods are combined with programming in modern research and contribute to various studies in statistics, economics and many other scientific fields. 
+The Monte Carlo method is a simulation method for calculating the probabilistic value of the desired function using random numbers. A repeated pseudo-random number generator estimates sample statistics and returns a probability distribution of the sample, representing the parameter(Barbu, 2020). Monte Carlo methods are combined with programming in modern research and contribute to various studies in statistics, economics and many other scientific fields. 
 This paper progresses on developing a collection of different wrapper functions to partially automatize the process of running a Monte Carlo simulation. The main function, that combines all the other helper functions, provides a convenient interface for Monte Carlo simulations and allows the user to create a parameter grid and iterate homogeneous function calls over the parameter grid. It also offers informative summary statistics, including visualization with `ggplot2`-methods and an option to use a parallelisation plan utilizing the `furrr` package.
 The paper proceeds as follows: Chapter 2 describes pre-processes to establish the Monte Carlo simulation function. The pre-process contains functions to create a parameter grid and the respective data points drawn from a user-defined distribution, along with functions that provide summary statistics. Chapter 3 details the main Monte Carlo simulation function, which consists of the helper functions introduced in chapter 2. Chapter 4 presents specific examples for the simulation process. Finally, chapter 5 summarizes the work presented in this paper. Since the output of the simulation in chapter 4 is quite lengthy, it was moved to the Appendix in order not to overload the structure of the actual paper.
 
@@ -135,9 +138,9 @@ The n data points created for each set of parameters are stored as separate elem
 
 | Mapping | Mapping with parallelisation | Number of parameters |
 | :------: | :------: | :------: |
-| `purrr:map()` | `furrrr:future_map()` | $n = 1$ |
-| `purrr:map2()` | `furrrr:future_map2()` | $n = 2$ | 
-| `purrr:pmap()` | `furrrr:future_pmap()` | $n \geq 3$ | 
+| `purrr::map()` | `furrrr::future_map()` | $n = 1$ |
+| `purrr::map2()` | `furrrr:f:uture_map2()` | $n = 2$ | 
+| `purrr::pmap()` | `furrrr::future_pmap()` | $n \geq 3$ | 
 
 `options = furrr_options(seed = TRUE)` is for reproducible random number generation (RNG) processes. This argument takes control of the RNG process for parallelisation and always generates the same numbers according to the given seed. More details can be found by running the command `?furrr_options` in RStudio.
 
@@ -183,7 +186,7 @@ data_generation <- function(simulation, grid){
 }
 ```
 
-Monte Carlo simulations can become very demanding in terms of computing time. In that case, parallel processing may be used to reduce the time of the simulation. In parallel processes, each process is executed simultaneously but independently. Interconnections are proceeded through communication channel [@Czech_2017].
+Monte Carlo simulations can become very demanding in terms of computing time. In that case, parallel processing may be used to reduce the time of the simulation. In parallel processes, each process is executed simultaneously but independently. Interconnections are proceeded through communication channel(Czech_2017).
 
 `data_generation()` automatically used the proper function from the `furrrr`-package, if the user specified more than one core. Otherwise, the function will stick to the respective mapping function from the `purrr`-package.
 
@@ -431,7 +434,7 @@ average_function <- function(grid_for_avg, summary, nrep){
 `nrep` and `cpt`  are used as input parameters in the `output_function()`.
 The variable `cpt` is used to store the execution time of the simulation. The next chapter will discuss this in more detail.
 
-Regarding the structure of `output_function()`, (1) `out` is an empty list for storing simulation results, averaged results and summary. (2) `Eco` is the class name of `out`. The class should be assigned to visualize simulation results with `ggplot2` methods. (3) Results from `array_1` and `average_over_reps` are assigned as `out$results` and `out$average` respectively. (4) These results have classes with their own names: `out$results` and `out$average`, thereby preventing future error when visualizing simulation results with `ggplot2`-methods. `ggplot2`-methods require specific classes, such as `data.frame`. (5) `cat` is useful for producing output in user-defined functions. It converts its arguments to character vectors, concatenates them to a single character vector, appends the given `sep` $=$ `string(s)` to each element and then outputs them [@rdocumentation]. (6) The neat output is returned at the end.
+Regarding the structure of `output_function()`, (1) `out` is an empty list for storing simulation results, averaged results and summary. (2) `Eco` is the class name of `out`. The class should be assigned to visualize simulation results with `ggplot2` methods. (3) Results from `array_1` and `average_over_reps` are assigned as `out$results` and `out$average` respectively. (4) These results have classes with their own names: `out$results` and `out$average`, thereby preventing future error when visualizing simulation results with `ggplot2`-methods. `ggplot2`-methods require specific classes, such as `data.frame`. (5) `cat` is useful for producing output in user-defined functions. It converts its arguments to character vectors, concatenates them to a single character vector, appends the given `sep` $=$ `string(s)` to each element and then outputs them (rdocumentation). (6) The neat output is returned at the end.
 
 
 ```{r echo=TRUE}
@@ -457,8 +460,8 @@ output_function <- function(array_1,average_over_reps,parameters,cores,simulatio
   }
   text <-  cat("\n",
            "Repetition(nrep)      : ",nrep,"\n\n",
-           "Parallelization Type  : ",parallel,"\n\n",
-           "Number of Cores Used in  Parallelization : ",cores,
+           "Parallelisation Type  : ",parallel,"\n\n",
+           "Number of Cores Used in  Parallelisation : ",cores,
            " out of",detectCores(),"\n\n",
            "Input Parameters : ",paste(parameters),"\n\n",
            "Simulation Length :",length(array_1),"\n",
@@ -628,7 +631,7 @@ ols <- main_function(parameters = param_list,
                      cores=1)
 
 ```
-The total execution time of OLS simulation is 8.46 seconds when only one core is used.
+The total execution time of OLS simulation is 0.25 seconds when only one core is used.
 
 
 
@@ -643,7 +646,7 @@ ols <- main_function(parameters = param_list,
                      seed=123,
                      cores=4)
 ```
-The total execution time of OLS simulation is 12 seconds when four cores are used.
+The total execution time of OLS simulation is 1.66 seconds when four cores are used.
 
 
 
@@ -658,7 +661,7 @@ gls <- main_function(parameters = param_list,
                      cores=4)
 
 ```
-
+The total execution time of GLS simulation is 1.13 seconds when four cores are used.
 
 
 
@@ -674,7 +677,7 @@ gls <- main_function(parameters = param_list,
                      cores=1)
 
 ```
-As seen in the summary part, the total execution time of the simulation took 36.35 seconds which also proves that the parallel process works well. Therefore, the execution times of the simulation might differ on other computers.
+As seen in the summary part, the total execution time of the simulation takes 1.56 seconds which also proves that the parallel process works well. Therefore, the execution times of the simulation might differ on other computers.
 
 
 
@@ -716,9 +719,9 @@ ggplot(ols$average,aes(x=mse,col="OLS"))+facet_grid(n~.)+
 
 # Conclusion
 
-The above section illustrates the power of the implemented model and provides a fairly easy-to-use tool that still allows for various specifications in terms of used parameters, data generation processes and summary functions. Researchers, who use Monte Carlo studies regularly, may save alot of time using a tool like this in the long run. It also lowers the threshold to run a Monte Carlo simulation for users, who dont have the ability or time to code a complete Monte Carlo simulation, like it was done for this paper.
+The above section illustrates the power of the implemented model and provides a fairly easy-to-use tool that still allows for various specifications in terms of used parameters, data generation processes and summary functions. Researchers, who use Monte Carlo studies regularly, may save a lot of time using a tool like this in the long run. It also lowers the threshold to run a Monte Carlo simulation for users, who do not have the ability or time to code a complete Monte Carlo simulation, like it was done for this paper.
 
-It was shown, that the code works for many different situations, but there are some limitations, f.e. regarding the number of variables used in the parameter grid or the fact, that only a singular output can be returned by the summary statistic. The functional programming approach applied in this work would easily allow for adjustments, in case the purpose of the program needs to be altered or expanded.
+It was shown, that the code works for many different situations, but there are some limitations, for instance, regarding the number of variables used in the parameter grid or the fact, that only a singular output can be returned by the summary statistic. The functional programming approach applied in this work would easily allow for adjustments, in case the purpose of the program needs to be altered or expanded.
 
 
 \pagebreak
@@ -735,11 +738,11 @@ It was shown, that the code works for many different situations, but there are s
 | `average_function()`  | X | 0 | 0 | 
 | `output_function()`  | 0 | X | 0 | 
 | `main_function()`  | X | X | 0 |
-| ggplot2 part   | 0 | X | 0 | 
-| formatting  | X | X | X | 
-| writing the report  | X | X | X | 
-| literature research  | X | X | X | 
-| proof-reading  | X | X | X | 
+| `ggplot2` part   | 0 | X | 0 | 
+| Formatting  | 0 | 0 | X | 
+| Writing the report  | X | X | X | 
+| Literature research  | 0 | 0 | X | 
+| Proof-reading  | X | X | X | 
 
 
 
