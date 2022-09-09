@@ -420,9 +420,10 @@ specification shown as on the table below:
 Mapping & Mapping with parallelisation & Number of parameters \\
 \midrule()
 \endhead
-\texttt{purrr:map()} & \texttt{furrrr:future\_map()} & \(n = 1\) \\
-\texttt{purrr:map2()} & \texttt{furrrr:future\_map2()} & \(n = 2\) \\
-\texttt{purrr:pmap()} & \texttt{furrrr:future\_pmap()} & \(n \geq 3\) \\
+\texttt{purrr::map()} & \texttt{furrrr::future\_map()} & \(n = 1\) \\
+\texttt{purrr::map2()} & \texttt{furrrr:f:uture\_map2()} & \(n = 2\) \\
+\texttt{purrr::pmap()} & \texttt{furrrr::future\_pmap()} &
+\(n \geq 3\) \\
 \bottomrule()
 \end{longtable}
 
@@ -1087,7 +1088,7 @@ performance}\label{test-1-summary-performance}}
 ## 
 ##  Parallelisation Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelisation :  1  out of 8 
+##  Number of Cores Used in  Parallelisation :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "10", "100", "10") c("mu", "0", "10", "1") c("sd", "0", "5", "1") 
 ## 
@@ -1097,7 +1098,7 @@ performance}\label{test-1-summary-performance}}
 ##  Mean    : 5.001471 
 ##  Median  : 5 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.4371829 secs 
+##  Execution Time of Monte Carlo Simulation 0.2370141 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1110,7 +1111,7 @@ are clear.
 performance}\label{test-2-visualization-performance}}
 
 \begin{itemize}
-  
+\tightlist
 \item
   Visualizing average
 \end{itemize}
@@ -1124,7 +1125,7 @@ performance}\label{test-2-visualization-performance}}
 \includegraphics{Abschlussarbeit_01_Sep_files/figure-latex/ggplot2-1.pdf}
 
 \begin{itemize}
-  
+\tightlist
 \item
   Visualizing average by using \texttt{facet\_grid()}
 \end{itemize}
@@ -1203,7 +1204,7 @@ is applied to the GLS function.
 ## 
 ##  Parallelisation Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelisation :  1  out of 8 
+##  Number of Cores Used in  Parallelisation :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1213,12 +1214,12 @@ is applied to the GLS function.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.197753 secs 
+##  Execution Time of Monte Carlo Simulation 0.1320069 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
 
-The total execution time of OLS simulation is 0.25 seconds when only one
+The total execution time of OLS simulation is 1.163067 seconds when one
 core is used.
 
 \textbf{OLS simulation with parallel processing:}
@@ -1240,7 +1241,7 @@ core is used.
 ## 
 ##  Parallelisation Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelisation :  4  out of 8 
+##  Number of Cores Used in  Parallelisation :  4  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1250,12 +1251,12 @@ core is used.
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 1.832217 secs 
+##  Execution Time of Monte Carlo Simulation 0.9060519 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
 
-The total execution time of OLS simulation is 1.66 seconds when four
+The total execution time of OLS simulation is 1.163067 seconds when four
 cores are used.
 
 \textbf{GLS with parallel processing:}
@@ -1277,7 +1278,7 @@ cores are used.
 ## 
 ##  Parallelisation Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelisation :  4  out of 8 
+##  Number of Cores Used in  Parallelisation :  4  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1287,7 +1288,7 @@ cores are used.
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 1.157024 secs 
+##  Execution Time of Monte Carlo Simulation 34.15795 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1314,7 +1315,7 @@ cores are used.
 ## 
 ##  Parallelisation Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelisation :  1  out of 8 
+##  Number of Cores Used in  Parallelisation :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1324,7 +1325,7 @@ cores are used.
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 1.1679 secs 
+##  Execution Time of Monte Carlo Simulation 34.35997 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1450,7 +1451,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ## 
 ##  Parallelisation Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelisation :  1  out of 8 
+##  Number of Cores Used in  Parallelisation :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1460,7 +1461,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 0.347321 secs 
+##  Execution Time of Monte Carlo Simulation 0.127007 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -1847,7 +1848,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ## 
 ##  Parallelisation Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelisation :  4  out of 8 
+##  Number of Cores Used in  Parallelisation :  4  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -1857,7 +1858,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.251827 
 ##  Median  : 1.246948 
 ## 
-##  Execution Time of Monte Carlo Simulation 1.502594 secs 
+##  Execution Time of Monte Carlo Simulation 0.4590261 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2245,7 +2246,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ## 
 ##  Parallelisation Type  :  Sequential 
 ## 
-##  Number of Cores Used in  Parallelisation :  1  out of 8 
+##  Number of Cores Used in  Parallelisation :  1  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -2255,7 +2256,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 54.58711 secs 
+##  Execution Time of Monte Carlo Simulation 33.37491 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}
@@ -2642,7 +2643,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ## 
 ##  Parallelisation Type  :  Multisession 
 ## 
-##  Number of Cores Used in  Parallelisation :  4  out of 8 
+##  Number of Cores Used in  Parallelisation :  4  out of 4 
 ## 
 ##  Input Parameters :  c("n", "100", "1000", "100") c("mu", "0", "1", "0.25") c("sd", "1", "2", "0.5") 
 ## 
@@ -2652,7 +2653,7 @@ url:\url{https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cat}
 ##  Mean    : 1.260196 
 ##  Median  : 1.284057 
 ## 
-##  Execution Time of Monte Carlo Simulation 58.06819 secs 
+##  Execution Time of Monte Carlo Simulation 34.61398 secs 
 ## 
 ##  Name of The Class : Eco
 \end{verbatim}

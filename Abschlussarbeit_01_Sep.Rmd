@@ -630,10 +630,13 @@ ols <- main_function(parameters = param_list,
                      seed=123,
                      cores=1)
 
+
+
+
 ```
-The total execution time of OLS simulation is 0.25 seconds when only one core is used.
 
 
+The total execution time of OLS simulation is 1.163067 seconds when one core is used.
 
 
 **OLS simulation with parallel processing:**
@@ -646,7 +649,7 @@ ols <- main_function(parameters = param_list,
                      seed=123,
                      cores=4)
 ```
-The total execution time of OLS simulation is 1.66 seconds when four cores are used.
+The total execution time of OLS simulation is 1.163067 seconds when four cores are used.
 
 
 
